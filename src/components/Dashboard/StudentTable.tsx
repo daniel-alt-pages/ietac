@@ -1,7 +1,7 @@
 "use client";
 
 import { Student } from '@/lib/data';
-import { Copy, Smartphone, Mail, Calendar, User, Hash, Lock, ShieldCheck } from 'lucide-react';
+import { Copy, Smartphone, Mail, Calendar, User, Lock } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
@@ -21,12 +21,12 @@ export default function StudentTable({ data }: StudentTableProps) {
     return (
         <div className="flex flex-col h-full bg-slate-50/50">
             {/* Desktop Table View */}
-            <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex-1">
+            <div className="hidden md:block bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex-1">
                 <div className="overflow-x-auto h-full">
                     <table className="min-w-full divide-y divide-slate-200">
                         <thead className="bg-slate-50 sticky top-0 z-10 shadow-sm">
                             <tr>
-                                <Th>Nombre</Th>
+                                <Th>Nombre Completo</Th>
                                 <Th>Apellidos</Th>
                                 <Th>Fecha Nac.</Th>
                                 <Th>Género</Th>
@@ -50,7 +50,7 @@ export default function StudentTable({ data }: StudentTableProps) {
             </div>
 
             {/* Mobile Card View */}
-            <div className="lg:hidden space-y-4 pb-20">
+            <div className="md:hidden space-y-4 pb-24 px-4 pt-4">
                 {data.length > 0 ? (
                     data.map((student, index) => (
                         <MobileCard key={index} student={student} index={index} onCopy={handleCopy} />
@@ -63,7 +63,7 @@ export default function StudentTable({ data }: StudentTableProps) {
             </div>
 
             {/* Footer / Pagination */}
-            <div className="hidden lg:flex px-6 py-4 border-t border-slate-200 bg-white items-center justify-between sticky bottom-0">
+            <div className="hidden md:flex px-6 py-4 border-t border-slate-200 bg-white items-center justify-between sticky bottom-0 z-20">
                 <span className="text-sm text-slate-500">Mostrando <span className="font-medium text-slate-900">{data.length}</span> registros</span>
                 <div className="flex gap-2">
                     <button className="px-3 py-1 text-sm border rounded text-slate-400" disabled>Anterior</button>
@@ -77,8 +77,11 @@ export default function StudentTable({ data }: StudentTableProps) {
 // --- Subcomponents ---
 
 function TableRow({ student, index, onCopy }: { student: Student; index: number; onCopy: (t: string, l: string) => void }) {
-    const cleanFirst = student.first.replace('IETAC - ', '');
-    const initials = cleanFirst.substring(0, 2).toUpperCase();
+    // We removed the cleaning logic so the full name (IETAC - ...) is displayed and copied.
+    const fullName = student.first;
+    // Attempt to extract initials from the part after "IETAC - " if possible, or just first two chars
+    const cleanNameForInitials = fullName.replace('IETAC - ', '');
+    const initials = cleanNameForInitials.substring(0, 2).toUpperCase();
 
     return (
         <motion.tr
@@ -89,11 +92,11 @@ function TableRow({ student, index, onCopy }: { student: Student; index: number;
         >
             {/* 1. Nombre */}
             <td className="px-6 py-4 whitespace-nowrap">
-                <div className="flex items-center cursor-pointer" onClick={() => onCopy(cleanFirst, 'Nombre')}>
-                    <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold mr-3 border border-indigo-200">
+                <div className="flex items-center cursor-pointer" onClick={() => onCopy(fullName, 'Nombre')}>
+                    <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold mr-3 border border-indigo-200 flex-shrink-0">
                         {initials}
                     </div>
-                    <div className="font-semibold text-slate-900">{cleanFirst}</div>
+                    <div className="font-semibold text-slate-900">{fullName}</div>
                     <CopyIcon />
                 </div>
             </td>
@@ -142,56 +145,56 @@ function TableRow({ student, index, onCopy }: { student: Student; index: number;
 }
 
 function MobileCard({ student, index, onCopy }: { student: Student; index: number; onCopy: (t: string, l: string) => void }) {
-    const cleanFirst = student.first.replace('IETAC - ', '');
+    const fullName = student.first;
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.03 }}
-            className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: index * 0.05 }}
+            className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
         >
-            <div className="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
-
-            {/* Header: Name & ID */}
-            <div className="flex justify-between items-start mb-4 pl-3">
+            <div className="bg-slate-50 p-4 border-b border-slate-100 flex justify-between items-center">
                 <div>
-                    <h3 className="text-lg font-bold text-slate-900 leading-tight" onClick={() => onCopy(cleanFirst + ' ' + student.last, 'Nombre Completo')}>{cleanFirst}</h3>
-                    <p className="text-sm text-slate-600 font-medium">{student.last}</p>
+                    <h3 className="text-base font-bold text-slate-900" onClick={() => onCopy(fullName, 'Nombre')}>{fullName}</h3>
+                    <p className="text-sm text-slate-500">{student.last}</p>
                 </div>
-                <span className="text-xs font-mono bg-slate-100 px-2 py-1 rounded text-slate-500" onClick={() => onCopy(student.id, 'ID')}>{student.id}</span>
+                <div className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-xs font-mono font-bold" onClick={() => onCopy(student.id, 'ID')}>{student.id}</div>
             </div>
 
-            {/* Grid of Info */}
-            <div className="grid grid-cols-1 gap-3 pl-3">
-                <MobileRow icon={<Mail className="w-4 h-4" />} label="Email" value={student.email} onCopy={onCopy} highlight />
-                <MobileRow icon={<Lock className="w-4 h-4" />} label="Pass" value={student.password} onCopy={onCopy} isPass />
-                <div className="flex gap-4">
-                    <MobileRow icon={<Calendar className="w-4 h-4" />} label="Nac." value={student.birth} onCopy={onCopy} />
-                    <MobileRow icon={<User className="w-4 h-4" />} label="Gen" value={student.gender} onCopy={onCopy} />
-                </div>
-                <MobileRow icon={<Smartphone className="w-4 h-4" />} label="Tel" value={student.phone} onCopy={onCopy} />
+            <div className="p-4 grid grid-cols-2 gap-3">
+                <MobileField label="Email" value={student.email} icon={<Mail size={14} />} fullWidth onCopy={onCopy} />
+                <MobileField label="Contraseña" value={student.password} icon={<Lock size={14} />} blur onCopy={onCopy} />
+                <MobileField label="Teléfono" value={student.phone} icon={<Smartphone size={14} />} onCopy={onCopy} />
+                <MobileField label="Fecha Nac." value={student.birth} icon={<Calendar size={14} />} onCopy={onCopy} />
+                <MobileField label="Género" value={student.gender} icon={<User size={14} />} onCopy={onCopy} />
             </div>
         </motion.div>
     );
 }
 
-function MobileRow({ icon, label, value, onCopy, highlight = false, isPass = false }: any) {
+interface MobileFieldProps {
+    label: string;
+    value: string;
+    icon: React.ReactNode;
+    fullWidth?: boolean;
+    blur?: boolean;
+    onCopy: (text: string, label: string) => void;
+}
+
+function MobileField({ label, value, icon, fullWidth, blur, onCopy }: MobileFieldProps) {
     return (
         <div
-            className={clsx("flex items-center p-2 rounded-lg active:bg-slate-50 transition-colors cursor-pointer border border-transparent active:border-slate-100", highlight && "bg-indigo-50/50 border-indigo-50")}
+            className={clsx("flex flex-col gap-1 p-2 rounded-lg bg-slate-50 active:bg-indigo-50 transition-colors border border-transparent active:border-indigo-100", fullWidth && "col-span-2")}
             onClick={() => onCopy(value, label)}
         >
-            <div className={clsx("p-1.5 rounded-md mr-3 text-slate-400", highlight ? "bg-indigo-100 text-indigo-600" : "bg-slate-100")}>
+            <div className="flex items-center gap-1.5 text-slate-400 text-xs font-semibold uppercase">
                 {icon}
+                <span>{label}</span>
             </div>
-            <div className="flex-1 min-w-0">
-                <p className="text-xs text-slate-400 uppercase font-semibold tracking-wider font-sans">{label}</p>
-                <p className={clsx("text-sm font-medium truncate", highlight ? "text-indigo-700" : "text-slate-700", isPass && "blur-[2px] active:blur-none transition-all")}>
-                    {value}
-                </p>
+            <div className={clsx("text-sm font-medium text-slate-700 truncate", blur && "blur-[2px] active:blur-none")}>
+                {value}
             </div>
-            <Copy className="w-4 h-4 text-slate-300 ml-2" />
         </div>
     );
 }
