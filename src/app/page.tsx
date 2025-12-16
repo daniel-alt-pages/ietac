@@ -9,6 +9,7 @@ import { subscribeToConfirmations, updateConfirmation } from '@/lib/firebase';
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [institutionFilter, setInstitutionFilter] = useState('ALL');
   const [confirmations, setConfirmations] = useState<Record<string, boolean>>({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -22,12 +23,20 @@ export default function Home() {
   }, []);
 
   const filteredData = useMemo(() => {
-    if (!searchTerm) return studentData;
+    let data = studentData;
+
+    // Filter by institution
+    if (institutionFilter !== 'ALL') {
+      data = data.filter(student => student.institution === institutionFilter);
+    }
+
+    // Filter by search term
+    if (!searchTerm) return data;
 
     // Split search term into words and remove empty strings
     const searchPartials = searchTerm.toLowerCase().split(/\s+/).filter(Boolean);
 
-    return studentData.filter(student => {
+    return data.filter(student => {
       // Create a single searchable string for the student
       const fullSearchableText = `
         ${student.first} 
@@ -39,7 +48,7 @@ export default function Home() {
       // Check if EVERY partial word exists in the student's data
       return searchPartials.every(part => fullSearchableText.includes(part));
     });
-  }, [searchTerm]);
+  }, [searchTerm, institutionFilter]);
 
   const handleToggleConfirm = async (studentId: string) => {
     const currentStatus = confirmations[studentId] || false;
@@ -53,7 +62,12 @@ export default function Home() {
     <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
       <Sidebar />
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-        <Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+        <Header
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          institutionFilter={institutionFilter}
+          onInstitutionChange={setInstitutionFilter}
+        />
 
         <div className="flex-1 overflow-auto p-4 md:p-6 scroll-smooth">
           {isLoading ? (

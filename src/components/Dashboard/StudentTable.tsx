@@ -143,16 +143,28 @@ interface TableRowProps {
 
 function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onToggleConfirm, onSendMessage }: TableRowProps) {
     const fullName = student.first;
-    const cleanNameForInitials = fullName.replace('IETAC - ', '');
+    const cleanNameForInitials = fullName.replace(/^(IETAC|SG) - /, '');
     const initials = cleanNameForInitials.substring(0, 2).toUpperCase();
     const emailUser = getEmailUsername(student.email);
+
+    // Institution-specific colors
+    const isIETAC = student.institution === 'IETAC';
+    const isSG = student.institution === 'SG';
+
+    const institutionColors = {
+        avatar: isIETAC ? 'bg-indigo-100 text-indigo-700 border-indigo-200' : 'bg-emerald-100 text-emerald-700 border-emerald-200',
+        hover: isIETAC ? 'hover:bg-indigo-50/30' : 'hover:bg-emerald-50/30',
+        text: isIETAC ? 'group-hover/cell:text-indigo-600' : 'group-hover/cell:text-emerald-600',
+        email: isIETAC ? 'text-indigo-600' : 'text-emerald-600',
+        copyIcon: isIETAC ? 'text-indigo-300' : 'text-emerald-300'
+    };
 
     return (
         <motion.tr
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.02 }}
-            className={clsx("hover:bg-indigo-50/30 transition-colors group", isConfirmed && "bg-green-50/50")}
+            className={clsx("transition-colors group", institutionColors.hover, isConfirmed && "bg-green-50/50")}
         >
             {/* # Row Number */}
             <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-400 font-mono text-center">
@@ -178,11 +190,11 @@ function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onTog
             <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center cursor-pointer group/cell flex-1" onClick={() => onCopy(fullName, 'Nombre')}>
-                        <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold mr-3 border border-indigo-200 flex-shrink-0">
+                        <div className={clsx("h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold mr-3 border flex-shrink-0", institutionColors.avatar)}>
                             {initials}
                         </div>
-                        <div className="font-semibold text-slate-900 group-hover/cell:text-indigo-600 transition-colors">{fullName}</div>
-                        <CopyIcon />
+                        <div className={clsx("font-semibold text-slate-900 transition-colors", institutionColors.text)}>{fullName}</div>
+                        <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
                     </div>
                     <button
                         onClick={(e) => { e.stopPropagation(); onSendMessage(); }}
@@ -202,7 +214,7 @@ function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onTog
             <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-700 font-medium">
                 <div className="flex items-center cursor-pointer group/cell" onClick={() => onCopy(student.last, 'Apellidos')}>
                     {student.last}
-                    <CopyIcon />
+                    <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
                 </div>
             </td>
 
@@ -210,7 +222,7 @@ function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onTog
             <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 font-mono">
                 <div className="flex items-center cursor-pointer group/cell" onClick={() => onCopy(student.birth, 'Fecha Nac')}>
                     {student.birth}
-                    <CopyIcon />
+                    <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
                 </div>
             </td>
 
@@ -225,10 +237,10 @@ function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onTog
             </td>
 
             {/* 5. Usuario Email (sin @gmail.com) */}
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-indigo-600">
+            <td className={clsx("px-6 py-4 whitespace-nowrap text-sm", institutionColors.email)}>
                 <div className="flex items-center cursor-pointer group/cell" onClick={() => onCopy(emailUser, 'Usuario')}>
                     {emailUser}
-                    <CopyIcon />
+                    <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
                 </div>
             </td>
 
@@ -236,7 +248,7 @@ function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onTog
             <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-mono">
                 <div className="flex items-center cursor-pointer group/cell" onClick={() => onCopy(student.password, 'Contraseña')}>
                     <span className="blur-[2px] hover:blur-none transition-all duration-200">{student.password}</span>
-                    <CopyIcon />
+                    <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
                 </div>
             </td>
 
@@ -244,7 +256,7 @@ function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onTog
             <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 font-mono">
                 <div className="flex items-center cursor-pointer group/cell" onClick={() => onCopy(student.phone, 'Teléfono')}>
                     {student.phone}
-                    <CopyIcon />
+                    <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
                 </div>
             </td>
 
@@ -252,7 +264,7 @@ function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onTog
             <td className="px-6 py-4 whitespace-nowrap text-xs font-mono text-slate-400">
                 <div className="flex items-center cursor-pointer group/cell" onClick={() => onCopy(student.id, 'ID')}>
                     {student.id}
-                    <CopyIcon />
+                    <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
                 </div>
             </td>
         </motion.tr>

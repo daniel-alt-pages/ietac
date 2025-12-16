@@ -1,12 +1,14 @@
-import { Search, Bell, X } from 'lucide-react';
+import { Search, Bell, X, Building2 } from 'lucide-react';
 import clsx from 'clsx';
 
 interface HeaderProps {
     searchTerm: string;
     onSearchChange: (value: string) => void;
+    institutionFilter: string;
+    onInstitutionChange: (value: string) => void;
 }
 
-export default function Header({ searchTerm, onSearchChange }: HeaderProps) {
+export default function Header({ searchTerm, onSearchChange, institutionFilter, onInstitutionChange }: HeaderProps) {
     return (
         <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-30 shadow-sm transition-all duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
@@ -15,6 +17,46 @@ export default function Header({ searchTerm, onSearchChange }: HeaderProps) {
                 <h2 className="text-lg md:text-xl font-bold text-slate-800 tracking-tight hidden xs:block truncate shrink-0">
                     Estudiantes
                 </h2>
+
+                {/* Institution Filter - Pill Style */}
+                <div className="flex items-center gap-2 shrink-0">
+                    <Building2 className="w-4 h-4 text-slate-400 hidden sm:block" />
+                    <div className="flex gap-1.5 bg-slate-100 p-1 rounded-lg">
+                        <button
+                            onClick={() => onInstitutionChange('ALL')}
+                            className={clsx(
+                                "px-3 py-1.5 text-xs font-semibold rounded-md transition-all",
+                                institutionFilter === 'ALL'
+                                    ? "bg-white text-slate-800 shadow-sm"
+                                    : "text-slate-500 hover:text-slate-700"
+                            )}
+                        >
+                            Todos
+                        </button>
+                        <button
+                            onClick={() => onInstitutionChange('IETAC')}
+                            className={clsx(
+                                "px-3 py-1.5 text-xs font-semibold rounded-md transition-all",
+                                institutionFilter === 'IETAC'
+                                    ? "bg-indigo-500 text-white shadow-md"
+                                    : "text-slate-500 hover:text-indigo-600"
+                            )}
+                        >
+                            IETAC
+                        </button>
+                        <button
+                            onClick={() => onInstitutionChange('SG')}
+                            className={clsx(
+                                "px-3 py-1.5 text-xs font-semibold rounded-md transition-all",
+                                institutionFilter === 'SG'
+                                    ? "bg-emerald-500 text-white shadow-md"
+                                    : "text-slate-500 hover:text-emerald-600"
+                            )}
+                        >
+                            SG
+                        </button>
+                    </div>
+                </div>
 
                 {/* Search Bar Container */}
                 <div className="flex-1 max-w-2xl flex justify-end md:justify-center">
