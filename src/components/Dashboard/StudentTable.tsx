@@ -37,7 +37,7 @@ export default function StudentTable({ data }: StudentTableProps) {
                         {data.length > 0 ? (
                             data.map((student, index) => {
                                 // Clean name logic
-                                const cleanFirst = student.first.replace('IETAC | ', '');
+                                const cleanFirst = student.first.replace('IETAC - ', '');
                                 const initials = cleanFirst.substring(0, 2).toUpperCase();
 
                                 return (
