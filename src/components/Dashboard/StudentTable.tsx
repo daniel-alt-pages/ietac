@@ -23,6 +23,21 @@ export default function StudentTable({ data, confirmations, onToggleConfirm }: S
     // Extract email username (without @gmail.com)
     const getEmailUsername = (email: string) => email.split('@')[0];
 
+    const handleSendMessage = (student: Student) => {
+        const firstName = student.first.replace('IETAC - ', '');
+        const message = `👋 Hola ${firstName}, aquí tienes tus credenciales institucionales:
+    
+📧 Usuario: ${student.email}
+🔑 Contraseña: ${student.password}
+    
+🌐 Inicia sesión en Google: https://accounts.google.com/
+    
+Por favor cambia tu contraseña al ingresar.`;
+
+        const whatsappUrl = `https://wa.me/57${student.phone}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    };
+
     return (
         <div className="flex flex-col h-full bg-slate-50/50">
             {/* Desktop Table View */}
@@ -54,6 +69,7 @@ export default function StudentTable({ data, confirmations, onToggleConfirm }: S
                                         getEmailUsername={getEmailUsername}
                                         isConfirmed={confirmations[student.id] || false}
                                         onToggleConfirm={() => onToggleConfirm(student.id)}
+                                        onSendMessage={() => handleSendMessage(student)}
                                     />
                                 ))
                             ) : (
@@ -76,6 +92,7 @@ export default function StudentTable({ data, confirmations, onToggleConfirm }: S
                             getEmailUsername={getEmailUsername}
                             isConfirmed={confirmations[student.id] || false}
                             onToggleConfirm={() => onToggleConfirm(student.id)}
+                            onSendMessage={() => handleSendMessage(student)}
                         />
                     ))
                 ) : (
@@ -121,9 +138,10 @@ interface TableRowProps {
     getEmailUsername: (email: string) => string;
     isConfirmed: boolean;
     onToggleConfirm: () => void;
+    onSendMessage: () => void;
 }
 
-function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onToggleConfirm }: TableRowProps) {
+function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onToggleConfirm, onSendMessage }: TableRowProps) {
     const fullName = student.first;
     const cleanNameForInitials = fullName.replace('IETAC - ', '');
     const initials = cleanNameForInitials.substring(0, 2).toUpperCase();
@@ -158,12 +176,25 @@ function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onTog
 
             {/* 1. Nombre */}
             <td className="px-6 py-4 whitespace-nowrap">
-                <div className="flex items-center cursor-pointer group/cell" onClick={() => onCopy(fullName, 'Nombre')}>
-                    <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold mr-3 border border-indigo-200 flex-shrink-0">
-                        {initials}
+                <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center cursor-pointer group/cell flex-1" onClick={() => onCopy(fullName, 'Nombre')}>
+                        <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold mr-3 border border-indigo-200 flex-shrink-0">
+                            {initials}
+                        </div>
+                        <div className="font-semibold text-slate-900 group-hover/cell:text-indigo-600 transition-colors">{fullName}</div>
+                        <CopyIcon />
                     </div>
-                    <div className="font-semibold text-slate-900 group-hover/cell:text-indigo-600 transition-colors">{fullName}</div>
-                    <CopyIcon />
+                    <button
+                        onClick={(e) => { e.stopPropagation(); onSendMessage(); }}
+                        className="p-1.5 hover:bg-green-50 rounded-full transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                        title="Enviar credenciales por WhatsApp"
+                    >
+                        <img
+                            src="https://images.seeklogo.com/logo-png/30/1/whatsapp-logo-png_seeklogo-306926.png"
+                            alt="WhatsApp"
+                            className="w-5 h-5 object-contain"
+                        />
+                    </button>
                 </div>
             </td>
 
@@ -235,9 +266,10 @@ interface MobileCardProps {
     getEmailUsername: (email: string) => string;
     isConfirmed: boolean;
     onToggleConfirm: () => void;
+    onSendMessage: () => void;
 }
 
-function MobileCard({ student, index, onCopy, getEmailUsername, isConfirmed, onToggleConfirm }: MobileCardProps) {
+function MobileCard({ student, index, onCopy, getEmailUsername, isConfirmed, onToggleConfirm, onSendMessage }: MobileCardProps) {
     const fullName = student.first;
     const emailUser = getEmailUsername(student.email);
 
@@ -257,17 +289,30 @@ function MobileCard({ student, index, onCopy, getEmailUsername, isConfirmed, onT
                         <p className="text-sm text-slate-500 active:text-indigo-600" onClick={() => onCopy(student.last, 'Apellidos')}>{student.last}</p>
                     </div>
                 </div>
-                <button
-                    onClick={onToggleConfirm}
-                    className={clsx(
-                        "w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all",
-                        isConfirmed
-                            ? "bg-green-500 border-green-500 text-white"
-                            : "border-slate-300 bg-white"
-                    )}
-                >
-                    {isConfirmed ? <Check className="w-5 h-5" /> : <Circle className="w-4 h-4 text-slate-300" />}
-                </button>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={onSendMessage}
+                        className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center hover:bg-green-100 transition-colors border border-green-100"
+                        title="Enviar credenciales por WhatsApp"
+                    >
+                        <img
+                            src="https://images.seeklogo.com/logo-png/30/1/whatsapp-logo-png_seeklogo-306926.png"
+                            alt="WhatsApp"
+                            className="w-5 h-5 object-contain"
+                        />
+                    </button>
+                    <button
+                        onClick={onToggleConfirm}
+                        className={clsx(
+                            "w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all",
+                            isConfirmed
+                                ? "bg-green-500 border-green-500 text-white"
+                                : "border-slate-300 bg-white"
+                        )}
+                    >
+                        {isConfirmed ? <Check className="w-5 h-5" /> : <Circle className="w-4 h-4 text-slate-300" />}
+                    </button>
+                </div>
             </div>
 
             {/* Grid of Info */}
