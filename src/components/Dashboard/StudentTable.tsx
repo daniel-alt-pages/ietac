@@ -316,13 +316,13 @@ function MobileCard({ student, index, onCopy, getEmailUsername, isConfirmed, onT
             </div>
 
             {/* Grid of Info */}
-            <div className="p-4 grid grid-cols-2 gap-3">
-                <MobileField label="Usuario" value={emailUser} icon={<Mail size={14} />} fullWidth onCopy={onCopy} />
-                <MobileField label="Contraseña" value={student.password} icon={<Lock size={14} />} blur onCopy={onCopy} />
-                <MobileField label="Teléfono" value={student.phone} icon={<Smartphone size={14} />} onCopy={onCopy} />
-                <MobileField label="Fecha Nac." value={student.birth} icon={<Calendar size={14} />} onCopy={onCopy} />
-                <MobileField label="Género" value={student.gender} icon={<User size={14} />} onCopy={onCopy} />
-                <MobileField label="ID" value={student.id} icon={<User size={14} />} onCopy={onCopy} />
+            <div className="p-3 grid grid-cols-2 gap-2">
+                <MobileField label="Usuario" value={emailUser} icon={<Mail size={13} />} fullWidth onCopy={onCopy} />
+                <MobileField label="Contraseña" value={student.password} icon={<Lock size={13} />} blur onCopy={onCopy} />
+                <MobileField label="Teléfono" value={student.phone} icon={<Smartphone size={13} />} onCopy={onCopy} />
+                <MobileField label="Fecha Nac." value={student.birth} icon={<Calendar size={13} />} onCopy={onCopy} />
+                <MobileField label="Género" value={student.gender} icon={<User size={13} />} onCopy={onCopy} />
+                <MobileField label="ID" value={student.id} icon={<User size={13} />} onCopy={onCopy} />
             </div>
         </motion.div>
     );
