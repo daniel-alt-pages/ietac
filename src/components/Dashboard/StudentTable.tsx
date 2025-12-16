@@ -1,7 +1,7 @@
 "use client";
 
 import { Student } from '@/lib/data';
-import { Copy, Smartphone, Mail, Calendar, User, Lock, Check, Circle } from 'lucide-react';
+import { Copy, Smartphone, Mail, Calendar, User, Lock, Check, Circle, Phone } from 'lucide-react';
 import { useToast } from '@/context/ToastContext';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
@@ -20,11 +20,19 @@ export default function StudentTable({ data, confirmations, onToggleConfirm }: S
         showToast(`${label}: ${text}`);
     };
 
+    const handleCall = (phone: string, studentName: string) => {
+        // Remove any spaces or special characters from phone number
+        const cleanPhone = phone.replace(/\s+/g, '').replace(/-/g, '');
+        // Open phone dialer with tel: protocol
+        window.location.href = `tel:+57${cleanPhone}`;
+        showToast(`Llamando a ${studentName}...`);
+    };
+
     // Extract email username (without @gmail.com)
     const getEmailUsername = (email: string) => email.split('@')[0];
 
     const handleSendMessage = (student: Student) => {
-        const firstName = student.first.replace('IETAC - ', '');
+        const firstName = student.first.replace(/^(IETAC|SG) - /, '');
         const message = `👋 Hola ${firstName}, aquí tienes tus credenciales institucionales:
     
 📧 Usuario: ${student.email}
@@ -66,6 +74,7 @@ Por favor cambia tu contraseña al ingresar.`;
                                         student={student}
                                         index={index}
                                         onCopy={handleCopy}
+                                        onCall={handleCall}
                                         getEmailUsername={getEmailUsername}
                                         isConfirmed={confirmations[student.id] || false}
                                         onToggleConfirm={() => onToggleConfirm(student.id)}
@@ -89,6 +98,7 @@ Por favor cambia tu contraseña al ingresar.`;
                             student={student}
                             index={index}
                             onCopy={handleCopy}
+                            onCall={handleCall}
                             getEmailUsername={getEmailUsername}
                             isConfirmed={confirmations[student.id] || false}
                             onToggleConfirm={() => onToggleConfirm(student.id)}
@@ -135,13 +145,14 @@ interface TableRowProps {
     student: Student;
     index: number;
     onCopy: (t: string, l: string) => void;
+    onCall: (phone: string, studentName: string) => void;
     getEmailUsername: (email: string) => string;
     isConfirmed: boolean;
     onToggleConfirm: () => void;
     onSendMessage: () => void;
 }
 
-function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onToggleConfirm, onSendMessage }: TableRowProps) {
+function TableRow({ student, index, onCopy, onCall, getEmailUsername, isConfirmed, onToggleConfirm, onSendMessage }: TableRowProps) {
     const fullName = student.first;
     const cleanNameForInitials = fullName.replace(/^(IETAC|SG) - /, '');
     const initials = cleanNameForInitials.substring(0, 2).toUpperCase();
@@ -196,17 +207,26 @@ function TableRow({ student, index, onCopy, getEmailUsername, isConfirmed, onTog
                         <div className={clsx("font-semibold text-slate-900 transition-colors", institutionColors.text)}>{fullName}</div>
                         <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
                     </div>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); onSendMessage(); }}
-                        className="p-1.5 hover:bg-green-50 rounded-full transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
-                        title="Enviar credenciales por WhatsApp"
-                    >
-                        <img
-                            src="https://images.seeklogo.com/logo-png/30/1/whatsapp-logo-png_seeklogo-306926.png"
-                            alt="WhatsApp"
-                            className="w-5 h-5 object-contain"
-                        />
-                    </button>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={(e) => { e.stopPropagation(); onCall(student.phone, cleanNameForInitials); }}
+                            className="p-1.5 hover:bg-blue-50 rounded-full transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                            title="Llamar por teléfono"
+                        >
+                            <Phone className="w-5 h-5 text-blue-600" />
+                        </button>
+                        <button
+                            onClick={(e) => { e.stopPropagation(); onSendMessage(); }}
+                            className="p-1.5 hover:bg-green-50 rounded-full transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                            title="Enviar credenciales por WhatsApp"
+                        >
+                            <img
+                                src="https://images.seeklogo.com/logo-png/30/1/whatsapp-logo-png_seeklogo-306926.png"
+                                alt="WhatsApp"
+                                className="w-5 h-5 object-contain"
+                            />
+                        </button>
+                    </div>
                 </div>
             </td>
 
@@ -275,36 +295,52 @@ interface MobileCardProps {
     student: Student;
     index: number;
     onCopy: (t: string, l: string) => void;
+    onCall: (phone: string, studentName: string) => void;
     getEmailUsername: (email: string) => string;
     isConfirmed: boolean;
     onToggleConfirm: () => void;
     onSendMessage: () => void;
 }
 
-function MobileCard({ student, index, onCopy, getEmailUsername, isConfirmed, onToggleConfirm, onSendMessage }: MobileCardProps) {
+function MobileCard({ student, index, onCopy, onCall, getEmailUsername, isConfirmed, onToggleConfirm, onSendMessage }: MobileCardProps) {
     const fullName = student.first;
+    const cleanNameForInitials = fullName.replace(/^(IETAC|SG) - /, '');
     const emailUser = getEmailUsername(student.email);
 
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: index * 0.05 }}
-            className={clsx("bg-white rounded-xl shadow-sm border overflow-hidden", isConfirmed ? "border-green-300 bg-green-50/30" : "border-slate-200")}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.03 }}
+            className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 hover:shadow-md transition-shadow"
         >
             {/* Header */}
-            <div className="bg-slate-50 p-4 border-b border-slate-100 flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                    <span className="text-sm font-bold text-slate-400 bg-slate-200 w-7 h-7 rounded-full flex items-center justify-center">{index + 1}</span>
-                    <div>
-                        <h3 className="text-base font-bold text-slate-900 active:text-indigo-600" onClick={() => onCopy(fullName, 'Nombre')}>{fullName}</h3>
-                        <p className="text-sm text-slate-500 active:text-indigo-600" onClick={() => onCopy(student.last, 'Apellidos')}>{student.last}</p>
-                    </div>
+            <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-3 flex-1">
+                    <button
+                        onClick={onToggleConfirm}
+                        className={clsx(
+                            "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0",
+                            isConfirmed
+                                ? "bg-green-500 border-green-500 text-white"
+                                : "border-slate-300"
+                        )}
+                    >
+                        {isConfirmed && <Check className="w-4 h-4" />}
+                    </button>
+                    <h3 className="text-base font-bold text-slate-900 active:text-indigo-600" onClick={() => onCopy(fullName, 'Nombre')}>{fullName}</h3>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => onCall(student.phone, cleanNameForInitials)}
+                        className="p-1.5 hover:bg-blue-50 rounded-full transition-colors"
+                        title="Llamar por teléfono"
+                    >
+                        <Phone className="w-5 h-5 text-blue-600" />
+                    </button>
                     <button
                         onClick={onSendMessage}
-                        className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center hover:bg-green-100 transition-colors border border-green-100"
+                        className="p-1.5 hover:bg-green-50 rounded-full transition-colors"
                         title="Enviar credenciales por WhatsApp"
                     >
                         <img
@@ -313,30 +349,41 @@ function MobileCard({ student, index, onCopy, getEmailUsername, isConfirmed, onT
                             className="w-5 h-5 object-contain"
                         />
                     </button>
-                    <button
-                        onClick={onToggleConfirm}
-                        className={clsx(
-                            "w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all",
-                            isConfirmed
-                                ? "bg-green-500 border-green-500 text-white"
-                                : "border-slate-300 bg-white"
-                        )}
-                    >
-                        {isConfirmed ? <Check className="w-5 h-5" /> : <Circle className="w-4 h-4 text-slate-300" />}
-                    </button>
+                </div>
+            </div>
+
+            {/* Content */}
+            <div className="space-y-3">
+                {/* Apellidos */}
+                <div className="flex items-center gap-2 text-sm">
+                    <User className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                    <span className="text-slate-600 font-medium">Apellidos:</span>
+                    <span className="text-slate-900 font-semibold active:text-indigo-600" onClick={() => onCopy(student.last, 'Apellidos')}>{student.last}</span>
+                </div>
+
+                {/* Email */}
+                <div className="flex items-center gap-2 text-sm">
+                    <Mail className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                    <span className="text-slate-600 font-medium">Email:</span>
+                    <span className="text-indigo-600 font-mono text-xs active:text-indigo-800" onClick={() => onCopy(emailUser, 'Usuario')}>{emailUser}</span>
+                </div>
+
+                {/* Password */}
+                <div className="flex items-center gap-2 text-sm">
+                    <Lock className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                    <span className="text-slate-600 font-medium">Contraseña:</span>
+                    <span className="text-slate-900 font-mono text-xs blur-sm active:blur-none active:text-indigo-600" onClick={() => onCopy(student.password, 'Contraseña')}>{student.password}</span>
                 </div>
             </div>
 
             {/* Grid of Info */}
             <div className="p-3 grid grid-cols-2 gap-2">
-                <MobileField label="Usuario" value={emailUser} icon={<Mail size={13} />} fullWidth onCopy={onCopy} />
-                <MobileField label="Contraseña" value={student.password} icon={<Lock size={13} />} blur onCopy={onCopy} />
                 <MobileField label="Teléfono" value={student.phone} icon={<Smartphone size={13} />} onCopy={onCopy} />
                 <MobileField label="Fecha Nac." value={student.birth} icon={<Calendar size={13} />} onCopy={onCopy} />
                 <MobileField label="Género" value={student.gender} icon={<User size={13} />} onCopy={onCopy} />
                 <MobileField label="ID" value={student.id} icon={<User size={13} />} onCopy={onCopy} />
             </div>
-        </motion.div>
+        </motion.div >
     );
 }
 
