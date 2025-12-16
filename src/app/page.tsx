@@ -15,7 +15,7 @@ export default function Home() {
     return studentData.filter(student =>
       student.first.toLowerCase().includes(term) ||
       student.last.toLowerCase().includes(term) ||
-      student.pass.includes(term) ||
+      student.id.includes(term) ||
       student.email.toLowerCase().includes(term)
     );
   }, [searchTerm]);
