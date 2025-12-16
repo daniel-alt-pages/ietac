@@ -1,12 +1,12 @@
 "use client";
 
 import Link from 'next/link';
-import { GraduationCap, Database, PieChart, Info, Settings } from 'lucide-react';
+import { GraduationCap, Database, PieChart, Settings } from 'lucide-react';
 import clsx from 'clsx';
 
 export default function Sidebar() {
     return (
-        <aside className="w-20 lg:w-64 bg-slate-900 text-white flex flex-col flex-shrink-0 transition-all duration-300">
+        <aside className="hidden md:flex w-20 lg:w-64 bg-slate-900 text-white flex flex-col flex-shrink-0 transition-all duration-300">
             <div className="h-16 flex items-center justify-center lg:justify-start lg:px-6 border-b border-slate-800">
                 <GraduationCap className="w-8 h-8 text-indigo-400" />
                 <span className="ml-3 font-bold text-lg hidden lg:block tracking-wide">EduManager</span>
