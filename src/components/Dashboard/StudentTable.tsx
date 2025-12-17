@@ -40,7 +40,7 @@ export default function StudentTable({ data, confirmations, onToggleConfirm }: S
     
 🌐 Inicia sesión en Google: https://accounts.google.com/
     
-Por favor cambia tu contraseña al ingresar.`;
+⚠️ Por favor accede lo más rápido posible a tu correo para evitar una desactivación.`;
 
         const whatsappUrl = `https://wa.me/57${student.phone}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
