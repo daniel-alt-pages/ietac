@@ -73,23 +73,30 @@ export default function Home() {
     }
 
     // Filter by search term
-    if (!searchTerm) return data;
+    if (searchTerm) {
+      // Split search term into words and remove empty strings
+      const searchPartials = searchTerm.toLowerCase().split(/\s+/).filter(Boolean);
 
-    // Split search term into words and remove empty strings
-    const searchPartials = searchTerm.toLowerCase().split(/\s+/).filter(Boolean);
+      data = data.filter(student => {
+        // Create a single searchable string for the student
+        const fullSearchableText = `
+          ${student.first} 
+          ${student.last} 
+          ${student.id} 
+          ${student.email}
+        `.toLowerCase();
 
-    return data.filter(student => {
-      // Create a single searchable string for the student
-      const fullSearchableText = `
-        ${student.first} 
-        ${student.last} 
-        ${student.id} 
-        ${student.email}
-      `.toLowerCase();
+        // Check if EVERY partial word exists in the student's data
+        return searchPartials.every(part => fullSearchableText.includes(part));
+      });
+    }
 
-      // Check if EVERY partial word exists in the student's data
-      return searchPartials.every(part => fullSearchableText.includes(part));
-    });
+    // Remove duplicates by ID (ensures unique results)
+    const uniqueData = Array.from(
+      new Map(data.map(student => [student.id, student])).values()
+    );
+
+    return uniqueData;
   }, [searchTerm, institutionFilter, nameFilter, lastnameFilter]);
 
   const handleToggleConfirm = async (studentId: string) => {
