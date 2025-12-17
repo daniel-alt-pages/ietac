@@ -210,14 +210,14 @@ function TableRow({ student, index, onCopy, onCall, getEmailUsername, isConfirme
                     <div className="flex items-center gap-2">
                         <button
                             onClick={(e) => { e.stopPropagation(); onCall(student.phone, cleanNameForInitials); }}
-                            className="p-1.5 hover:bg-blue-50 rounded-full transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                            className="p-1.5 hover:bg-blue-50 rounded-full transition-colors"
                             title="Llamar por teléfono"
                         >
                             <Phone className="w-5 h-5 text-blue-600" />
                         </button>
                         <button
                             onClick={(e) => { e.stopPropagation(); onSendMessage(); }}
-                            className="p-1.5 hover:bg-green-50 rounded-full transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                            className="p-1.5 hover:bg-green-50 rounded-full transition-colors"
                             title="Enviar credenciales por WhatsApp"
                         >
                             <img
