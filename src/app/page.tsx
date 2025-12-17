@@ -8,10 +8,37 @@ import { studentData } from '@/lib/data';
 import { subscribeToConfirmations, updateConfirmation } from '@/lib/firebase';
 
 export default function Home() {
+  // Load filters from localStorage or use defaults
   const [searchTerm, setSearchTerm] = useState('');
-  const [institutionFilter, setInstitutionFilter] = useState('ALL');
+  const [institutionFilter, setInstitutionFilter] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('institutionFilter') || 'ALL';
+    }
+    return 'ALL';
+  });
+  const [nameFilter, setNameFilter] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('nameFilter') || 'ALL';
+    }
+    return 'ALL';
+  });
+  const [lastnameFilter, setLastnameFilter] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('lastnameFilter') || 'ALL';
+    }
+    return 'ALL';
+  });
   const [confirmations, setConfirmations] = useState<Record<string, boolean>>({});
   const [isLoading, setIsLoading] = useState(true);
+
+  // Save filters to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('institutionFilter', institutionFilter);
+      localStorage.setItem('nameFilter', nameFilter);
+      localStorage.setItem('lastnameFilter', lastnameFilter);
+    }
+  }, [institutionFilter, nameFilter, lastnameFilter]);
 
   // Subscribe to Firebase real-time updates
   useEffect(() => {
@@ -28,6 +55,21 @@ export default function Home() {
     // Filter by institution
     if (institutionFilter !== 'ALL') {
       data = data.filter(student => student.institution === institutionFilter);
+    }
+
+    // Filter by name (alphabetical)
+    if (nameFilter !== 'ALL') {
+      data = data.filter(student => {
+        const firstName = student.first.replace(/^(IETAC|SG) - /, '');
+        return firstName.toUpperCase().startsWith(nameFilter);
+      });
+    }
+
+    // Filter by lastname (alphabetical)
+    if (lastnameFilter !== 'ALL') {
+      data = data.filter(student => {
+        return student.last.toUpperCase().startsWith(lastnameFilter);
+      });
     }
 
     // Filter by search term
@@ -48,7 +90,7 @@ export default function Home() {
       // Check if EVERY partial word exists in the student's data
       return searchPartials.every(part => fullSearchableText.includes(part));
     });
-  }, [searchTerm, institutionFilter]);
+  }, [searchTerm, institutionFilter, nameFilter, lastnameFilter]);
 
   const handleToggleConfirm = async (studentId: string) => {
     const currentStatus = confirmations[studentId] || false;
@@ -67,6 +109,10 @@ export default function Home() {
           onSearchChange={setSearchTerm}
           institutionFilter={institutionFilter}
           onInstitutionChange={setInstitutionFilter}
+          nameFilter={nameFilter}
+          onNameFilterChange={setNameFilter}
+          lastnameFilter={lastnameFilter}
+          onLastnameFilterChange={setLastnameFilter}
         />
 
         <div className="flex-1 overflow-auto p-4 md:p-6 scroll-smooth">
