@@ -159,9 +159,9 @@ function TableRow({ student, index, onCopy, onCall, getEmailUsername, isConfirme
     const initials = cleanNameForInitials.substring(0, 2).toUpperCase();
     const emailUser = getEmailUsername(student.email);
 
-    // Institution-specific colors
-    const isIETAC = student.institution === 'IETAC';
-    const isSG = student.institution === 'SG';
+    // Institution-specific colors (inferred from name prefix)
+    const isIETAC = student.first.startsWith('IETAC');
+    const isSG = student.first.startsWith('SG');
 
     const institutionColors = {
         avatar: isIETAC ? 'bg-indigo-100 text-indigo-700 border-indigo-200' : 'bg-emerald-100 text-emerald-700 border-emerald-200',
