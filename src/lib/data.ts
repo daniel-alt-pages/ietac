@@ -131,8 +131,8 @@ export const studentData: Student[] = [
         "birth": "04 Mar 2010"
     },
     {
-        "first": "SG - JOHAN ANDRÉS SALCEDO BEDOYA",
-        "last": "",
+        "first": "SG - JOHAN ANDRÉS",
+        "last": "SALCEDO BEDOYA",
         "email": "jhoansalcedo1010@gmail.com",
         "id": "1066606386",
         "password": "Johan6386",
@@ -181,8 +181,8 @@ export const studentData: Student[] = [
         "birth": "10 Abr 2010"
     },
     {
-        "first": "SG - RONALDO ANDRES ZULETA GUERRA",
-        "last": "",
+        "first": "SG - RONALDO ANDRES",
+        "last": "ZULETA GUERRA",
         "email": "jesusrodricuez1990@gmail.com",
         "id": "1063363727",
         "password": "Ronaldo3727",
@@ -371,8 +371,8 @@ export const studentData: Student[] = [
         "birth": "06 May 2010"
     },
     {
-        "first": "SG - ANGIE SOFIA ALDANA ARIAS",
-        "last": "",
+        "first": "SG - ANGIE SOFIA",
+        "last": "ALDANA ARIAS",
         "email": "angie.850gg@gmail.com",
         "id": "1014992221",
         "password": "Angie2221",
@@ -381,8 +381,8 @@ export const studentData: Student[] = [
         "birth": "15 Ene 2009"
     },
     {
-        "first": "SG - LUIS FELIPE ESCUDERO VILLEGAS",
-        "last": "",
+        "first": "SG - LUIS FELIPE",
+        "last": "ESCUDERO VILLEGAS",
         "email": "luisfelipe788tam@gmail.com",
         "id": "1013126436",
         "password": "Luis6436",
@@ -391,8 +391,8 @@ export const studentData: Student[] = [
         "birth": "10 May 2009"
     },
     {
-        "first": "SG - LAURA SOFÍA OVEJERO MALDONADO",
-        "last": "",
+        "first": "SG - LAURA SOFÍA",
+        "last": "OVEJERO MALDONADO",
         "email": "ovejerolaurasofia2007@gmail.com",
         "id": "1115690260",
         "password": "Laura0260",
@@ -401,8 +401,8 @@ export const studentData: Student[] = [
         "birth": "8 Ago 2007"
     },
     {
-        "first": "SG - KAMILA INES HERRERA MARTINEZ",
-        "last": "",
+        "first": "SG - KAMILA INES",
+        "last": "HERRERA MARTINEZ",
         "email": "hkamila531@gmail.com",
         "id": "1049935197",
         "password": "Kamila5197",
@@ -411,8 +411,8 @@ export const studentData: Student[] = [
         "birth": "28 Abr 2009"
     },
     {
-        "first": "SG - VALERIE GAMARRA FONTALVO",
-        "last": "",
+        "first": "SG - VALERIE",
+        "last": "GAMARRA FONTALVO",
         "email": "valeriegamarr4@gmail.com",
         "id": "1041981827",
         "password": "Valerie1827",
@@ -421,8 +421,8 @@ export const studentData: Student[] = [
         "birth": "21 Mar 2008"
     },
     {
-        "first": "SG - KAROL VALENTINA CEBALLOS QUIROZ",
-        "last": "",
+        "first": "SG - KAROL VALENTINA",
+        "last": "CEBALLOS QUIROZ",
         "email": "karolcq208@gmail.com",
         "id": "1080052959",
         "password": "Karol2959",
@@ -431,8 +431,8 @@ export const studentData: Student[] = [
         "birth": "11 Sep 2008"
     },
     {
-        "first": "SG - ANGIE CAROLINA SOTO GIRALDO",
-        "last": "",
+        "first": "SG - ANGIE CAROLINA",
+        "last": "SOTO GIRALDO",
         "email": "caro.soto992@gmail.com",
         "id": "1063158765",
         "password": "Angie8765",
@@ -441,8 +441,8 @@ export const studentData: Student[] = [
         "birth": "16 Dic 2009"
     },
     {
-        "first": "SG - JUAN DIEGO ZAMBRANO OCAMPO",
-        "last": "",
+        "first": "SG - JUAN DIEGO",
+        "last": "ZAMBRANO OCAMPO",
         "email": "jzambranoocampo@gmail.com",
         "id": "1077726158",
         "password": "Juan6158",
@@ -451,8 +451,8 @@ export const studentData: Student[] = [
         "birth": "13 Ene 2009"
     },
     {
-        "first": "SG - STEPHANY VELAZCO RODRIGUEZ",
-        "last": "",
+        "first": "SG - STEPHANY",
+        "last": "VELAZCO RODRIGUEZ",
         "email": "sv273837@gmail.com",
         "id": "1142715366",
         "password": "Stephany5366",
@@ -461,8 +461,8 @@ export const studentData: Student[] = [
         "birth": "29 Feb 2008"
     },
     {
-        "first": "SG - ISABELA BARREIRO  CÁRDENAS",
-        "last": "",
+        "first": "SG - ISABELA",
+        "last": "BARREIRO CÁRDENAS",
         "email": "isabelabarreiro427@gmail.com",
         "id": "1077230281",
         "password": "Isabela0281",
@@ -471,8 +471,8 @@ export const studentData: Student[] = [
         "birth": "5 Sep 2008"
     },
     {
-        "first": "SG - JUAN SEBASTIAN RIVERA AVENDAÑO",
-        "last": "",
+        "first": "SG - JUAN SEBASTIAN",
+        "last": "RIVERA AVENDAÑO",
         "email": "juan.riveraa2006@gmail.com",
         "id": "1051066924",
         "password": "Juan6924",
@@ -481,8 +481,8 @@ export const studentData: Student[] = [
         "birth": "3 Feb 2006"
     },
     {
-        "first": "SG - KAREN YULIED ARENAS COMETA",
-        "last": "",
+        "first": "SG - KAREN YULIED",
+        "last": "ARENAS COMETA",
         "email": "karenyulied22@gmail.com",
         "id": "1061717282",
         "password": "Karen7282",
@@ -491,8 +491,8 @@ export const studentData: Student[] = [
         "birth": "16 Mar 2007"
     },
     {
-        "first": "SG - LUIS ANTONIO MUÑOZ HINCAPIE",
-        "last": "",
+        "first": "SG - LUIS ANTONIO",
+        "last": "MUÑOZ HINCAPIE",
         "email": "luisantoniomunozhimpa@gmail.com",
         "id": "1104821599",
         "password": "Luis1599",
@@ -501,8 +501,8 @@ export const studentData: Student[] = [
         "birth": "3 Abr 2009"
     },
     {
-        "first": "SG - ADRIANA ISABEL HOYOS HOYOS",
-        "last": "",
+        "first": "SG - ADRIANA ISABEL",
+        "last": "HOYOS HOYOS",
         "email": "hoyosadrily@gmail.com",
         "id": "1103950959",
         "password": "Adriana0959",
@@ -511,8 +511,8 @@ export const studentData: Student[] = [
         "birth": "28 Abr 2010"
     },
     {
-        "first": "SG - CAREN YILENI ECHEVERRÍA CARDOZO",
-        "last": "",
+        "first": "SG - CAREN YILENI",
+        "last": "ECHEVERRÍA CARDOZO",
         "email": "echeverriacaren998@gmail.com",
         "id": "1099205249",
         "password": "Caren5249",
@@ -521,8 +521,8 @@ export const studentData: Student[] = [
         "birth": "6 Jul 2006"
     },
     {
-        "first": "SG - JOSIAS ACUÑA ARIAS",
-        "last": "",
+        "first": "SG - JOSIAS",
+        "last": "ACUÑA ARIAS",
         "email": "josiasacunaarias919@gmail.com",
         "id": "1128327871",
         "password": "Josias7871",
@@ -531,8 +531,8 @@ export const studentData: Student[] = [
         "birth": "23 Feb 2010"
     },
     {
-        "first": "SG - CRISTIAN DE JESÚS CUESTA BLANQUICETT",
-        "last": "",
+        "first": "SG - CRISTIAN DE",
+        "last": "JESÚS CUESTA BLANQUICETT",
         "email": "cjblanquicett1106@gmail.com",
         "id": "1043975755",
         "password": "Cristian5755",
@@ -541,8 +541,8 @@ export const studentData: Student[] = [
         "birth": "6 Nov 2007"
     },
     {
-        "first": "SG - NATALIA CARVAJAL VERGARA",
-        "last": "",
+        "first": "SG - NATALIA",
+        "last": "CARVAJAL VERGARA",
         "email": "nataliacv1208@gmail.com",
         "id": "1104547717",
         "password": "Natalia7717",
@@ -551,8 +551,8 @@ export const studentData: Student[] = [
         "birth": "30 Dic 2008"
     },
     {
-        "first": "SG - SAHRA ELIZABETH PUJIMUY ROBLES",
-        "last": "",
+        "first": "SG - SAHRA ELIZABETH",
+        "last": "PUJIMUY ROBLES",
         "email": "boomaoto@gmail.com",
         "id": "1120099332",
         "password": "Sahra9332",
@@ -561,8 +561,8 @@ export const studentData: Student[] = [
         "birth": "14 Sep 2008"
     },
     {
-        "first": "SG - MATHIAS JOSÉ HERNÁNDEZ BERMÚDEZ",
-        "last": "",
+        "first": "SG - MATHIAS JOSÉ",
+        "last": "HERNÁNDEZ BERMÚDEZ",
         "email": "cinoberdo@gmail.com",
         "id": "1143241184",
         "password": "Mathias1184",
@@ -571,8 +571,8 @@ export const studentData: Student[] = [
         "birth": "2 Feb 2010"
     },
     {
-        "first": "SG - MIGUEL ANGEL AYALA PRIETO",
-        "last": "",
+        "first": "SG - MIGUEL ANGEL",
+        "last": "AYALA PRIETO",
         "email": "ayalaprietomiguelangel768@gmail.com",
         "id": "1098678852",
         "password": "Miguel8852",
@@ -581,8 +581,8 @@ export const studentData: Student[] = [
         "birth": "27 Nov 2007"
     },
     {
-        "first": "SG - SANTIAGO SERNA MEDINA",
-        "last": "",
+        "first": "SG - SANTIAGO",
+        "last": "SERNA MEDINA",
         "email": "santiagosernamedina1@gmail.com",
         "id": "1022367201",
         "password": "Santiago7201",
@@ -591,8 +591,8 @@ export const studentData: Student[] = [
         "birth": "14 Feb 2009"
     },
     {
-        "first": "SG - JUAN CAMILO URIBE CUESTA",
-        "last": "",
+        "first": "SG - JUAN CAMILO",
+        "last": "URIBE CUESTA",
         "email": "uribecuestajuancamilo@gmail.com",
         "id": "1142921241",
         "password": "Juan1241",
@@ -601,8 +601,8 @@ export const studentData: Student[] = [
         "birth": "16 Oct 2008"
     },
     {
-        "first": "SG - YURI NATALIA SARMIENTO SILVA",
-        "last": "",
+        "first": "SG - YURI NATALIA",
+        "last": "SARMIENTO SILVA",
         "email": "sarmientoyuri719@gmail.com",
         "id": "1095530126",
         "password": "Yuri0126",
@@ -611,8 +611,8 @@ export const studentData: Student[] = [
         "birth": "31 Oct 2008"
     },
     {
-        "first": "SG - BRITANI MARIANGEL AGUERO GARCIA",
-        "last": "",
+        "first": "SG - BRITANI MARIANGEL",
+        "last": "AGUERO GARCIA",
         "email": "aguerogarciabritani@gmail.com",
         "id": "7734824",
         "password": "Britani4824",
@@ -621,8 +621,8 @@ export const studentData: Student[] = [
         "birth": "14 Abr 2009"
     },
     {
-        "first": "SG - MARÍA JOSÉ CORTES CHALITAS",
-        "last": "",
+        "first": "SG - MARÍA JOSÉ",
+        "last": "CORTES CHALITAS",
         "email": "majocortes32z@gmail.com",
         "id": "1061741898",
         "password": "María1898",
@@ -631,8 +631,8 @@ export const studentData: Student[] = [
         "birth": "22 Sep 2009"
     },
     {
-        "first": "SG - SOFIA MÚNERA LÓPEZ",
-        "last": "",
+        "first": "SG - SOFIA",
+        "last": "MÚNERA LÓPEZ",
         "email": "sofiamunera24@gmail.com",
         "id": "1143340255",
         "password": "Sofia0255",
@@ -641,8 +641,8 @@ export const studentData: Student[] = [
         "birth": "25 Ene 2008"
     },
     {
-        "first": "SG - ROSA INES REVEROL GONZALEZ",
-        "last": "",
+        "first": "SG - ROSA INES",
+        "last": "REVEROL GONZALEZ",
         "email": "rosareverol1@gmail.com",
         "id": "5420076",
         "password": "Rosa0076",
@@ -651,8 +651,8 @@ export const studentData: Student[] = [
         "birth": "17 Mar 2006"
     },
     {
-        "first": "SG - SALOME DUQUE BETANCURT",
-        "last": "",
+        "first": "SG - SALOME",
+        "last": "DUQUE BETANCURT",
         "email": "salomedb2005@gmail.com",
         "id": "1088826978",
         "password": "Salome6978",
@@ -661,8 +661,8 @@ export const studentData: Student[] = [
         "birth": "9 Oct 2005"
     },
     {
-        "first": "SG - ROSA MENDIETA FONSECA",
-        "last": "",
+        "first": "SG - ROSA",
+        "last": "MENDIETA FONSECA",
         "email": "rmendietafonseca@gmail.com",
         "id": "1097912847",
         "password": "Rosa2847",
@@ -671,8 +671,8 @@ export const studentData: Student[] = [
         "birth": "2 May 2008"
     },
     {
-        "first": "SG - JHOAN DAVID LEÓN LAGOS",
-        "last": "",
+        "first": "SG - JHOAN DAVID",
+        "last": "LEÓN LAGOS",
         "email": "leonlagos2023@gmail.com",
         "id": "1118366654",
         "password": "Jhoan6654",
@@ -681,8 +681,8 @@ export const studentData: Student[] = [
         "birth": "16 Jul 2007"
     },
     {
-        "first": "SG - LUIS FERNANDO LOPEZ LOPEZ",
-        "last": "",
+        "first": "SG - LUIS FERNANDO",
+        "last": "LOPEZ LOPEZ",
         "email": "lopezlopezfercho739403@gmail.com",
         "id": "1112465416",
         "password": "Luis5416",
@@ -691,8 +691,8 @@ export const studentData: Student[] = [
         "birth": "6 Jun 1988"
     },
     {
-        "first": "SG - TALIANA ANDREA FLOREZ SALGADO",
-        "last": "",
+        "first": "SG - TALIANA ANDREA",
+        "last": "FLOREZ SALGADO",
         "email": "fsale2612@gmail.com",
         "id": "1062437352",
         "password": "Taliana7352",
@@ -701,8 +701,8 @@ export const studentData: Student[] = [
         "birth": "30 Ago 2008"
     },
     {
-        "first": "SG - EMMA ISABELLA LINDADO ALGARIN",
-        "last": "",
+        "first": "SG - EMMA ISABELLA",
+        "last": "LINDADO ALGARIN",
         "email": "emmalindado@gmail.com",
         "id": "1043594698",
         "password": "Emma4698",
@@ -711,8 +711,8 @@ export const studentData: Student[] = [
         "birth": "3 Jul 2010"
     },
     {
-        "first": "SG - CLAUDIA VALENTINA OSORIO GOMEZ",
-        "last": "",
+        "first": "SG - CLAUDIA VALENTINA",
+        "last": "OSORIO GOMEZ",
         "email": "gomez538claudia@gmail.com",
         "id": "1126704313",
         "password": "Claudia4313",
@@ -721,8 +721,8 @@ export const studentData: Student[] = [
         "birth": "6 Dic 2006"
     },
     {
-        "first": "SG - DANIELA SOFÍA FLOREZ VARGAS",
-        "last": "",
+        "first": "SG - DANIELA SOFÍA",
+        "last": "FLOREZ VARGAS",
         "email": "danisofifv28@gmail.com",
         "id": "1023381412",
         "password": "Daniela1412",
@@ -731,8 +731,8 @@ export const studentData: Student[] = [
         "birth": "28 Sep 2008"
     },
     {
-        "first": "SG - MARIANA DÍAZ ZÚÑIGA",
-        "last": "",
+        "first": "SG - MARIANA",
+        "last": "DÍAZ ZÚÑIGA",
         "email": "anita9mayo@gmail.com",
         "id": "1110296142",
         "password": "Mariana6142",
@@ -741,8 +741,8 @@ export const studentData: Student[] = [
         "birth": "9 May 2008"
     },
     {
-        "first": "SG - MARIA PAULA CARBALLO QUINTERO",
-        "last": "",
+        "first": "SG - MARIA PAULA",
+        "last": "CARBALLO QUINTERO",
         "email": "mariapaulacarballo35@gmail.com",
         "id": "1095925977",
         "password": "Maria5977",
@@ -751,8 +751,8 @@ export const studentData: Student[] = [
         "birth": "25 Jul 2009"
     },
     {
-        "first": "SG - JUAN FRANCISCO CAMACHO POSSO",
-        "last": "",
+        "first": "SG - JUAN FRANCISCO",
+        "last": "CAMACHO POSSO",
         "email": "juanfranciscocamachoposso07@gmail.com",
         "id": "1023084237",
         "password": "Juan4237",
@@ -761,8 +761,8 @@ export const studentData: Student[] = [
         "birth": "16 May 2007"
     },
     {
-        "first": "SG - NICOLLE MARMOLEJO LUNA",
-        "last": "",
+        "first": "SG - NICOLLE",
+        "last": "MARMOLEJO LUNA",
         "email": "marmolejonicolle89@gmail.com",
         "id": "1047430590",
         "password": "Nicolle0590",
@@ -771,8 +771,8 @@ export const studentData: Student[] = [
         "birth": "21 Ene 2009"
     },
     {
-        "first": "SG - CAMILA ALEJANDRA RAMIREZ RUEDA",
-        "last": "",
+        "first": "SG - CAMILA ALEJANDRA",
+        "last": "RAMIREZ RUEDA",
         "email": "camila1016036708@gmail.com",
         "id": "1016036708",
         "password": "Camila6708",
@@ -781,8 +781,8 @@ export const studentData: Student[] = [
         "birth": "9 Jul 2009"
     },
     {
-        "first": "SG - MARGREYS QUINTERO PALOMINO",
-        "last": "",
+        "first": "SG - MARGREYS",
+        "last": "QUINTERO PALOMINO",
         "email": "palominomezamargreys@gmail.com",
         "id": "1043658548",
         "password": "Margreys8548",
@@ -791,8 +791,8 @@ export const studentData: Student[] = [
         "birth": "23 Jun 2008"
     },
     {
-        "first": "SG - DANIEL FELIPE MOTTA PILONIETA",
-        "last": "",
+        "first": "SG - DANIEL FELIPE",
+        "last": "MOTTA PILONIETA",
         "email": "danimottapilo@gmail.com",
         "id": "1146334161",
         "password": "Daniel4161",
@@ -801,8 +801,8 @@ export const studentData: Student[] = [
         "birth": "26 Jul 2007"
     },
     {
-        "first": "SG - MARÍA PAULA TAPIA YEPES",
-        "last": "",
+        "first": "SG - MARÍA PAULA",
+        "last": "TAPIA YEPES",
         "email": "maripautaye@gmail.com",
         "id": "1062439947",
         "password": "María9947",
@@ -811,8 +811,8 @@ export const studentData: Student[] = [
         "birth": "2 Jul 2009"
     },
     {
-        "first": "SG - GABRIEL SUTACHAN MENDEZ",
-        "last": "",
+        "first": "SG - GABRIEL",
+        "last": "SUTACHAN MENDEZ",
         "email": "sutachanxd@gmail.com",
         "id": "1025062800",
         "password": "Gabriel2800",
@@ -821,8 +821,8 @@ export const studentData: Student[] = [
         "birth": "9 Ago 2007"
     },
     {
-        "first": "SG - MARÍA JULIETH CASTILLO BAUTISTA",
-        "last": "",
+        "first": "SG - MARÍA JULIETH",
+        "last": "CASTILLO BAUTISTA",
         "email": "julicastillo972@gmail.com",
         "id": "1097102695",
         "password": "María2695",
@@ -831,8 +831,8 @@ export const studentData: Student[] = [
         "birth": "20 Oct 2008"
     },
     {
-        "first": "SG - JUAN JOSE CASTILLO VIVERO",
-        "last": "",
+        "first": "SG - JUAN JOSE",
+        "last": "CASTILLO VIVERO",
         "email": "juanjosecastillovivero@gmail.com",
         "id": "1102826203",
         "password": "Juan6203",
@@ -841,8 +841,8 @@ export const studentData: Student[] = [
         "birth": "1 Sep 2007"
     },
     {
-        "first": "SG - DIANA MARCELA MANBUSCAY AGUDELO",
-        "last": "",
+        "first": "SG - DIANA MARCELA",
+        "last": "MANBUSCAY AGUDELO",
         "email": "marcelaagudelo2202@gmail.com",
         "id": "1028663171",
         "password": "Diana3171",
@@ -851,8 +851,8 @@ export const studentData: Student[] = [
         "birth": "22 Feb 2007"
     },
     {
-        "first": "SG - GISELL LETIZIA DUARTE CALDERÓN",
-        "last": "",
+        "first": "SG - GISELL LETIZIA",
+        "last": "DUARTE CALDERÓN",
         "email": "d495045@gmail.com",
         "id": "1097495125",
         "password": "Gisell5125",
@@ -861,8 +861,8 @@ export const studentData: Student[] = [
         "birth": "26 Nov 2006"
     },
     {
-        "first": "SG - VALERIA AUSECHA CAMPO",
-        "last": "",
+        "first": "SG - VALERIA",
+        "last": "AUSECHA CAMPO",
         "email": "valeriaausecha@gmail.com",
         "id": "1058933116",
         "password": "Valeria3116",
@@ -871,8 +871,8 @@ export const studentData: Student[] = [
         "birth": "22 May 2007"
     },
     {
-        "first": "SG - KIARA CALDERA CORONADO",
-        "last": "",
+        "first": "SG - KIARA",
+        "last": "CALDERA CORONADO",
         "email": "calderacoronadokiara@gmail.com",
         "id": "1169713061",
         "password": "Kiara3061",
@@ -881,8 +881,8 @@ export const studentData: Student[] = [
         "birth": "22 Sep 2008"
     },
     {
-        "first": "SG - DULCE MARÍA ROJAS TARAZONA",
-        "last": "",
+        "first": "SG - DULCE MARÍA",
+        "last": "ROJAS TARAZONA",
         "email": "hannarojas0.01@gmail.com",
         "id": "1093434369",
         "password": "Dulce4369",
@@ -891,8 +891,8 @@ export const studentData: Student[] = [
         "birth": "14 Dic 2009"
     },
     {
-        "first": "SG - ÁNGEL GABRIEL GÓMEZ",
-        "last": "",
+        "first": "SG - ÁNGEL",
+        "last": "GABRIEL GÓMEZ",
         "email": "angelgabrielgomez24112008@gmail.com",
         "id": "1080053987",
         "password": "Ángel3987",
@@ -901,8 +901,8 @@ export const studentData: Student[] = [
         "birth": "24 Nov 2008"
     },
     {
-        "first": "SG - KEVIN SANTIAGO PORTILLO BENAVIDES",
-        "last": "",
+        "first": "SG - KEVIN SANTIAGO",
+        "last": "PORTILLO BENAVIDES",
         "email": "ksportillobenavides@gmail.com",
         "id": "1080052995",
         "password": "Kevin2995",
@@ -911,8 +911,8 @@ export const studentData: Student[] = [
         "birth": "17 Sep 2008"
     },
     {
-        "first": "SG - MARÍA PAULA PÉREZ HORMIGA",
-        "last": "",
+        "first": "SG - MARÍA PAULA",
+        "last": "PÉREZ HORMIGA",
         "email": "paulahormiga2307@gmail.com",
         "id": "1058547636",
         "password": "María7636",
@@ -921,8 +921,8 @@ export const studentData: Student[] = [
         "birth": "23 Jul 2005"
     },
     {
-        "first": "SG - MARIA JOSE GUTIERREZ OSORIO",
-        "last": "",
+        "first": "SG - MARIA JOSE",
+        "last": "GUTIERREZ OSORIO",
         "email": "mari.302jose@gmail.com",
         "id": "1114241878",
         "password": "Maria1878",
@@ -931,8 +931,8 @@ export const studentData: Student[] = [
         "birth": "6 Ago 2007"
     },
     {
-        "first": "SG - LAURA CAMILA GUZMÁN LÓPEZ",
-        "last": "",
+        "first": "SG - LAURA CAMILA",
+        "last": "GUZMÁN LÓPEZ",
         "email": "lauraguzman@jecaro.edu.co",
         "id": "1059242362",
         "password": "Laura2362",
@@ -941,8 +941,8 @@ export const studentData: Student[] = [
         "birth": "27 May 2009"
     },
     {
-        "first": "SG - JUAN ANDRES ECHEVERRÍA ESCOBAR",
-        "last": "",
+        "first": "SG - JUAN ANDRES",
+        "last": "ECHEVERRÍA ESCOBAR",
         "email": "juanxd14268@gmail.com",
         "id": "1044637051",
         "password": "Juan7051",
@@ -951,8 +951,8 @@ export const studentData: Student[] = [
         "birth": "9 Dic 2009"
     },
     {
-        "first": "SG - MARIA JOSE OSSA CUERVO",
-        "last": "",
+        "first": "SG - MARIA JOSE",
+        "last": "OSSA CUERVO",
         "email": "mariaossa1223@gmail.com",
         "id": "1055359068",
         "password": "Maria9068",
@@ -961,8 +961,8 @@ export const studentData: Student[] = [
         "birth": "20 Sep 2005"
     },
     {
-        "first": "SG - SAMARA CARO ORTEGA",
-        "last": "",
+        "first": "SG - SAMARA",
+        "last": "CARO ORTEGA",
         "email": "walsayo@gmail.com",
         "id": "1042587442",
         "password": "Samara7442",
@@ -971,8 +971,8 @@ export const studentData: Student[] = [
         "birth": "5 Mar 2010"
     },
     {
-        "first": "SG - MARÍA DANIELA VERA VILLAMIZAR",
-        "last": "",
+        "first": "SG - MARÍA DANIELA",
+        "last": "VERA VILLAMIZAR",
         "email": "mvdaniv@gmail.com",
         "id": "1096069283",
         "password": "María9283",
@@ -981,8 +981,8 @@ export const studentData: Student[] = [
         "birth": "3 Oct 2009"
     },
     {
-        "first": "SG - MARÍA ALEJANDRA RODRIGUEZ CANDURY",
-        "last": "",
+        "first": "SG - MARÍA ALEJANDRA",
+        "last": "RODRIGUEZ CANDURY",
         "email": "mcandury16@gmail.com",
         "id": "1044918208",
         "password": "María8208",
@@ -991,8 +991,8 @@ export const studentData: Student[] = [
         "birth": "16 Dic 2008"
     },
     {
-        "first": "SG - CRISTIAN DAVID FAJARDO PERILLA",
-        "last": "",
+        "first": "SG - CRISTIAN DAVID",
+        "last": "FAJARDO PERILLA",
         "email": "cristian156789a@gmail.com",
         "id": "1050096058",
         "password": "Cristian6058",
@@ -1001,8 +1001,8 @@ export const studentData: Student[] = [
         "birth": "4 Mar 2010"
     },
     {
-        "first": "SG - MARLONG FRRNEY CASAS RONDON",
-        "last": "",
+        "first": "SG - MARLONG FRRNEY",
+        "last": "CASAS RONDON",
         "email": "marlongferneycasas@gmail.com",
         "id": "1030280214",
         "password": "Marlong0214",
@@ -1011,8 +1011,8 @@ export const studentData: Student[] = [
         "birth": "24 Oct 2006"
     },
     {
-        "first": "SG - DARLY SARAY PÉREZ JAIMES",
-        "last": "",
+        "first": "SG - DARLY SARAY",
+        "last": "PÉREZ JAIMES",
         "email": "10sarayperez@gmail.com",
         "id": "1098073581",
         "password": "Darly3581",
@@ -1021,8 +1021,8 @@ export const studentData: Student[] = [
         "birth": "10 Abr 2008"
     },
     {
-        "first": "SG - SALOMÉ DIAZ VALENCIA",
-        "last": "",
+        "first": "SG - SALOMÉ",
+        "last": "DIAZ VALENCIA",
         "email": "salomediazvalencia2608@gmail.com",
         "id": "1110296676",
         "password": "Salomé6676",
@@ -1031,8 +1031,8 @@ export const studentData: Student[] = [
         "birth": "26 Sep 2008"
     },
     {
-        "first": "SG - JULIETH VANESSA BECERRA MORA",
-        "last": "",
+        "first": "SG - JULIETH VANESSA",
+        "last": "BECERRA MORA",
         "email": "moravnss5610@gmail.com",
         "id": "1097496452",
         "password": "Julieth6452",
@@ -1041,8 +1041,8 @@ export const studentData: Student[] = [
         "birth": "20 Jun 2007"
     },
     {
-        "first": "SG - DANIELA MANCHOLA TORRES",
-        "last": "",
+        "first": "SG - DANIELA",
+        "last": "MANCHOLA TORRES",
         "email": "danimant006@gmail.com",
         "id": "1105840578",
         "password": "Daniela0578",
@@ -1051,8 +1051,8 @@ export const studentData: Student[] = [
         "birth": "10 Jun 2010"
     },
     {
-        "first": "SG - GABRIELA CASTIBLANCO WILCHES",
-        "last": "",
+        "first": "SG - GABRIELA",
+        "last": "CASTIBLANCO WILCHES",
         "email": "gabysnine@gmail.com",
         "id": "1065892631",
         "password": "Gabriela2631",
@@ -1061,8 +1061,8 @@ export const studentData: Student[] = [
         "birth": "29 Sep 2010"
     },
     {
-        "first": "SG - MARÍA FERNANDA SANTANA RAMÍREZ",
-        "last": "",
+        "first": "SG - MARÍA FERNANDA",
+        "last": "SANTANA RAMÍREZ",
         "email": "mariasantanar.edu.seamosgenios@gmail.com",
         "id": "1065893790",
         "password": "María3790",
@@ -1071,8 +1071,8 @@ export const studentData: Student[] = [
         "birth": "28 Dic 2010"
     },
     {
-        "first": "SG - ANDREA VALENTINA RAMÍREZ OCHOA",
-        "last": "",
+        "first": "SG - ANDREA VALENTINA",
+        "last": "RAMÍREZ OCHOA",
         "email": "andrearamirez.edu.seamosgenios@gmail.com",
         "id": "1053787841",
         "password": "Andrea7841",
@@ -1081,8 +1081,8 @@ export const studentData: Student[] = [
         "birth": "4 Ago 2006"
     },
     {
-        "first": "SG - VALENTINA ESPINOSA ARIAS",
-        "last": "",
+        "first": "SG - VALENTINA",
+        "last": "ESPINOSA ARIAS",
         "email": "valeespinosa1010b@gmail.com",
         "id": "1106633208",
         "password": "Valentina3208",
@@ -1091,8 +1091,8 @@ export const studentData: Student[] = [
         "birth": "29 Ene 2006"
     },
     {
-        "first": "SG - SHEYLA DE JESUS AVILEZ VEGA",
-        "last": "",
+        "first": "SG - SHEYLA DE",
+        "last": "JESUS AVILEZ VEGA",
         "email": "avilezvegasheyladejesus@gmail.com",
         "id": "1069485344",
         "password": "Sheyla5344",
@@ -1101,8 +1101,8 @@ export const studentData: Student[] = [
         "birth": "8 Jun 2025"
     },
     {
-        "first": "SG - SARA SOFIA ESQUIVEL VARGAS",
-        "last": "",
+        "first": "SG - SARA SOFIA",
+        "last": "ESQUIVEL VARGAS",
         "email": "saraesquivelvargas777@gmail.com",
         "id": "1077726354",
         "password": "Sara6354",
@@ -1111,8 +1111,8 @@ export const studentData: Student[] = [
         "birth": "4 Feb 2009"
     },
     {
-        "first": "SG - LORENA ALEJANDRA POVEDA QUIÑONES",
-        "last": "",
+        "first": "SG - LORENA ALEJANDRA",
+        "last": "POVEDA QUIÑONES",
         "email": "alejandravet28@gmail.com",
         "id": "1011092218",
         "password": "Lorena2218",
@@ -1121,8 +1121,8 @@ export const studentData: Student[] = [
         "birth": "28 Feb 2006"
     },
     {
-        "first": "SG - JULIANA BORJA BUELVAS",
-        "last": "",
+        "first": "SG - JULIANA",
+        "last": "BORJA BUELVAS",
         "email": "juliana.b0bu@gmail.com",
         "id": "1062440492",
         "password": "Juliana0492",
@@ -1131,8 +1131,8 @@ export const studentData: Student[] = [
         "birth": "3 Oct 2009"
     },
     {
-        "first": "SG - LEYSA LUZ MARTINEZ MENDOZA",
-        "last": "",
+        "first": "SG - LEYSA LUZ",
+        "last": "MARTINEZ MENDOZA",
         "email": "leysamartinez58@gmail.com",
         "id": "1104261261",
         "password": "Leysa1261",
@@ -1141,8 +1141,8 @@ export const studentData: Student[] = [
         "birth": "4 Mar 2008"
     },
     {
-        "first": "SG - ALEJANDRO DAVID LORA TORRES",
-        "last": "",
+        "first": "SG - ALEJANDRO DAVID",
+        "last": "LORA TORRES",
         "email": "dlora5284@gmail.com",
         "id": "1028006716",
         "password": "Alejandro6716",
