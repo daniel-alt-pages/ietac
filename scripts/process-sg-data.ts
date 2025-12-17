@@ -52,9 +52,22 @@ function generatePassword(fullName: string, id: string): string {
     const { firstName, lastName } = extractFirstNameAndLastName(fullName);
     const lastFourDigits = id.slice(-4);
 
+    // Normalizar nombres para remover acentos y caracteres especiales
+    const normalizedFirstName = firstName
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ñ/gi, 'n')
+        .replace(/[^a-zA-Z]/g, '');
+
+    const normalizedLastName = lastName
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/ñ/gi, 'n')
+        .replace(/[^a-zA-Z]/g, '');
+
     // Formato: PrimerNombrePrimeraLetraApellido.UltimosCuatroDigitos
-    const firstNameCapitalized = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
-    const lastNameInitial = lastName.charAt(0).toUpperCase();
+    const firstNameCapitalized = normalizedFirstName.charAt(0).toUpperCase() + normalizedFirstName.slice(1).toLowerCase();
+    const lastNameInitial = normalizedLastName.charAt(0).toUpperCase();
 
     return `${firstNameCapitalized}${lastNameInitial}.${lastFourDigits}`;
 }

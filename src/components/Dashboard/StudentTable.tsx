@@ -64,6 +64,7 @@ Por favor cambia tu contraseña al ingresar.`;
                                 <Th>Contraseña</Th>
                                 <Th>Teléfono</Th>
                                 <Th>ID / Doc</Th>
+                                <Th>Acciones</Th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-slate-100">
@@ -199,34 +200,12 @@ function TableRow({ student, index, onCopy, onCall, getEmailUsername, isConfirme
 
             {/* 1. Nombre */}
             <td className="px-6 py-4 whitespace-nowrap">
-                <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center cursor-pointer group/cell flex-1" onClick={() => onCopy(fullName, 'Nombre')}>
-                        <div className={clsx("h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold mr-3 border flex-shrink-0", institutionColors.avatar)}>
-                            {initials}
-                        </div>
-                        <div className={clsx("font-semibold text-slate-900 transition-colors", institutionColors.text)}>{fullName}</div>
-                        <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
+                <div className="flex items-center cursor-pointer group/cell" onClick={() => onCopy(fullName, 'Nombre')}>
+                    <div className={clsx("h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold mr-3 border flex-shrink-0", institutionColors.avatar)}>
+                        {initials}
                     </div>
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={(e) => { e.stopPropagation(); onCall(student.phone, cleanNameForInitials); }}
-                            className="p-1.5 hover:bg-blue-50 rounded-full transition-colors"
-                            title="Llamar por teléfono"
-                        >
-                            <Phone className="w-5 h-5 text-blue-600" />
-                        </button>
-                        <button
-                            onClick={(e) => { e.stopPropagation(); onSendMessage(); }}
-                            className="p-1.5 hover:bg-green-50 rounded-full transition-colors"
-                            title="Enviar credenciales por WhatsApp"
-                        >
-                            <img
-                                src="https://images.seeklogo.com/logo-png/30/1/whatsapp-logo-png_seeklogo-306926.png"
-                                alt="WhatsApp"
-                                className="w-5 h-5 object-contain"
-                            />
-                        </button>
-                    </div>
+                    <div className={clsx("font-semibold text-slate-900 transition-colors", institutionColors.text)}>{fullName}</div>
+                    <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
                 </div>
             </td>
 
@@ -285,6 +264,30 @@ function TableRow({ student, index, onCopy, onCall, getEmailUsername, isConfirme
                 <div className="flex items-center cursor-pointer group/cell" onClick={() => onCopy(student.id, 'ID')}>
                     {student.id}
                     <Copy className={clsx("w-3 h-3 ml-2 inline opacity-0 group-hover/cell:opacity-100 transition-opacity", institutionColors.copyIcon)} />
+                </div>
+            </td>
+
+            {/* 9. Acciones */}
+            <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex items-center gap-2 justify-center">
+                    <button
+                        onClick={(e) => { e.stopPropagation(); onCall(student.phone, cleanNameForInitials); }}
+                        className="p-1.5 hover:bg-blue-50 rounded-full transition-colors"
+                        title="Llamar por teléfono"
+                    >
+                        <Phone className="w-5 h-5 text-blue-600" />
+                    </button>
+                    <button
+                        onClick={(e) => { e.stopPropagation(); onSendMessage(); }}
+                        className="p-1.5 hover:bg-green-50 rounded-full transition-colors"
+                        title="Enviar credenciales por WhatsApp"
+                    >
+                        <img
+                            src="https://images.seeklogo.com/logo-png/30/1/whatsapp-logo-png_seeklogo-306926.png"
+                            alt="WhatsApp"
+                            className="w-5 h-5 object-contain"
+                        />
+                    </button>
                 </div>
             </td>
         </motion.tr>
