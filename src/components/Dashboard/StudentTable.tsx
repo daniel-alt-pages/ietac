@@ -91,7 +91,7 @@ Por favor cambia tu contraseña al ingresar.`;
             </div>
 
             {/* Mobile Card View */}
-            <div className="md:hidden space-y-4 pb-28 px-4 pt-4">
+            <div className="md:hidden space-y-3 pb-36 px-3 pt-3">
                 {data.length > 0 ? (
                     data.map((student, index) => (
                         <MobileCard
@@ -127,7 +127,7 @@ Por favor cambia tu contraseña al ingresar.`;
             </div>
 
             {/* Mobile Footer - Fixed at bottom */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-4 py-3 flex justify-between items-center shadow-lg z-50">
+            <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-slate-200 px-4 py-2.5 flex justify-between items-center shadow-lg z-40">
                 <div className="text-sm">
                     <span className="text-slate-500">{data.length} estudiantes</span>
                 </div>
@@ -312,10 +312,10 @@ function MobileCard({ student, index, onCopy, onCall, getEmailUsername, isConfir
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.03 }}
-            className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 hover:shadow-md transition-shadow"
+            transition={{ delay: index * 0.02 }}
+            className="bg-white rounded-xl shadow-sm border border-slate-200 p-3 active:shadow-md transition-shadow"
         >
             {/* Header */}
             <div className="flex items-start justify-between mb-3">

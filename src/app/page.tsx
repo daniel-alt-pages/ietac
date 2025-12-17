@@ -6,6 +6,7 @@ import Header from '@/components/Dashboard/Header';
 import StudentTable from '@/components/Dashboard/StudentTable';
 import { studentData } from '@/lib/data';
 import { subscribeToConfirmations, updateConfirmation } from '@/lib/firebase';
+import { exportToExcel } from '@/lib/exportExcel';
 
 export default function Home() {
   // Load filters from localStorage or use defaults
@@ -125,6 +126,7 @@ export default function Home() {
           onNameFilterChange={setNameFilter}
           lastnameFilter={lastnameFilter}
           onLastnameFilterChange={setLastnameFilter}
+          onExportExcel={() => exportToExcel(studentData)}
         />
 
         <div className="flex-1 overflow-auto p-4 md:p-6 scroll-smooth">
