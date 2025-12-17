@@ -54,13 +54,18 @@ export default function Home() {
 
     // Filter by institution
     if (institutionFilter !== 'ALL') {
-      data = data.filter(student => student.institution === institutionFilter);
+      data = data.filter(student => {
+        if (institutionFilter === 'IETAC') return student.first.startsWith('IETAC');
+        if (institutionFilter === 'SG') return student.first.startsWith('SG');
+        return true;
+      });
     }
 
     // Filter by name (alphabetical)
     if (nameFilter !== 'ALL') {
       data = data.filter(student => {
-        const firstName = student.first.replace(/^(IETAC|SG) - /, '');
+        // Remove prefix for sorting/filtering
+        const firstName = student.first.replace(/^(IETAC|SG) - /, '').trim();
         return firstName.toUpperCase().startsWith(nameFilter);
       });
     }
