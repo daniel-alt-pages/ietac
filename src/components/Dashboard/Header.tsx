@@ -1,4 +1,4 @@
-import { Search, Bell, X, Building2, Filter } from 'lucide-react';
+import { Search, Bell, X, Filter } from 'lucide-react';
 import clsx from 'clsx';
 import { useState } from 'react';
 
@@ -13,6 +13,89 @@ interface HeaderProps {
     onLastnameFilterChange: (value: string) => void;
 }
 
+// Helper component for Filters
+const FilterSection = ({
+    mobile = false,
+    nameFilter,
+    onNameFilterChange,
+    lastnameFilter,
+    onLastnameFilterChange,
+    alphabet
+}: {
+    mobile?: boolean;
+    nameFilter: string;
+    onNameFilterChange: (val: string) => void;
+    lastnameFilter: string;
+    onLastnameFilterChange: (val: string) => void;
+    alphabet: string[];
+}) => (
+    <div className={clsx("flex flex-col gap-3", mobile ? "p-4" : "hidden md:flex")}>
+        {/* Name Filter */}
+        <div className="flex flex-col gap-1.5">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtrar por Nombre</span>
+            <div className="flex flex-wrap gap-1">
+                <button
+                    onClick={() => onNameFilterChange('ALL')}
+                    className={clsx(
+                        "h-7 px-2 text-xs font-medium rounded transition-all",
+                        nameFilter === 'ALL'
+                            ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
+                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    )}
+                >
+                    Todos
+                </button>
+                {alphabet.map(letter => (
+                    <button
+                        key={`name-${letter}`}
+                        onClick={() => onNameFilterChange(letter)}
+                        className={clsx(
+                            "w-7 h-7 text-xs font-medium rounded transition-all flex items-center justify-center",
+                            nameFilter === letter
+                                ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
+                                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        )}
+                    >
+                        {letter}
+                    </button>
+                ))}
+            </div>
+        </div>
+
+        {/* Lastname Filter */}
+        <div className="flex flex-col gap-1.5 mt-1">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtrar por Apellido</span>
+            <div className="flex flex-wrap gap-1">
+                <button
+                    onClick={() => onLastnameFilterChange('ALL')}
+                    className={clsx(
+                        "h-7 px-2 text-xs font-medium rounded transition-all",
+                        lastnameFilter === 'ALL'
+                            ? "bg-emerald-600 text-white shadow-md shadow-emerald-200"
+                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    )}
+                >
+                    Todos
+                </button>
+                {alphabet.map(letter => (
+                    <button
+                        key={`lastname-${letter}`}
+                        onClick={() => onLastnameFilterChange(letter)}
+                        className={clsx(
+                            "w-7 h-7 text-xs font-medium rounded transition-all flex items-center justify-center",
+                            lastnameFilter === letter
+                                ? "bg-emerald-600 text-white shadow-md shadow-emerald-200"
+                                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                        )}
+                    >
+                        {letter}
+                    </button>
+                ))}
+            </div>
+        </div>
+    </div>
+);
+
 export default function Header({
     searchTerm,
     onSearchChange,
@@ -25,74 +108,6 @@ export default function Header({
 }: HeaderProps) {
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-
-    const FilterSection = ({ mobile = false }) => (
-        <div className={clsx("flex flex-col gap-3", mobile ? "p-4" : "hidden md:flex")}>
-            {/* Name Filter */}
-            <div className="flex flex-col gap-1.5">
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtrar por Nombre</span>
-                <div className="flex flex-wrap gap-1">
-                    <button
-                        onClick={() => onNameFilterChange('ALL')}
-                        className={clsx(
-                            "h-7 px-2 text-xs font-medium rounded transition-all",
-                            nameFilter === 'ALL'
-                                ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
-                                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                        )}
-                    >
-                        Todos
-                    </button>
-                    {alphabet.map(letter => (
-                        <button
-                            key={`name-${letter}`}
-                            onClick={() => onNameFilterChange(letter)}
-                            className={clsx(
-                                "w-7 h-7 text-xs font-medium rounded transition-all flex items-center justify-center",
-                                nameFilter === letter
-                                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-200"
-                                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                            )}
-                        >
-                            {letter}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Lastname Filter */}
-            <div className="flex flex-col gap-1.5 mt-1">
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Filtrar por Apellido</span>
-                <div className="flex flex-wrap gap-1">
-                    <button
-                        onClick={() => onLastnameFilterChange('ALL')}
-                        className={clsx(
-                            "h-7 px-2 text-xs font-medium rounded transition-all",
-                            lastnameFilter === 'ALL'
-                                ? "bg-emerald-600 text-white shadow-md shadow-emerald-200"
-                                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                        )}
-                    >
-                        Todos
-                    </button>
-                    {alphabet.map(letter => (
-                        <button
-                            key={`lastname-${letter}`}
-                            onClick={() => onLastnameFilterChange(letter)}
-                            className={clsx(
-                                "w-7 h-7 text-xs font-medium rounded transition-all flex items-center justify-center",
-                                lastnameFilter === letter
-                                    ? "bg-emerald-600 text-white shadow-md shadow-emerald-200"
-                                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                            )}
-                        >
-                            {letter}
-                        </button>
-                    ))}
-                </div>
-            </div>
-        </div>
-    );
 
     return (
         <>
@@ -171,7 +186,10 @@ export default function Header({
 
                             {/* Desktop Notification & User */}
                             <div className="flex items-center gap-2 shrink-0">
-                                <button className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all relative">
+                                <button
+                                    className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all relative"
+                                    title="Notificaciones"
+                                >
                                     <Bell className="w-5 h-5" />
                                     <span className="absolute top-2 right-2.5 w-1.5 h-1.5 bg-red-500 rounded-full ring-2 ring-white"></span>
                                 </button>
@@ -184,7 +202,13 @@ export default function Header({
 
                     {/* Desktop Filters (Visible on MD+) */}
                     <div className="hidden md:block border-t border-slate-100 pt-3">
-                        <FilterSection mobile={false} />
+                        <FilterSection
+                            nameFilter={nameFilter}
+                            onNameFilterChange={onNameFilterChange}
+                            lastnameFilter={lastnameFilter}
+                            onLastnameFilterChange={onLastnameFilterChange}
+                            alphabet={alphabet}
+                        />
                     </div>
                 </div>
             </header>
@@ -193,7 +217,7 @@ export default function Header({
             <button
                 onClick={() => setIsMobileFiltersOpen(true)}
                 className="md:hidden fixed bottom-6 right-6 z-50 w-14 h-14 bg-indigo-600 text-white rounded-full shadow-lg shadow-indigo-600/30 flex items-center justify-center hover:bg-indigo-700 transition-all active:scale-95"
-                aria-label="Filtros"
+                title="Abrir filtros"
             >
                 <Filter className="w-6 h-6" />
                 {(nameFilter !== 'ALL' || lastnameFilter !== 'ALL') && (
@@ -221,7 +245,14 @@ export default function Header({
                             </button>
                         </div>
                         <div className="max-h-[70vh] overflow-y-auto">
-                            <FilterSection mobile={true} />
+                            <FilterSection
+                                mobile={true}
+                                nameFilter={nameFilter}
+                                onNameFilterChange={onNameFilterChange}
+                                lastnameFilter={lastnameFilter}
+                                onLastnameFilterChange={onLastnameFilterChange}
+                                alphabet={alphabet}
+                            />
                         </div>
                         <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
                             <button

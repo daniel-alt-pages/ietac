@@ -13,7 +13,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - XIMENA",
         "last": "ARIAS MANCO",
-        "email": "sg.estudiante.ximena.arias@gmail.com",
+        "email": "sg.estudiante.ximena.arias",
         "id": "1066605786",
         "password": "1066605786",
         "gender": "Mujer",
@@ -23,7 +23,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - CAMILO ANDRÉS",
         "last": "ARROYO CASTRO",
-        "email": "sg.estudiante.camilo.arroyo@gmail.com",
+        "email": "sg.estudiante.camilo.arroyo",
         "id": "1066605793",
         "password": "1066605793",
         "gender": "Hombre",
@@ -33,7 +33,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - MARÍA ESTHER",
         "last": "ACOSTA FERIA",
-        "email": "sg.estudiante.maria.acosta@gmail.com",
+        "email": "sg.estudiante.maria.acosta",
         "id": "1066605450",
         "password": "1066605450",
         "gender": "Mujer",
@@ -43,7 +43,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - JAIRO MANUEL",
         "last": "BALTAZAR VILLERO",
-        "email": "sg.estudiante.jairo.baltazar@gmail.com",
+        "email": "sg.estudiante.jairo.baltazar",
         "id": "1063290755",
         "password": "1063290755",
         "gender": "Hombre",
@@ -53,7 +53,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - JHOANS SEBASTIÁN",
         "last": "DURANGO ZABALA",
-        "email": "sg.estudiante.jhoans.durango@gmail.com",
+        "email": "sg.estudiante.jhoans.durango",
         "id": "1063789927",
         "password": "1063789927",
         "gender": "Hombre",
@@ -63,7 +63,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - ELICEO ELI",
         "last": "FUENTES DÍAZ",
-        "email": "sg.estudiante.eliceo.fuentes@gmail.com",
+        "email": "sg.estudiante.eliceo.fuentes",
         "id": "1133790795",
         "password": "1133790795",
         "gender": "Hombre",
@@ -73,7 +73,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - LIZ VALERIA",
         "last": "GIL HOYOS",
-        "email": "sg.estudiante.liz.gil@gmail.com",
+        "email": "sg.estudiante.liz.gil",
         "id": "1063292674",
         "password": "1063292674",
         "gender": "Mujer",
@@ -83,7 +83,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - HAROLD IVÁN",
         "last": "HOYOS VERGARA",
-        "email": "sg.estudiante.harold.hoyos@gmail.com",
+        "email": "sg.estudiante.harold.hoyos",
         "id": "1148438187",
         "password": "1148438187",
         "gender": "Hombre",
@@ -93,7 +93,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - ISABELLA",
         "last": "MANCHEGO LOZANO",
-        "email": "sg.estudiante.isabella.manchego@gmail.com",
+        "email": "sg.estudiante.isabella.manchego",
         "id": "1063295017",
         "password": "1063295017",
         "gender": "Mujer",
@@ -103,7 +103,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - MARÍA ANGÉLICA",
         "last": "MORELO VILLEROS",
-        "email": "sg.estudiante.maria.morelo@gmail.com",
+        "email": "sg.estudiante.maria.morelo",
         "id": "1070815365",
         "password": "1070815365",
         "gender": "Mujer",
@@ -113,7 +113,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - HERNÁN ANDRÉS",
         "last": "PALMERA PÉREZ",
-        "email": "sg.estudiante.hernan.palmera@gmail.com",
+        "email": "sg.estudiante.hernan.palmera",
         "id": "1101447212",
         "password": "1101447212",
         "gender": "Hombre",
@@ -123,7 +123,7 @@ export const studentData: Student[] = [
     {
         "first": "IETAC - ADRIANA LUCÍA",
         "last": "ROJAS CORDERO",
-        "email": "sg.estudiante.adriana.rojas@gmail.com",
+        "email": "sg.estudiante.adriana.rojas",
         "id": "1038117449",
         "password": "1038117449",
         "gender": "Mujer",
@@ -131,19 +131,9 @@ export const studentData: Student[] = [
         "birth": "04 Mar 2010"
     },
     {
-        "first": "SG - JOHAN ANDRÉS",
+        "first": "IETAC - JOHAN ANDRÉS",
         "last": "SALCEDO BEDOYA",
-        "email": "jhoansalcedo1010@gmail.com",
-        "id": "1066606386",
-        "password": "Johan6386",
-        "gender": "Hombre",
-        "phone": "3117930027",
-        "birth": "10 Oct 2010"
-    },
-    {
-        "first": "IETAC - ARNEDIS",
-        "last": "SIBAJA BEGAMBRE",
-        "email": "sg.estudiante.arnedis.sibaja@gmail.com",
+        "email": "sg.estudiante.arnedis.sibaja",
         "id": "1063290456",
         "password": "1063290456",
         "gender": "Mujer",
@@ -151,9 +141,9 @@ export const studentData: Student[] = [
         "birth": "14 Oct 2009"
     },
     {
-        "first": "IETAC - ALEXANDRA",
-        "last": "URZOLA MARTÍNEZ",
-        "email": "sg.estudiante.alexandra.urzola@gmail.com",
+        "first": "IETAC - ARNEDIS",
+        "last": "SIBAJA BEGAMBRE",
+        "email": "sg.estudiante.alexandra.urzola",
         "id": "1067898547",
         "password": "1067898547",
         "gender": "Mujer",
@@ -161,9 +151,9 @@ export const studentData: Student[] = [
         "birth": "23 Mar 2009"
     },
     {
-        "first": "IETAC - DANIEL ANDRÉS",
-        "last": "ZABALA MONTIEL",
-        "email": "sg.estudiante.daniel.zabala@gmail.com",
+        "first": "IETAC - ALEXANDRA",
+        "last": "URZOLA MARTÍNEZ",
+        "email": "sg.estudiante.daniel.zabala",
         "id": "1066605887",
         "password": "1066605887",
         "gender": "Hombre",
@@ -171,9 +161,9 @@ export const studentData: Student[] = [
         "birth": "04 Mar 2010"
     },
     {
-        "first": "IETAC - LUIS MARIO",
-        "last": "ZABALA SÁNCHEZ",
-        "email": "sg.estudiante.luis.zabala@gmail.com",
+        "first": "IETAC - DANIEL ANDRÉS",
+        "last": "ZABALA MONTIEL",
+        "email": "sg.estudiante.luis.zabala",
         "id": "1066606169",
         "password": "1066606169",
         "gender": "Hombre",
@@ -181,19 +171,9 @@ export const studentData: Student[] = [
         "birth": "10 Abr 2010"
     },
     {
-        "first": "SG - RONALDO ANDRES",
-        "last": "ZULETA GUERRA",
-        "email": "jesusrodricuez1990@gmail.com",
-        "id": "1063363727",
-        "password": "Ronaldo3727",
-        "gender": "Hombre",
-        "phone": "3127038167",
-        "birth": "7 Abr 2010"
-    },
-    {
-        "first": "IETAC - KAREN SOFÍA",
-        "last": "ARRIETA VERGARA",
-        "email": "sg.estudiante.karen.arrieta@gmail.com",
+        "first": "IETAC - LUIS MARIO",
+        "last": "ZABALA SÁNCHEZ",
+        "email": "sg.estudiante.karen.arrieta",
         "id": "114869587",
         "password": "114869587",
         "gender": "Mujer",
@@ -201,9 +181,9 @@ export const studentData: Student[] = [
         "birth": "07 Sep 2010"
     },
     {
-        "first": "IETAC - ANA BELÉN",
-        "last": "BARÓN CEBALLOS",
-        "email": "sg.estudiante.ana.baron@gmail.com",
+        "first": "IETAC - RONALDO ANDRÉS",
+        "last": "ZULETA GUERRA",
+        "email": "sg.estudiante.ana.baron",
         "id": "1033373778",
         "password": "1033373778",
         "gender": "Mujer",
@@ -211,9 +191,9 @@ export const studentData: Student[] = [
         "birth": "01 Mar 2010"
     },
     {
-        "first": "IETAC - KAREN DAYANA",
-        "last": "CASTILLO PÉREZ",
-        "email": "sg.estudiante.karen.castillo@gmail.com",
+        "first": "IETAC - KAREN SOFÍA",
+        "last": "ARRIETA VERGARA",
+        "email": "sg.estudiante.karen.castillo",
         "id": "1063292595",
         "password": "1063292595",
         "gender": "Mujer",
@@ -221,9 +201,9 @@ export const studentData: Student[] = [
         "birth": "17 Abr 2010"
     },
     {
-        "first": "IETAC - JUAN DAVID",
-        "last": "CORREA HERNÁNDEZ",
-        "email": "sg.estudiante.juan.correa@gmail.com",
+        "first": "IETAC - ANA BELÉN",
+        "last": "BARÓN CEBALLOS",
+        "email": "sg.estudiante.juan.correa",
         "id": "1066572003",
         "password": "1066572003",
         "gender": "Hombre",
@@ -231,9 +211,9 @@ export const studentData: Student[] = [
         "birth": "30 Sep 2007"
     },
     {
-        "first": "IETAC - LUIS DANIEL",
-        "last": "MENDOZA URIBE",
-        "email": "sg.estudiante.luis.mendoza@gmail.com",
+        "first": "IETAC - KAREN DAYANA",
+        "last": "CASTILLO PÉREZ",
+        "email": "sg.estudiante.luis.mendoza",
         "id": "1148695425",
         "password": "1148695425",
         "gender": "Hombre",
@@ -241,9 +221,9 @@ export const studentData: Student[] = [
         "birth": "11 Feb 2009"
     },
     {
-        "first": "IETAC - ALEXANDRA",
-        "last": "JULIO ROMERO",
-        "email": "sg.estudiante.alexandra.julio@gmail.com",
+        "first": "IETAC - JUAN DAVID",
+        "last": "CORREA HERNÁNDEZ",
+        "email": "sg.estudiante.alexandra.julio",
         "id": "1148695426",
         "password": "1148695426",
         "gender": "Mujer",
@@ -251,9 +231,9 @@ export const studentData: Student[] = [
         "birth": "10 Feb 2010"
     },
     {
-        "first": "IETAC - YULISA",
-        "last": "RODRÍGUEZ RODRÍGUEZ",
-        "email": "sg.estudiante.yulisa.rodriguez@gmail.com",
+        "first": "IETAC - LUIS DANIEL",
+        "last": "MENDOZA URIBE",
+        "email": "sg.estudiante.yulisa.rodriguez",
         "id": "1133790727",
         "password": "1133790727",
         "gender": "Mujer",
@@ -261,9 +241,9 @@ export const studentData: Student[] = [
         "birth": "10 Sep 2009"
     },
     {
-        "first": "IETAC - VIVIANA MARCELA",
-        "last": "ROMERO ZÚÑIGA",
-        "email": "sg.estudiante.viviana.romero@gmail.com",
+        "first": "IETAC - ALEXANDRA",
+        "last": "JULIO ROMERO",
+        "email": "sg.estudiante.viviana.romero",
         "id": "1066573694",
         "password": "1066573694",
         "gender": "Mujer",
@@ -271,9 +251,9 @@ export const studentData: Student[] = [
         "birth": "16 Ene 2010"
     },
     {
-        "first": "IETAC - DAINER ANDRÉS",
-        "last": "SÁNCHEZ CASTRO",
-        "email": "sg.estudiante.dainer.sanchez@gmail.com",
+        "first": "IETAC - YULISA",
+        "last": "RODRÍGUEZ RODRÍGUEZ",
+        "email": "sg.estudiante.dainer.sanchez",
         "id": "1063295162",
         "password": "1063295162",
         "gender": "Hombre",
@@ -281,9 +261,9 @@ export const studentData: Student[] = [
         "birth": "19 Jun 2009"
     },
     {
-        "first": "IETAC - MARIANA DE JESÚS",
-        "last": "CABADIA PARRA",
-        "email": "sg.estudiante.mariana.cabadia@gmail.com",
+        "first": "IETAC - VIVIANA MARCELA",
+        "last": "ROMERO ZÚÑIGA",
+        "email": "sg.estudiante.mariana.cabadia",
         "id": "1148438017",
         "password": "1148438017",
         "gender": "Mujer",
@@ -291,9 +271,9 @@ export const studentData: Student[] = [
         "birth": "06 Feb 2008"
     },
     {
-        "first": "IETAC - JANER",
-        "last": "CASTRO MONTALVO",
-        "email": "sg.estudiante.janer.castro@gmail.com",
+        "first": "IETAC - DAINER ANDRÉS",
+        "last": "SÁNCHEZ CASTRO",
+        "email": "sg.estudiante.janer.castro",
         "id": "1148695511",
         "password": "1148695511",
         "gender": "Hombre",
@@ -301,9 +281,9 @@ export const studentData: Student[] = [
         "birth": "03 Abr 2009"
     },
     {
-        "first": "IETAC - DAVIER ESTEBAN",
-        "last": "OTERO URANGO",
-        "email": "sg.estudiante.davier.otero@gmail.com",
+        "first": "IETAC - MARIANA DE",
+        "last": "JESÚS CABADIA PARRA",
+        "email": "sg.estudiante.davier.otero",
         "id": "1067286561",
         "password": "1067286561",
         "gender": "Hombre",
@@ -311,9 +291,9 @@ export const studentData: Student[] = [
         "birth": "06 Jul 2007"
     },
     {
-        "first": "IETAC - ELIANA MARCELA",
-        "last": "VERGARA GANDIA",
-        "email": "sg.estudiante.eliana.vergara@gmail.com",
+        "first": "IETAC - JANER",
+        "last": "CASTRO MONTALVO",
+        "email": "sg.estudiante.eliana.vergara",
         "id": "1063293969",
         "password": "1063293969",
         "gender": "Mujer",
@@ -321,9 +301,9 @@ export const studentData: Student[] = [
         "birth": "21 Jun 2008"
     },
     {
-        "first": "IETAC - LUISA FERNANDA",
-        "last": "BARÓN LUCAS",
-        "email": "sg.estudiante.luisa.baron@gmail.com",
+        "first": "IETAC - DAVIER ESTEBAN",
+        "last": "OTERO URANGO",
+        "email": "sg.estudiante.luisa.baron",
         "id": "1148437906",
         "password": "1148437906",
         "gender": "Mujer",
@@ -331,9 +311,9 @@ export const studentData: Student[] = [
         "birth": "15 Dic 2008"
     },
     {
-        "first": "IETAC - JORGE ANDRÉS",
-        "last": "PÉREZ MESTRA",
-        "email": "sg.estudiante.jorge.perez@gmail.com",
+        "first": "IETAC - ELIANA MARCELA",
+        "last": "VERGARA GANDIA",
+        "email": "sg.estudiante.jorge.perez",
         "id": "1148695420",
         "password": "1148695420",
         "gender": "Hombre",
@@ -341,9 +321,9 @@ export const studentData: Student[] = [
         "birth": "14 Mar 2010"
     },
     {
-        "first": "IETAC - YULEIMIS",
-        "last": "MURILLO GÓMEZ",
-        "email": "sg.estudiante.yuleimis.murillo@gmail.com",
+        "first": "IETAC - LUISA FERNANDA",
+        "last": "BARÓN LUCAS",
+        "email": "sg.estudiante.yuleimis.murillo",
         "id": "1133790340",
         "password": "1133790340",
         "gender": "Mujer",
@@ -351,9 +331,9 @@ export const studentData: Student[] = [
         "birth": "12 Oct 2004"
     },
     {
-        "first": "IETAC - NICOL TATIANA",
-        "last": "CERPA PEINADO",
-        "email": "sg.estudiante.nicol.cerpa@gmail.com",
+        "first": "IETAC - JORGE ANDRÉS",
+        "last": "PÉREZ MESTRA",
+        "email": "sg.estudiante.nicol.cerpa",
         "id": "1148438554",
         "password": "1148438554",
         "gender": "Mujer",
@@ -361,9 +341,9 @@ export const studentData: Student[] = [
         "birth": "17 Dic 2008"
     },
     {
-        "first": "IETAC - DAYANA MICHEL",
-        "last": "PEÑA TORDECILLA",
-        "email": "sg.estudiante.dayana.pena@gmail.com",
+        "first": "IETAC - YULEIMIS",
+        "last": "MURILLO GÓMEZ",
+        "email": "sg.estudiante.dayana.pena",
         "id": "1148695628",
         "password": "1148695628",
         "gender": "Mujer",
@@ -371,9 +351,29 @@ export const studentData: Student[] = [
         "birth": "06 May 2010"
     },
     {
+        "first": "SG - JOHAN ANDRÉS",
+        "last": "SALCEDO BEDOYA",
+        "email": "sg.estudiante.johan.andres.salcedo.bedoya",
+        "id": "1066606386",
+        "password": "Johan6386",
+        "gender": "Hombre",
+        "phone": "3117930027",
+        "birth": "10 Oct 2010"
+    },
+    {
+        "first": "SG - RONALDO ANDRES",
+        "last": "ZULETA GUERRA",
+        "email": "sg.estudiante.ronaldo.andres.zuleta.guerra",
+        "id": "1063363727",
+        "password": "Ronaldo3727",
+        "gender": "Hombre",
+        "phone": "3127038167",
+        "birth": "7 Abr 2010"
+    },
+    {
         "first": "SG - ANGIE SOFIA",
         "last": "ALDANA ARIAS",
-        "email": "angie.850gg@gmail.com",
+        "email": "sg.estudiante.angie.sofia.aldana.arias",
         "id": "1014992221",
         "password": "Angie2221",
         "gender": "Mujer",
@@ -383,7 +383,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - LUIS FELIPE",
         "last": "ESCUDERO VILLEGAS",
-        "email": "luisfelipe788tam@gmail.com",
+        "email": "sg.estudiante.luis.felipe.escudero.villegas",
         "id": "1013126436",
         "password": "Luis6436",
         "gender": "Hombre",
@@ -393,7 +393,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - LAURA SOFÍA",
         "last": "OVEJERO MALDONADO",
-        "email": "ovejerolaurasofia2007@gmail.com",
+        "email": "sg.estudiante.laura.sofia.ovejero.maldonado",
         "id": "1115690260",
         "password": "Laura0260",
         "gender": "Mujer",
@@ -403,7 +403,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - KAMILA INES",
         "last": "HERRERA MARTINEZ",
-        "email": "hkamila531@gmail.com",
+        "email": "sg.estudiante.kamila.ines.herrera.martinez",
         "id": "1049935197",
         "password": "Kamila5197",
         "gender": "Mujer",
@@ -413,7 +413,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - VALERIE",
         "last": "GAMARRA FONTALVO",
-        "email": "valeriegamarr4@gmail.com",
+        "email": "sg.estudiante.valerie.gamarra.fontalvo",
         "id": "1041981827",
         "password": "Valerie1827",
         "gender": "Mujer",
@@ -423,7 +423,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - KAROL VALENTINA",
         "last": "CEBALLOS QUIROZ",
-        "email": "karolcq208@gmail.com",
+        "email": "sg.estudiante.karol.valentina.ceballos.quiroz",
         "id": "1080052959",
         "password": "Karol2959",
         "gender": "Mujer",
@@ -433,7 +433,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - ANGIE CAROLINA",
         "last": "SOTO GIRALDO",
-        "email": "caro.soto992@gmail.com",
+        "email": "sg.estudiante.angie.carolina.soto.giraldo",
         "id": "1063158765",
         "password": "Angie8765",
         "gender": "Mujer",
@@ -443,7 +443,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - JUAN DIEGO",
         "last": "ZAMBRANO OCAMPO",
-        "email": "jzambranoocampo@gmail.com",
+        "email": "sg.estudiante.juan.diego.zambrano.ocampo",
         "id": "1077726158",
         "password": "Juan6158",
         "gender": "Hombre",
@@ -453,7 +453,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - STEPHANY",
         "last": "VELAZCO RODRIGUEZ",
-        "email": "sv273837@gmail.com",
+        "email": "sg.estudiante.stephany.velazco.rodriguez",
         "id": "1142715366",
         "password": "Stephany5366",
         "gender": "Mujer",
@@ -463,7 +463,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - ISABELA",
         "last": "BARREIRO CÁRDENAS",
-        "email": "isabelabarreiro427@gmail.com",
+        "email": "sg.estudiante.isabela.barreiro.cardenas",
         "id": "1077230281",
         "password": "Isabela0281",
         "gender": "Mujer",
@@ -473,7 +473,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - JUAN SEBASTIAN",
         "last": "RIVERA AVENDAÑO",
-        "email": "juan.riveraa2006@gmail.com",
+        "email": "sg.estudiante.juan.sebastian.rivera.avendano",
         "id": "1051066924",
         "password": "Juan6924",
         "gender": "Hombre",
@@ -483,7 +483,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - KAREN YULIED",
         "last": "ARENAS COMETA",
-        "email": "karenyulied22@gmail.com",
+        "email": "sg.estudiante.karen.yulied.arenas.cometa",
         "id": "1061717282",
         "password": "Karen7282",
         "gender": "Mujer",
@@ -493,7 +493,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - LUIS ANTONIO",
         "last": "MUÑOZ HINCAPIE",
-        "email": "luisantoniomunozhimpa@gmail.com",
+        "email": "sg.estudiante.luis.antonio.munoz.hincapie",
         "id": "1104821599",
         "password": "Luis1599",
         "gender": "Hombre",
@@ -503,7 +503,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - ADRIANA ISABEL",
         "last": "HOYOS HOYOS",
-        "email": "hoyosadrily@gmail.com",
+        "email": "sg.estudiante.adriana.isabel.hoyos.hoyos",
         "id": "1103950959",
         "password": "Adriana0959",
         "gender": "Mujer",
@@ -513,7 +513,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - CAREN YILENI",
         "last": "ECHEVERRÍA CARDOZO",
-        "email": "echeverriacaren998@gmail.com",
+        "email": "sg.estudiante.caren.yileni.echeverria.cardozo",
         "id": "1099205249",
         "password": "Caren5249",
         "gender": "Mujer",
@@ -523,7 +523,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - JOSIAS",
         "last": "ACUÑA ARIAS",
-        "email": "josiasacunaarias919@gmail.com",
+        "email": "sg.estudiante.josias.acuna.arias",
         "id": "1128327871",
         "password": "Josias7871",
         "gender": "Hombre",
@@ -533,7 +533,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - CRISTIAN DE",
         "last": "JESÚS CUESTA BLANQUICETT",
-        "email": "cjblanquicett1106@gmail.com",
+        "email": "sg.estudiante.cristian.de.jesus.cuesta.blanquicett",
         "id": "1043975755",
         "password": "Cristian5755",
         "gender": "Hombre",
@@ -543,7 +543,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - NATALIA",
         "last": "CARVAJAL VERGARA",
-        "email": "nataliacv1208@gmail.com",
+        "email": "sg.estudiante.natalia.carvajal.vergara",
         "id": "1104547717",
         "password": "Natalia7717",
         "gender": "Mujer",
@@ -553,7 +553,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - SAHRA ELIZABETH",
         "last": "PUJIMUY ROBLES",
-        "email": "boomaoto@gmail.com",
+        "email": "sg.estudiante.sahra.elizabeth.pujimuy.robles",
         "id": "1120099332",
         "password": "Sahra9332",
         "gender": "Mujer",
@@ -563,7 +563,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MATHIAS JOSÉ",
         "last": "HERNÁNDEZ BERMÚDEZ",
-        "email": "cinoberdo@gmail.com",
+        "email": "sg.estudiante.mathias.jose.hernandez.bermudez",
         "id": "1143241184",
         "password": "Mathias1184",
         "gender": "Hombre",
@@ -573,7 +573,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MIGUEL ANGEL",
         "last": "AYALA PRIETO",
-        "email": "ayalaprietomiguelangel768@gmail.com",
+        "email": "sg.estudiante.miguel.angel.ayala.prieto",
         "id": "1098678852",
         "password": "Miguel8852",
         "gender": "Hombre",
@@ -583,7 +583,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - SANTIAGO",
         "last": "SERNA MEDINA",
-        "email": "santiagosernamedina1@gmail.com",
+        "email": "sg.estudiante.santiago.serna.medina",
         "id": "1022367201",
         "password": "Santiago7201",
         "gender": "Hombre",
@@ -593,7 +593,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - JUAN CAMILO",
         "last": "URIBE CUESTA",
-        "email": "uribecuestajuancamilo@gmail.com",
+        "email": "sg.estudiante.juan.camilo.uribe.cuesta",
         "id": "1142921241",
         "password": "Juan1241",
         "gender": "Hombre",
@@ -603,7 +603,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - YURI NATALIA",
         "last": "SARMIENTO SILVA",
-        "email": "sarmientoyuri719@gmail.com",
+        "email": "sg.estudiante.yuri.natalia.sarmiento.silva",
         "id": "1095530126",
         "password": "Yuri0126",
         "gender": "Mujer",
@@ -613,7 +613,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - BRITANI MARIANGEL",
         "last": "AGUERO GARCIA",
-        "email": "aguerogarciabritani@gmail.com",
+        "email": "sg.estudiante.britani.mariangel.aguero.garcia",
         "id": "7734824",
         "password": "Britani4824",
         "gender": "Mujer",
@@ -623,7 +623,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARÍA JOSÉ",
         "last": "CORTES CHALITAS",
-        "email": "majocortes32z@gmail.com",
+        "email": "sg.estudiante.maria.jose.cortes.chalitas",
         "id": "1061741898",
         "password": "María1898",
         "gender": "Mujer",
@@ -633,7 +633,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - SOFIA",
         "last": "MÚNERA LÓPEZ",
-        "email": "sofiamunera24@gmail.com",
+        "email": "sg.estudiante.sofia.munera.lopez",
         "id": "1143340255",
         "password": "Sofia0255",
         "gender": "Mujer",
@@ -643,7 +643,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - ROSA INES",
         "last": "REVEROL GONZALEZ",
-        "email": "rosareverol1@gmail.com",
+        "email": "sg.estudiante.rosa.ines.reverol.gonzalez",
         "id": "5420076",
         "password": "Rosa0076",
         "gender": "Mujer",
@@ -653,7 +653,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - SALOME",
         "last": "DUQUE BETANCURT",
-        "email": "salomedb2005@gmail.com",
+        "email": "sg.estudiante.salome.duque.betancurt",
         "id": "1088826978",
         "password": "Salome6978",
         "gender": "Mujer",
@@ -663,7 +663,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - ROSA",
         "last": "MENDIETA FONSECA",
-        "email": "rmendietafonseca@gmail.com",
+        "email": "sg.estudiante.rosa.mendieta.fonseca",
         "id": "1097912847",
         "password": "Rosa2847",
         "gender": "Mujer",
@@ -673,7 +673,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - JHOAN DAVID",
         "last": "LEÓN LAGOS",
-        "email": "leonlagos2023@gmail.com",
+        "email": "sg.estudiante.jhoan.david.leon.lagos",
         "id": "1118366654",
         "password": "Jhoan6654",
         "gender": "Hombre",
@@ -683,7 +683,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - LUIS FERNANDO",
         "last": "LOPEZ LOPEZ",
-        "email": "lopezlopezfercho739403@gmail.com",
+        "email": "sg.estudiante.luis.fernando.lopez.lopez",
         "id": "1112465416",
         "password": "Luis5416",
         "gender": "Hombre",
@@ -693,7 +693,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - TALIANA ANDREA",
         "last": "FLOREZ SALGADO",
-        "email": "fsale2612@gmail.com",
+        "email": "sg.estudiante.taliana.andrea.florez.salgado",
         "id": "1062437352",
         "password": "Taliana7352",
         "gender": "Mujer",
@@ -703,7 +703,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - EMMA ISABELLA",
         "last": "LINDADO ALGARIN",
-        "email": "emmalindado@gmail.com",
+        "email": "sg.estudiante.emma.isabella.lindado.algarin",
         "id": "1043594698",
         "password": "Emma4698",
         "gender": "Mujer",
@@ -713,7 +713,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - CLAUDIA VALENTINA",
         "last": "OSORIO GOMEZ",
-        "email": "gomez538claudia@gmail.com",
+        "email": "sg.estudiante.claudia.valentina.osorio.gomez",
         "id": "1126704313",
         "password": "Claudia4313",
         "gender": "Mujer",
@@ -723,7 +723,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - DANIELA SOFÍA",
         "last": "FLOREZ VARGAS",
-        "email": "danisofifv28@gmail.com",
+        "email": "sg.estudiante.daniela.sofia.florez.vargas",
         "id": "1023381412",
         "password": "Daniela1412",
         "gender": "Mujer",
@@ -733,7 +733,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARIANA",
         "last": "DÍAZ ZÚÑIGA",
-        "email": "anita9mayo@gmail.com",
+        "email": "sg.estudiante.mariana.diaz.zuniga",
         "id": "1110296142",
         "password": "Mariana6142",
         "gender": "Mujer",
@@ -743,7 +743,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARIA PAULA",
         "last": "CARBALLO QUINTERO",
-        "email": "mariapaulacarballo35@gmail.com",
+        "email": "sg.estudiante.maria.paula.carballo.quintero",
         "id": "1095925977",
         "password": "Maria5977",
         "gender": "Mujer",
@@ -753,7 +753,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - JUAN FRANCISCO",
         "last": "CAMACHO POSSO",
-        "email": "juanfranciscocamachoposso07@gmail.com",
+        "email": "sg.estudiante.juan.francisco.camacho.posso",
         "id": "1023084237",
         "password": "Juan4237",
         "gender": "Hombre",
@@ -763,7 +763,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - NICOLLE",
         "last": "MARMOLEJO LUNA",
-        "email": "marmolejonicolle89@gmail.com",
+        "email": "sg.estudiante.nicolle.marmolejo.luna",
         "id": "1047430590",
         "password": "Nicolle0590",
         "gender": "Mujer",
@@ -773,7 +773,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - CAMILA ALEJANDRA",
         "last": "RAMIREZ RUEDA",
-        "email": "camila1016036708@gmail.com",
+        "email": "sg.estudiante.camila.alejandra.ramirez.rueda",
         "id": "1016036708",
         "password": "Camila6708",
         "gender": "Mujer",
@@ -783,7 +783,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARGREYS",
         "last": "QUINTERO PALOMINO",
-        "email": "palominomezamargreys@gmail.com",
+        "email": "sg.estudiante.margreys.quintero.palomino",
         "id": "1043658548",
         "password": "Margreys8548",
         "gender": "Mujer",
@@ -793,7 +793,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - DANIEL FELIPE",
         "last": "MOTTA PILONIETA",
-        "email": "danimottapilo@gmail.com",
+        "email": "sg.estudiante.daniel.felipe.motta.pilonieta",
         "id": "1146334161",
         "password": "Daniel4161",
         "gender": "Hombre",
@@ -803,7 +803,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARÍA PAULA",
         "last": "TAPIA YEPES",
-        "email": "maripautaye@gmail.com",
+        "email": "sg.estudiante.maria.paula.tapia.yepes",
         "id": "1062439947",
         "password": "María9947",
         "gender": "Mujer",
@@ -813,7 +813,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - GABRIEL",
         "last": "SUTACHAN MENDEZ",
-        "email": "sutachanxd@gmail.com",
+        "email": "sg.estudiante.gabriel.sutachan.mendez",
         "id": "1025062800",
         "password": "Gabriel2800",
         "gender": "Hombre",
@@ -823,7 +823,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARÍA JULIETH",
         "last": "CASTILLO BAUTISTA",
-        "email": "julicastillo972@gmail.com",
+        "email": "sg.estudiante.maria.julieth.castillo.bautista",
         "id": "1097102695",
         "password": "María2695",
         "gender": "Mujer",
@@ -833,7 +833,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - JUAN JOSE",
         "last": "CASTILLO VIVERO",
-        "email": "juanjosecastillovivero@gmail.com",
+        "email": "sg.estudiante.juan.jose.castillo.vivero",
         "id": "1102826203",
         "password": "Juan6203",
         "gender": "Hombre",
@@ -843,7 +843,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - DIANA MARCELA",
         "last": "MANBUSCAY AGUDELO",
-        "email": "marcelaagudelo2202@gmail.com",
+        "email": "sg.estudiante.diana.marcela.manbuscay.agudelo",
         "id": "1028663171",
         "password": "Diana3171",
         "gender": "Mujer",
@@ -853,7 +853,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - GISELL LETIZIA",
         "last": "DUARTE CALDERÓN",
-        "email": "d495045@gmail.com",
+        "email": "sg.estudiante.gisell.letizia.duarte.calderon",
         "id": "1097495125",
         "password": "Gisell5125",
         "gender": "Mujer",
@@ -863,7 +863,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - VALERIA",
         "last": "AUSECHA CAMPO",
-        "email": "valeriaausecha@gmail.com",
+        "email": "sg.estudiante.valeria.ausecha.campo",
         "id": "1058933116",
         "password": "Valeria3116",
         "gender": "Mujer",
@@ -873,7 +873,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - KIARA",
         "last": "CALDERA CORONADO",
-        "email": "calderacoronadokiara@gmail.com",
+        "email": "sg.estudiante.kiara.caldera.coronado",
         "id": "1169713061",
         "password": "Kiara3061",
         "gender": "Mujer",
@@ -883,7 +883,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - DULCE MARÍA",
         "last": "ROJAS TARAZONA",
-        "email": "hannarojas0.01@gmail.com",
+        "email": "sg.estudiante.dulce.maria.rojas.tarazona",
         "id": "1093434369",
         "password": "Dulce4369",
         "gender": "Mujer",
@@ -893,7 +893,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - ÁNGEL",
         "last": "GABRIEL GÓMEZ",
-        "email": "angelgabrielgomez24112008@gmail.com",
+        "email": "sg.estudiante.angel.gabriel.gomez",
         "id": "1080053987",
         "password": "Ángel3987",
         "gender": "Hombre",
@@ -903,7 +903,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - KEVIN SANTIAGO",
         "last": "PORTILLO BENAVIDES",
-        "email": "ksportillobenavides@gmail.com",
+        "email": "sg.estudiante.kevin.santiago.portillo.benavides",
         "id": "1080052995",
         "password": "Kevin2995",
         "gender": "Hombre",
@@ -913,7 +913,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARÍA PAULA",
         "last": "PÉREZ HORMIGA",
-        "email": "paulahormiga2307@gmail.com",
+        "email": "sg.estudiante.maria.paula.perez.hormiga",
         "id": "1058547636",
         "password": "María7636",
         "gender": "Mujer",
@@ -923,7 +923,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARIA JOSE",
         "last": "GUTIERREZ OSORIO",
-        "email": "mari.302jose@gmail.com",
+        "email": "sg.estudiante.maria.jose.gutierrez.osorio",
         "id": "1114241878",
         "password": "Maria1878",
         "gender": "Mujer",
@@ -933,7 +933,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - LAURA CAMILA",
         "last": "GUZMÁN LÓPEZ",
-        "email": "lauraguzman@jecaro.edu.co",
+        "email": "sg.estudiante.laura.camila.guzman.lopez",
         "id": "1059242362",
         "password": "Laura2362",
         "gender": "Mujer",
@@ -943,7 +943,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - JUAN ANDRES",
         "last": "ECHEVERRÍA ESCOBAR",
-        "email": "juanxd14268@gmail.com",
+        "email": "sg.estudiante.juan.andres.echeverria.escobar",
         "id": "1044637051",
         "password": "Juan7051",
         "gender": "Hombre",
@@ -953,7 +953,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARIA JOSE",
         "last": "OSSA CUERVO",
-        "email": "mariaossa1223@gmail.com",
+        "email": "sg.estudiante.maria.jose.ossa.cuervo",
         "id": "1055359068",
         "password": "Maria9068",
         "gender": "Mujer",
@@ -963,7 +963,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - SAMARA",
         "last": "CARO ORTEGA",
-        "email": "walsayo@gmail.com",
+        "email": "sg.estudiante.samara.caro.ortega",
         "id": "1042587442",
         "password": "Samara7442",
         "gender": "Mujer",
@@ -973,7 +973,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARÍA DANIELA",
         "last": "VERA VILLAMIZAR",
-        "email": "mvdaniv@gmail.com",
+        "email": "sg.estudiante.maria.daniela.vera.villamizar",
         "id": "1096069283",
         "password": "María9283",
         "gender": "Mujer",
@@ -983,7 +983,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARÍA ALEJANDRA",
         "last": "RODRIGUEZ CANDURY",
-        "email": "mcandury16@gmail.com",
+        "email": "sg.estudiante.maria.alejandra.rodriguez.candury",
         "id": "1044918208",
         "password": "María8208",
         "gender": "Mujer",
@@ -993,7 +993,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - CRISTIAN DAVID",
         "last": "FAJARDO PERILLA",
-        "email": "cristian156789a@gmail.com",
+        "email": "sg.estudiante.cristian.david.fajardo.perilla",
         "id": "1050096058",
         "password": "Cristian6058",
         "gender": "Hombre",
@@ -1003,7 +1003,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARLONG FRRNEY",
         "last": "CASAS RONDON",
-        "email": "marlongferneycasas@gmail.com",
+        "email": "sg.estudiante.marlong.frrney.casas.rondon",
         "id": "1030280214",
         "password": "Marlong0214",
         "gender": "Hombre",
@@ -1013,7 +1013,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - DARLY SARAY",
         "last": "PÉREZ JAIMES",
-        "email": "10sarayperez@gmail.com",
+        "email": "sg.estudiante.darly.saray.perez.jaimes",
         "id": "1098073581",
         "password": "Darly3581",
         "gender": "Mujer",
@@ -1023,7 +1023,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - SALOMÉ",
         "last": "DIAZ VALENCIA",
-        "email": "salomediazvalencia2608@gmail.com",
+        "email": "sg.estudiante.salome.diaz.valencia",
         "id": "1110296676",
         "password": "Salomé6676",
         "gender": "Mujer",
@@ -1033,7 +1033,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - JULIETH VANESSA",
         "last": "BECERRA MORA",
-        "email": "moravnss5610@gmail.com",
+        "email": "sg.estudiante.julieth.vanessa.becerra.mora",
         "id": "1097496452",
         "password": "Julieth6452",
         "gender": "Mujer",
@@ -1043,7 +1043,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - DANIELA",
         "last": "MANCHOLA TORRES",
-        "email": "danimant006@gmail.com",
+        "email": "sg.estudiante.daniela.manchola.torres",
         "id": "1105840578",
         "password": "Daniela0578",
         "gender": "Mujer",
@@ -1053,7 +1053,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - GABRIELA",
         "last": "CASTIBLANCO WILCHES",
-        "email": "gabysnine@gmail.com",
+        "email": "sg.estudiante.gabriela.castiblanco.wilches",
         "id": "1065892631",
         "password": "Gabriela2631",
         "gender": "Mujer",
@@ -1063,7 +1063,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - MARÍA FERNANDA",
         "last": "SANTANA RAMÍREZ",
-        "email": "mariasantanar.edu.seamosgenios@gmail.com",
+        "email": "sg.estudiante.maria.fernanda.santana.ramirez",
         "id": "1065893790",
         "password": "María3790",
         "gender": "Mujer",
@@ -1073,7 +1073,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - ANDREA VALENTINA",
         "last": "RAMÍREZ OCHOA",
-        "email": "andrearamirez.edu.seamosgenios@gmail.com",
+        "email": "sg.estudiante.andrea.valentina.ramirez.ochoa",
         "id": "1053787841",
         "password": "Andrea7841",
         "gender": "Mujer",
@@ -1083,7 +1083,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - VALENTINA",
         "last": "ESPINOSA ARIAS",
-        "email": "valeespinosa1010b@gmail.com",
+        "email": "sg.estudiante.valentina.espinosa.arias",
         "id": "1106633208",
         "password": "Valentina3208",
         "gender": "Mujer",
@@ -1093,7 +1093,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - SHEYLA DE",
         "last": "JESUS AVILEZ VEGA",
-        "email": "avilezvegasheyladejesus@gmail.com",
+        "email": "sg.estudiante.sheyla.de.jesus.avilez.vega",
         "id": "1069485344",
         "password": "Sheyla5344",
         "gender": "Mujer",
@@ -1103,7 +1103,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - SARA SOFIA",
         "last": "ESQUIVEL VARGAS",
-        "email": "saraesquivelvargas777@gmail.com",
+        "email": "sg.estudiante.sara.sofia.esquivel.vargas",
         "id": "1077726354",
         "password": "Sara6354",
         "gender": "Mujer",
@@ -1113,7 +1113,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - LORENA ALEJANDRA",
         "last": "POVEDA QUIÑONES",
-        "email": "alejandravet28@gmail.com",
+        "email": "sg.estudiante.lorena.alejandra.poveda.quinones",
         "id": "1011092218",
         "password": "Lorena2218",
         "gender": "Mujer",
@@ -1123,7 +1123,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - JULIANA",
         "last": "BORJA BUELVAS",
-        "email": "juliana.b0bu@gmail.com",
+        "email": "sg.estudiante.juliana.borja.buelvas",
         "id": "1062440492",
         "password": "Juliana0492",
         "gender": "Mujer",
@@ -1133,7 +1133,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - LEYSA LUZ",
         "last": "MARTINEZ MENDOZA",
-        "email": "leysamartinez58@gmail.com",
+        "email": "sg.estudiante.leysa.luz.martinez.mendoza",
         "id": "1104261261",
         "password": "Leysa1261",
         "gender": "Mujer",
@@ -1143,7 +1143,7 @@ export const studentData: Student[] = [
     {
         "first": "SG - ALEJANDRO DAVID",
         "last": "LORA TORRES",
-        "email": "dlora5284@gmail.com",
+        "email": "sg.estudiante.alejandro.david.lora.torres",
         "id": "1028006716",
         "password": "Alejandro6716",
         "gender": "Hombre",
