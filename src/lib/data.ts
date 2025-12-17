@@ -89,3 +89,4 @@ export const studentData: Student[] = [
     { first: "SG - LEYSA LUZ MARTINEZ MENDOZA", last: "", email: "leysamartinez58@gmail.com", id: "1104261261", password: "Leysa1261", gender: "Mujer", phone: "3012351902", birth: "4 Mar 2008" },
     { first: "SG - ALEJANDRO DAVID LORA TORRES", last: "", email: "dlora5284@gmail.com", id: "1028006716", password: "Alejandro6716", gender: "Hombre", phone: "3017327165", birth: "16 Feb 2010" }
 ];
+
