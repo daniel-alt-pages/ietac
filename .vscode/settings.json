@@ -1,0 +1,9 @@
+{
+    "workbench.editor.autoLockGroups": {
+        "antigravity.workflowEditor": true,
+        "vscode.videoPreview": true,
+        "gitlens.rebase": true,
+        "cweijan.htmlViewer": true,
+        "cweijan.markdownViewer": true
+    }
+}

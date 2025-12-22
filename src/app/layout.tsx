@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // Using Inter as requested
+import { Inter } from "next/font/google";
 import "./globals.css";
-import { ToastProvider } from "@/context/ToastContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EduManager | Portal de Gestión Académica",
-  description: "Plataforma de gestión de estudiantes",
+  title: "SeamosGenios | PreICFES Intensivo",
+  description: "Plataforma de gestión y creación de cuentas para el PreICFES Intensivo",
 };
 
 export default function RootLayout({
@@ -18,9 +17,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={inter.className}>
-        <ToastProvider>
-          {children}
-        </ToastProvider>
+        {children}
       </body>
     </html>
   );
