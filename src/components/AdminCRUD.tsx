@@ -9,11 +9,13 @@ import {
     generateDeletionToken,
     getAllStudentsFromFirestore,
     optimizeFirestoreUsage,
+    syncStudentsToFirestore,
     StudentCRUDData,
     StudentDocument
 } from '@/lib/firebase';
 import { doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { studentData } from '@/lib/data';
 
 interface AdminCRUDProps {
     adminId: string;
@@ -27,6 +29,7 @@ export default function AdminCRUD({ adminId, onClose, fixedInstitution }: AdminC
     const [mode, setMode] = useState<CRUDMode>('list');
     const [students, setStudents] = useState<StudentDocument[]>([]);
     const [loading, setLoading] = useState(true);
+    const [syncing, setSyncing] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [showDeleted, setShowDeleted] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -83,6 +86,32 @@ export default function AdminCRUD({ adminId, onClose, fixedInstitution }: AdminC
         const data = await getAllStudentsFromFirestore(showDeleted);
         setStudents(data);
         setLoading(false);
+    }
+
+    async function handleSyncStudents() {
+        setSyncing(true);
+        try {
+            const studentsToSync = studentData.map(s => ({
+                id: s.id,
+                first: s.first,
+                last: s.last,
+                birth: s.birth,
+                gender: s.gender as 'M' | 'F',
+                email: s.email,
+                password: s.password,
+                phone: s.phone,
+                institution: s.institution
+            }));
+
+            const result = await syncStudentsToFirestore(studentsToSync);
+            showMessage('success', `Sincronizado: ${result.created} creados, ${result.updated} actualizados`);
+            loadStudents();
+        } catch (error) {
+            console.error('Error syncing:', error);
+            showMessage('error', 'Error al sincronizar');
+        } finally {
+            setSyncing(false);
+        }
     }
 
     function showMessage(type: 'success' | 'error', text: string) {
@@ -178,6 +207,7 @@ export default function AdminCRUD({ adminId, onClose, fixedInstitution }: AdminC
         try {
             const { oldId, newId, data } = pendingIdChange;
 
+            // Verificar que el nuevo ID no exista
             const newDocRef = doc(db, 'students', newId);
             const newDocSnap = await getDoc(newDocRef);
             if (newDocSnap.exists()) {
@@ -185,15 +215,33 @@ export default function AdminCRUD({ adminId, onClose, fixedInstitution }: AdminC
                 return;
             }
 
+            // Buscar datos del estudiante (Firestore o data.ts local)
             const oldDocRef = doc(db, 'students', oldId);
             const oldDocSnap = await getDoc(oldDocRef);
-            if (!oldDocSnap.exists()) {
-                showMessage('error', 'Estudiante original no encontrado');
-                return;
+
+            let oldData: Record<string, unknown> = {};
+
+            if (oldDocSnap.exists()) {
+                // Estudiante existe en Firestore
+                oldData = oldDocSnap.data();
+            } else {
+                // Estudiante viene de data.ts - usar los datos del formulario
+                oldData = {
+                    studentId: oldId,
+                    first: data.first,
+                    last: data.last,
+                    email: data.email,
+                    password: data.password,
+                    birth: data.birth,
+                    gender: data.gender,
+                    phone: data.phone,
+                    institution: data.institution,
+                    verificationStatus: 'PENDING',
+                    createdAt: new Date().toISOString()
+                };
             }
 
-            const oldData = oldDocSnap.data();
-
+            // Crear documento con nuevo ID
             await setDoc(newDocRef, {
                 ...oldData,
                 studentId: newId,
@@ -212,7 +260,10 @@ export default function AdminCRUD({ adminId, onClose, fixedInstitution }: AdminC
                 idChangedBy: adminId
             });
 
-            await deleteDoc(oldDocRef);
+            // Eliminar documento antiguo solo si existía en Firestore
+            if (oldDocSnap.exists()) {
+                await deleteDoc(oldDocRef);
+            }
 
             showMessage('success', `ID cambiado: ${oldId} → ${newId}`);
             setMode('list');
@@ -348,6 +399,16 @@ export default function AdminCRUD({ adminId, onClose, fixedInstitution }: AdminC
                                 >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
                                     <span className="hidden xl:inline">Optimizar BD</span>
+                                </button>
+
+                                <button
+                                    onClick={handleSyncStudents}
+                                    disabled={syncing}
+                                    className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 disabled:from-slate-600 disabled:to-slate-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/20 transition-all"
+                                    title="Sincronizar estudiantes de data.ts a Firestore"
+                                >
+                                    <svg className={`w-5 h-5 ${syncing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                                    <span className="hidden xl:inline">{syncing ? 'Sincronizando...' : 'Sincronizar'}</span>
                                 </button>
 
                                 <div className="flex-1 relative">
