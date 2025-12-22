@@ -537,8 +537,8 @@ export default function Home() {
     } catch { /* ignore */ }
   };
 
-  // 🚀 OPTIMIZACIÓN: Caché local para reducir lecturas de Firebase
-  const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutos de caché
+  // 🚀 ULTRA OPTIMIZACIÓN: Caché de 7 días para reducir lecturas de Firebase
+  const CACHE_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 días de caché
 
   const loadCachedData = (key: string) => {
     try {

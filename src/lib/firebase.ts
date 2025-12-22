@@ -418,8 +418,17 @@ function detectDeviceInfo(): { deviceType: 'desktop' | 'mobile' | 'tablet'; brow
     return { deviceType, browser, os };
 }
 
-// Save an activity event - ENHANCED with device detection
+// Save an activity event - ULTRA OPTIMIZED: Only critical events
+// 🔧 OPTIMIZACIÓN RADICAL: Solo login, confirmación y verificación Google
+const ESSENTIAL_EVENT_TYPES = ['login', 'confirmation', 'google_verify'];
+
 export async function saveActivityEvent(event: Omit<ActivityEvent, 'id' | 'timestamp' | 'deviceType' | 'browser' | 'os'>): Promise<boolean> {
+    // 🔧 FILTRO: Solo guardar eventos esenciales
+    if (!ESSENTIAL_EVENT_TYPES.includes(event.type)) {
+        console.log(`📊 Activity skipped (non-essential): ${event.type}`);
+        return true; // Retornar true para no romper flujos existentes
+    }
+
     try {
         const eventId = `${event.type}_${event.studentId}_${Date.now()}`;
         const deviceInfo = detectDeviceInfo();
@@ -2142,15 +2151,36 @@ export async function updateStudentCRUD(
         const docRef = doc(studentsCollection, studentId);
         const existingDoc = await getDoc(docRef);
 
-        if (!existingDoc.exists()) {
-            return { success: false, message: 'Estudiante no encontrado.' };
-        }
+        // Si no existe en Firestore, buscar en data.ts local
+        let existingData: Record<string, unknown> = {};
 
-        const existingData = existingDoc.data();
+        if (!existingDoc.exists()) {
+            // Buscar en data.ts
+            const localStudent = studentData.find(s => s.id === studentId);
+            if (!localStudent) {
+                return { success: false, message: 'Estudiante no encontrado.' };
+            }
+            // Usar datos locales como base
+            existingData = {
+                studentId: localStudent.id,
+                first: localStudent.first,
+                last: localStudent.last,
+                email: localStudent.email,
+                password: localStudent.password,
+                birth: localStudent.birth,
+                gender: localStudent.gender,
+                phone: localStudent.phone,
+                institution: localStudent.institution
+            };
+        } else {
+            existingData = existingDoc.data();
+        }
 
         // Preparar datos de actualización
         const updateData: Record<string, unknown> = {
+            ...existingData,
             ...updates,
+            studentId, // Asegurar que el ID sea consistente
             updatedAt: new Date().toISOString(),
             updatedBy: adminId
         };
@@ -2160,7 +2190,8 @@ export async function updateStudentCRUD(
             updateData.assignedEmail = `${updates.email}@gmail.com`;
         }
 
-        await updateDoc(docRef, updateData);
+        // Usar setDoc con merge para manejar tanto updates como creates
+        await setDoc(docRef, updateData, { merge: true });
 
         // 📝 REGISTRAR CAMBIOS PARA SINCRONIZACIÓN
         const changes: { field: string; oldValue: unknown; newValue: unknown }[] = [];
@@ -2186,14 +2217,14 @@ export async function updateStudentCRUD(
             });
         }
 
-        // Registrar el evento de actividad
-        await saveActivityEvent({
-            type: 'admin_action',
-            studentId: studentId,
-            studentName: updates.first && updates.last ? `${updates.first} ${updates.last}` : 'Estudiante',
-            institution: updates.institution || existingData.institution || 'Desconocida',
-            details: `📝 Datos actualizados por ${adminId}: ${changes.map(c => c.field).join(', ')}`
-        });
+        // 🔧 OPTIMIZACIÓN: No registrar actividades de admin (no esencial)
+        // await saveActivityEvent({
+        //     type: 'admin_action',
+        //     studentId: studentId,
+        //     studentName: updates.first && updates.last ? `${updates.first} ${updates.last}` : 'Estudiante',
+        //     institution: updates.institution || existingData.institution || 'Desconocida',
+        //     details: `📝 Datos actualizados por ${adminId}: ${changes.map(c => c.field).join(', ')}`
+        // });
 
         return { success: true, message: `Estudiante actualizado. ${changes.length} campo(s) modificado(s).` };
     } catch (error) {
