@@ -53,7 +53,7 @@ import GoogleVerificationReport from '@/components/GoogleVerificationReport';
 // 🔧 MODO MANTENIMIENTO
 // Cambiar a false para reactivar el sistema
 // ============================================
-const MAINTENANCE_MODE = true;
+const MAINTENANCE_MODE = false;
 const MAINTENANCE_MESSAGE = "Estamos realizando mejoras en el sistema. Volveremos pronto.";
 
 // Credentials type

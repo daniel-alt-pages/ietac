@@ -633,67 +633,71 @@ export default function AdminCRUD({ adminId, onClose, fixedInstitution }: AdminC
 
                     {/* CHANGE ID CONFIRMATION */}
                     {mode === 'change-id' && pendingIdChange && (
-                        <div className="max-w-lg mx-auto text-center">
-                            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-3xl flex items-center justify-center border border-orange-500/30">
-                                {Icons.warning}
-                            </div>
-
-                            <h2 className="text-2xl font-bold text-white mb-2">Confirmar Cambio de ID</h2>
-                            <p className="text-slate-400 text-sm mb-6">Esta es una operación crítica que requiere confirmación</p>
-
-                            <div className="bg-slate-800/50 rounded-2xl p-5 mb-6 border border-slate-700/50">
-                                <div className="flex items-center justify-between text-sm mb-3">
-                                    <span className="text-slate-400">ID Actual</span>
-                                    <code className="bg-slate-700 px-3 py-1.5 rounded-lg text-white font-mono">{pendingIdChange.oldId}</code>
+                        <div className="p-8">
+                            <div className="max-w-md mx-auto">
+                                <div className="flex flex-col items-center mb-8">
+                                    <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-600 rounded-3xl flex items-center justify-center mb-6 shadow-2xl shadow-orange-500/30">
+                                        {Icons.warning}
+                                    </div>
+                                    <h2 className="text-3xl font-bold text-white mb-2">Confirmar Cambio de ID</h2>
+                                    <p className="text-slate-400 text-center">Esta es una operación crítica que requiere confirmación</p>
                                 </div>
-                                <div className="flex justify-center my-2">
-                                    <svg className="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                                    </svg>
-                                </div>
-                                <div className="flex items-center justify-between text-sm">
-                                    <span className="text-slate-400">Nuevo ID</span>
-                                    <code className="bg-orange-500/20 px-3 py-1.5 rounded-lg text-orange-300 font-mono border border-orange-500/30">{pendingIdChange.newId}</code>
-                                </div>
-                            </div>
 
-                            <div className="bg-orange-500/5 border border-orange-500/20 rounded-2xl p-5 mb-6">
-                                {idChangeToken ? (
-                                    <>
-                                        <p className="text-slate-300 text-sm mb-3">
-                                            Ingresa el código de confirmación <span className="text-orange-400 font-medium">({idChangeExpiry}s)</span>
-                                        </p>
-                                        <div className="bg-slate-900/50 rounded-xl p-4 font-mono text-3xl text-white tracking-[0.3em] mb-4 border border-slate-700/50">
-                                            {idChangeToken}
-                                        </div>
-                                        <input
-                                            type="text"
-                                            value={idChangeTokenInput}
-                                            onChange={(e) => setIdChangeTokenInput(e.target.value)}
-                                            placeholder="000000"
-                                            maxLength={6}
-                                            className="w-full bg-slate-800/50 border border-slate-600/50 rounded-xl px-4 py-4 text-center text-2xl font-mono tracking-[0.3em] text-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
-                                        />
-                                    </>
-                                ) : (
-                                    <p className="text-slate-500">Token expirado. Cancela y vuelve a intentar.</p>
-                                )}
-                            </div>
+                                <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-2xl p-6 mb-6 border border-white/10 shadow-xl">
+                                    <div className="flex items-center justify-between text-base mb-4">
+                                        <span className="text-slate-300 font-medium">ID Actual</span>
+                                        <code className="bg-slate-700/50 px-4 py-2 rounded-lg text-white font-mono text-lg border border-slate-600/50">{pendingIdChange.oldId}</code>
+                                    </div>
+                                    <div className="flex justify-center my-4">
+                                        <svg className="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                                        </svg>
+                                    </div>
+                                    <div className="flex items-center justify-between text-base">
+                                        <span className="text-slate-300 font-medium">Nuevo ID</span>
+                                        <code className="bg-gradient-to-r from-orange-500/20 to-amber-500/20 px-4 py-2 rounded-lg text-orange-300 font-mono text-lg border border-orange-500/40 shadow-lg shadow-orange-500/10">{pendingIdChange.newId}</code>
+                                    </div>
+                                </div>
 
-                            <div className="flex gap-4">
-                                <button
-                                    onClick={() => { setMode('edit'); setPendingIdChange(null); setIdChangeToken(''); }}
-                                    className="flex-1 bg-slate-700/50 hover:bg-slate-700 text-white py-3.5 rounded-xl font-medium transition-colors"
-                                >
-                                    Cancelar
-                                </button>
-                                <button
-                                    onClick={handleIdChangeConfirm}
-                                    disabled={idChangeTokenInput.length !== 6 || !idChangeToken}
-                                    className="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 disabled:from-slate-700 disabled:to-slate-700 disabled:text-slate-500 text-white py-3.5 rounded-xl font-medium transition-all"
-                                >
-                                    Confirmar Cambio
-                                </button>
+                                <div className="bg-gradient-to-br from-orange-500/10 to-amber-500/10 border-2 border-orange-500/30 rounded-2xl p-6 mb-6 shadow-xl">
+                                    {idChangeToken ? (
+                                        <>
+                                            <p className="text-white text-base mb-4 text-center font-medium">
+                                                Ingresa el código de confirmación <span className="text-orange-400 font-bold text-lg">({idChangeExpiry}s)</span>
+                                            </p>
+                                            <div className="bg-slate-900 rounded-2xl p-6 font-mono text-5xl text-white tracking-[0.4em] mb-6 border-2 border-slate-700 shadow-inner text-center">
+                                                {idChangeToken}
+                                            </div>
+                                            <input
+                                                type="text"
+                                                value={idChangeTokenInput}
+                                                onChange={(e) => setIdChangeTokenInput(e.target.value)}
+                                                placeholder="475002"
+                                                maxLength={6}
+                                                className="w-full bg-slate-800 border-2 border-slate-600 rounded-2xl px-6 py-5 text-center text-4xl font-mono tracking-[0.4em] text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/30 transition-all shadow-lg"
+                                                autoFocus
+                                            />
+                                        </>
+                                    ) : (
+                                        <p className="text-slate-400 text-center">Token expirado. Cancela y vuelve a intentar.</p>
+                                    )}
+                                </div>
+
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={() => { setMode('edit'); setPendingIdChange(null); setIdChangeToken(''); }}
+                                        className="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-4 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl text-lg"
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        onClick={handleIdChangeConfirm}
+                                        disabled={idChangeTokenInput.length !== 6 || !idChangeToken}
+                                        className="flex-1 bg-gradient-to-r from-orange-500 to-amber-500 disabled:from-slate-700 disabled:to-slate-700 disabled:text-slate-500 text-white py-4 rounded-xl font-semibold transition-all shadow-lg hover:shadow-2xl hover:shadow-orange-500/30 disabled:shadow-none text-lg"
+                                    >
+                                        Confirmar Cambio
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}
