@@ -109,10 +109,47 @@ export default function VerificationReport({ onClose }: VerificationReportProps)
     function formatDate(dateStr: string | null | undefined): string {
         if (!dateStr) return '-';
         try {
-            return new Date(dateStr).toLocaleDateString('es-CO', { 
+            return new Date(dateStr).toLocaleDateString('es-CO', {
                 day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
             });
         } catch { return dateStr; }
+    }
+
+    // 📊 Exportar a Excel
+    function exportToExcel() {
+        const data = filteredStudents.map(student => {
+            const { first, last } = getName(student);
+            const email = getEmail(student);
+            const status = student.verificationStatus || 'PENDING';
+
+            return {
+                'ID': student.studentId || '',
+                'Nombre': first,
+                'Apellido': last,
+                'Institución': student.institution || '',
+                'Email Asignado': `${email}@gmail.com`,
+                'Email Verificado': student.verifiedWithEmail || '',
+                'Estado': status === 'VERIFIED' ? 'Verificado' : status === 'MISMATCH' ? 'Mismatch' : 'Pendiente',
+                'Fecha Verificación': student.verifiedAt ? new Date(student.verifiedAt).toLocaleDateString('es-CO') : '',
+                'Verificado Por': student.verifiedWithName || ''
+            };
+        });
+
+        // Crear CSV
+        const headers = Object.keys(data[0] || {});
+        const csvContent = [
+            headers.join(','),
+            ...data.map(row => headers.map(h => `"${(row as Record<string, string>)[h] || ''}"`).join(','))
+        ].join('\n');
+
+        // Descargar
+        const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Reporte_Verificacion_Google_${new Date().toISOString().split('T')[0]}.csv`;
+        link.click();
+
+        showMessage('success', `Exportado ${data.length} registros a Excel`);
     }
 
     // Icons
@@ -123,6 +160,7 @@ export default function VerificationReport({ onClose }: VerificationReportProps)
         check: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>,
         refresh: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>,
         back: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>,
+        download: <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>,
     };
 
     // Status Badge Component
@@ -132,7 +170,7 @@ export default function VerificationReport({ onClose }: VerificationReportProps)
             MISMATCH: { bg: 'bg-red-500/10', border: 'border-red-500/30', text: 'text-red-400', icon: '✕', label: 'Mismatch' },
             PENDING: { bg: 'bg-amber-500/10', border: 'border-amber-500/30', text: 'text-amber-400', icon: '○', label: 'Pendiente' }
         }[status as string] || { bg: 'bg-amber-500/10', border: 'border-amber-500/30', text: 'text-amber-400', icon: '○', label: 'Pendiente' };
-        
+
         return (
             <span className={`inline-flex items-center gap-1.5 ${config.bg} ${config.text} border ${config.border} ${large ? 'px-4 py-2 rounded-xl text-sm' : 'px-2.5 py-1 rounded-lg text-xs'} font-medium`}>
                 <span>{config.icon}</span>
@@ -144,7 +182,7 @@ export default function VerificationReport({ onClose }: VerificationReportProps)
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-xl">
             <div className="bg-[#0f172a] rounded-2xl w-full max-w-5xl max-h-[98vh] overflow-hidden flex flex-col shadow-2xl shadow-blue-500/10 border border-white/5">
-                
+
                 {/* Professional Header */}
                 <div className="shrink-0 bg-gradient-to-r from-[#0c4a6e] via-[#0369a1] to-[#0c4a6e] px-6 py-5 border-b border-white/10">
                     <div className="flex items-center justify-between">
@@ -157,8 +195,8 @@ export default function VerificationReport({ onClose }: VerificationReportProps)
                                 <p className="text-blue-200/60 text-sm">Estado de confirmación de cuentas Google</p>
                             </div>
                         </div>
-                        <button 
-                            onClick={onClose} 
+                        <button
+                            onClick={onClose}
                             className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/50 hover:text-white transition-all"
                         >
                             {Icons.close}
@@ -174,46 +212,43 @@ export default function VerificationReport({ onClose }: VerificationReportProps)
                             <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-1">Total</p>
                             <p className="text-3xl font-bold text-white">{stats.total}</p>
                         </div>
-                        
+
                         {/* Verified */}
-                        <button 
+                        <button
                             onClick={() => setStatusFilter(statusFilter === 'VERIFIED' ? 'ALL' : 'VERIFIED')}
-                            className={`rounded-2xl p-4 text-left transition-all ${
-                                statusFilter === 'VERIFIED' 
-                                    ? 'bg-emerald-500/20 border-2 border-emerald-500 scale-[1.02]' 
-                                    : 'bg-emerald-500/5 border border-emerald-500/20 hover:bg-emerald-500/10'
-                            }`}
+                            className={`rounded-2xl p-4 text-left transition-all ${statusFilter === 'VERIFIED'
+                                ? 'bg-emerald-500/20 border-2 border-emerald-500 scale-[1.02]'
+                                : 'bg-emerald-500/5 border border-emerald-500/20 hover:bg-emerald-500/10'
+                                }`}
                         >
                             <p className="text-emerald-300/70 text-xs font-medium uppercase tracking-wider mb-1">Verificados</p>
                             <p className="text-3xl font-bold text-emerald-400">{stats.verified}</p>
                         </button>
-                        
+
                         {/* Pending */}
-                        <button 
+                        <button
                             onClick={() => setStatusFilter(statusFilter === 'PENDING' ? 'ALL' : 'PENDING')}
-                            className={`rounded-2xl p-4 text-left transition-all ${
-                                statusFilter === 'PENDING' 
-                                    ? 'bg-amber-500/20 border-2 border-amber-500 scale-[1.02]' 
-                                    : 'bg-amber-500/5 border border-amber-500/20 hover:bg-amber-500/10'
-                            }`}
+                            className={`rounded-2xl p-4 text-left transition-all ${statusFilter === 'PENDING'
+                                ? 'bg-amber-500/20 border-2 border-amber-500 scale-[1.02]'
+                                : 'bg-amber-500/5 border border-amber-500/20 hover:bg-amber-500/10'
+                                }`}
                         >
                             <p className="text-amber-300/70 text-xs font-medium uppercase tracking-wider mb-1">Pendientes</p>
                             <p className="text-3xl font-bold text-amber-400">{stats.pending}</p>
                         </button>
-                        
+
                         {/* Mismatch */}
-                        <button 
+                        <button
                             onClick={() => setStatusFilter(statusFilter === 'MISMATCH' ? 'ALL' : 'MISMATCH')}
-                            className={`rounded-2xl p-4 text-left transition-all ${
-                                statusFilter === 'MISMATCH' 
-                                    ? 'bg-red-500/20 border-2 border-red-500 scale-[1.02]' 
-                                    : 'bg-red-500/5 border border-red-500/20 hover:bg-red-500/10'
-                            }`}
+                            className={`rounded-2xl p-4 text-left transition-all ${statusFilter === 'MISMATCH'
+                                ? 'bg-red-500/20 border-2 border-red-500 scale-[1.02]'
+                                : 'bg-red-500/5 border border-red-500/20 hover:bg-red-500/10'
+                                }`}
                         >
                             <p className="text-red-300/70 text-xs font-medium uppercase tracking-wider mb-1">Mismatch</p>
                             <p className="text-3xl font-bold text-red-400">{stats.mismatch}</p>
                         </button>
-                        
+
                         {/* Rate */}
                         <div className="bg-gradient-to-br from-purple-500/10 to-indigo-500/10 rounded-2xl p-4 border border-purple-500/20">
                             <p className="text-purple-300/70 text-xs font-medium uppercase tracking-wider mb-1">Tasa Éxito</p>
@@ -237,22 +272,30 @@ export default function VerificationReport({ onClose }: VerificationReportProps)
                         />
                     </div>
                     {statusFilter !== 'ALL' && (
-                        <button 
+                        <button
                             onClick={() => setStatusFilter('ALL')}
                             className="flex items-center gap-2 text-sm text-blue-300 hover:text-white px-4 py-2 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl border border-blue-500/20 transition-colors"
                         >
                             <span>✕</span> Limpiar filtro
                         </button>
                     )}
+
+                    {/* Export Button */}
+                    <button
+                        onClick={exportToExcel}
+                        className="flex items-center gap-2 text-sm text-white px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 rounded-xl shadow-lg shadow-emerald-500/20 transition-all font-medium"
+                    >
+                        {Icons.download}
+                        <span>📊 Exportar Excel</span>
+                    </button>
                 </div>
 
                 {/* Toast */}
                 {message && (
-                    <div className={`mx-6 mt-3 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3 ${
-                        message.type === 'success' 
-                            ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20' 
-                            : 'bg-red-500/10 text-red-300 border border-red-500/20'
-                    }`}>
+                    <div className={`mx-6 mt-3 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3 ${message.type === 'success'
+                        ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20'
+                        : 'bg-red-500/10 text-red-300 border border-red-500/20'
+                        }`}>
                         <span className="text-lg">{message.type === 'success' ? '✓' : '✕'}</span>
                         {message.text}
                     </div>
@@ -263,14 +306,14 @@ export default function VerificationReport({ onClose }: VerificationReportProps)
                     {selectedStudent ? (
                         /* DETAIL VIEW */
                         <div className="max-w-2xl mx-auto">
-                            <button 
-                                onClick={() => setSelectedStudent(null)} 
+                            <button
+                                onClick={() => setSelectedStudent(null)}
                                 className="flex items-center gap-2 text-blue-300 hover:text-white text-sm mb-6 transition-colors"
                             >
                                 {Icons.back}
                                 Volver a la lista
                             </button>
-                            
+
                             <div className="bg-slate-800/30 rounded-2xl border border-slate-700/30 overflow-hidden">
                                 {/* Header */}
                                 <div className="p-6 bg-gradient-to-r from-slate-800/50 to-slate-700/30 border-b border-slate-700/30">
@@ -295,23 +338,21 @@ export default function VerificationReport({ onClose }: VerificationReportProps)
                                             <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-2">📧 Email Asignado</p>
                                             <p className="text-white font-mono text-sm break-all">{getEmail(selectedStudent)}@gmail.com</p>
                                         </div>
-                                        <div className={`rounded-xl p-4 border ${
-                                            selectedStudent.verificationStatus === 'VERIFIED' 
-                                                ? 'bg-emerald-500/5 border-emerald-500/20' 
-                                                : selectedStudent.verificationStatus === 'MISMATCH' 
-                                                    ? 'bg-red-500/5 border-red-500/20' 
-                                                    : 'bg-slate-900/50 border-slate-700/30'
-                                        }`}>
-                                            <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-2">🔐 Email Usado</p>
-                                            <p className={`font-mono text-sm break-all ${
-                                                selectedStudent.verificationStatus === 'VERIFIED' 
-                                                    ? 'text-emerald-300' 
-                                                    : selectedStudent.verificationStatus === 'MISMATCH' 
-                                                        ? 'text-red-300' 
-                                                        : 'text-slate-500'
+                                        <div className={`rounded-xl p-4 border ${selectedStudent.verificationStatus === 'VERIFIED'
+                                            ? 'bg-emerald-500/5 border-emerald-500/20'
+                                            : selectedStudent.verificationStatus === 'MISMATCH'
+                                                ? 'bg-red-500/5 border-red-500/20'
+                                                : 'bg-slate-900/50 border-slate-700/30'
                                             }`}>
-                                                {selectedStudent.verifiedWithEmail === 'admin-manual-verification' 
-                                                    ? '(Verificación manual por admin)' 
+                                            <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-2">🔐 Email Usado</p>
+                                            <p className={`font-mono text-sm break-all ${selectedStudent.verificationStatus === 'VERIFIED'
+                                                ? 'text-emerald-300'
+                                                : selectedStudent.verificationStatus === 'MISMATCH'
+                                                    ? 'text-red-300'
+                                                    : 'text-slate-500'
+                                                }`}>
+                                                {selectedStudent.verifiedWithEmail === 'admin-manual-verification'
+                                                    ? '(Verificación manual por admin)'
                                                     : selectedStudent.verifiedWithEmail || 'No ha intentado'
                                                 }
                                             </p>
@@ -391,22 +432,21 @@ export default function VerificationReport({ onClose }: VerificationReportProps)
                                     const { full, first } = getName(student);
                                     const email = getEmail(student);
                                     const status = student.verificationStatus || 'PENDING';
-                                    
+
                                     return (
-                                        <div 
+                                        <div
                                             key={student.studentId}
                                             onClick={() => setSelectedStudent(student)}
                                             className="bg-slate-800/30 hover:bg-slate-800/50 rounded-xl p-4 cursor-pointer transition-all flex items-center gap-4 border border-slate-700/30 hover:border-slate-600/50 group"
                                         >
                                             {/* Avatar */}
-                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-white shrink-0 ${
-                                                status === 'VERIFIED' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 
-                                                status === 'MISMATCH' ? 'bg-red-500/20 text-red-300 border border-red-500/30' : 
-                                                'bg-slate-700/50 text-slate-400 border border-slate-600/30'
-                                            }`}>
+                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-white shrink-0 ${status === 'VERIFIED' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                                                status === 'MISMATCH' ? 'bg-red-500/20 text-red-300 border border-red-500/30' :
+                                                    'bg-slate-700/50 text-slate-400 border border-slate-600/30'
+                                                }`}>
                                                 {first.charAt(0) || '?'}
                                             </div>
-                                            
+
                                             {/* Info */}
                                             <div className="flex-1 min-w-0">
                                                 <p className="text-white font-medium truncate group-hover:text-blue-300 transition-colors">{full}</p>

@@ -42,8 +42,8 @@ const appSecondary = getApps().find(a => a.name === 'secondary')
 
 // Firestore instances
 const db = getFirestore(appPrimary);           // BD Principal
-const dbSecondary = getFirestore(appSecondary); // BD Secundaria (logs)
-export { db };
+const dbSecondary = getFirestore(appSecondary); // BD Secundaria (logs + notificaciones)
+export { db, dbSecondary };
 
 // Initialize Firebase Auth with Google Provider (uses primary)
 const auth = getAuth(appPrimary);
@@ -67,6 +67,9 @@ const studentsCollection = collection(db, 'students');
 // BD SECUNDARIA: Logs (alto volumen de escrituras)
 const activityCollection = collection(dbSecondary, 'activity_events');
 const crudLogsCollection = collection(dbSecondary, 'crud_logs');
+
+// BD SECUNDARIA: Seguridad (sesiones activas, infracciones)
+const securityCollection = collection(dbSecondary, 'security_sessions');
 
 // ============================================
 // CRUD LOGGING SYSTEM
@@ -686,6 +689,7 @@ export interface StudentSecurityStatus {
     infractions: InfractionRecord[];
     activeSessionId?: string;
     activeSessionStartedAt?: string;
+    lastActivity?: string;
     lastStepTime?: string;
     lastStep?: string;
     enabledAt?: string;
@@ -718,10 +722,11 @@ export function generateSessionId(): string {
     return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
-// Get student security status (now reads from students collection)
+// Get student security status (reads from SECONDARY DB - security_sessions)
 export async function getStudentSecurityStatus(studentId: string): Promise<StudentSecurityStatus | null> {
     try {
-        const docSnap = await getDoc(doc(studentsCollection, studentId));
+        // Read from secondary DB (security_sessions)
+        const docSnap = await getDoc(doc(securityCollection, studentId));
         if (!docSnap.exists()) return null;
 
         const data = docSnap.data();
@@ -757,6 +762,22 @@ export async function isStudentDisabled(studentId: string): Promise<{ disabled: 
     };
 }
 
+// Record security infraction (in SECONDARY DB)
+async function recordInfraction(studentId: string, infraction: { type: 'speed_violation' | 'duplicate_session' | 'manual_block'; timestamp: string; details: string }): Promise<void> {
+    try {
+        const status = await getStudentSecurityStatus(studentId);
+        const infractions = status?.infractions || [];
+        infractions.push(infraction);
+
+        await setDoc(doc(securityCollection, studentId), {
+            infractions,
+            lastInfractionAt: infraction.timestamp
+        }, { merge: true });
+    } catch (error) {
+        console.error('Error recording infraction:', error);
+    }
+}
+
 // Check and register session (returns false if another session is active)
 export async function checkAndRegisterSession(studentId: string, sessionId: string): Promise<{
     allowed: boolean;
@@ -779,13 +800,18 @@ export async function checkAndRegisterSession(studentId: string, sessionId: stri
 
         // Check for active session
         if (status?.activeSessionId && status.activeSessionId !== sessionId) {
-            const sessionStartedAt = status.activeSessionStartedAt ? new Date(status.activeSessionStartedAt) : null;
+            // Use lastActivity instead of session start time for more accurate detection
+            const lastActivityTime = status.lastActivity
+                ? new Date(status.lastActivity)
+                : (status.activeSessionStartedAt ? new Date(status.activeSessionStartedAt) : null);
             const now = new Date();
-            // Session expires after 30 minutes of inactivity
-            const SESSION_TIMEOUT = 30 * 60 * 1000;
 
-            if (sessionStartedAt && (now.getTime() - sessionStartedAt.getTime()) < SESSION_TIMEOUT) {
-                // Active session exists - record infraction
+            // Session is considered inactive after 10 minutes of no activity
+            // This reduces false positives when users close tab without logging out
+            const ACTIVITY_TIMEOUT = 10 * 60 * 1000; // 10 minutes
+
+            if (lastActivityTime && (now.getTime() - lastActivityTime.getTime()) < ACTIVITY_TIMEOUT) {
+                // Active session exists and was recently active - likely a real duplicate
                 await recordInfraction(studentId, {
                     type: 'duplicate_session',
                     timestamp: now.toISOString(),
@@ -797,14 +823,16 @@ export async function checkAndRegisterSession(studentId: string, sessionId: stri
                     existingSessionId: status.activeSessionId
                 };
             }
+            // If last activity is old, allow the new session (previous session was abandoned)
         }
 
-        // Register this session (in student document)
-        await setDoc(doc(studentsCollection, studentId), {
+        // Register this session (in SECONDARY DB - security_sessions)
+        await setDoc(doc(securityCollection, studentId), {
             disabled: status?.disabled || false,
             infractions: status?.infractions || [],
             activeSessionId: sessionId,
-            activeSessionStartedAt: new Date().toISOString()
+            activeSessionStartedAt: new Date().toISOString(),
+            lastActivity: new Date().toISOString()
         }, { merge: true });
 
         return { allowed: true };
@@ -814,12 +842,26 @@ export async function checkAndRegisterSession(studentId: string, sessionId: stri
     }
 }
 
+// Update session activity (call this periodically to keep session alive)
+export async function updateSessionActivity(studentId: string, sessionId: string): Promise<void> {
+    try {
+        const status = await getStudentSecurityStatus(studentId);
+        if (status?.activeSessionId === sessionId) {
+            await setDoc(doc(securityCollection, studentId), {
+                lastActivity: new Date().toISOString()
+            }, { merge: true });
+        }
+    } catch (error) {
+        console.error('Error updating session activity:', error);
+    }
+}
+
 // Clear session when user logs out or leaves
 export async function clearSession(studentId: string, sessionId: string): Promise<void> {
     try {
         const status = await getStudentSecurityStatus(studentId);
         if (status?.activeSessionId === sessionId) {
-            await setDoc(doc(studentsCollection, studentId), {
+            await setDoc(doc(securityCollection, studentId), {
                 activeSessionId: null,
                 activeSessionStartedAt: null
             }, { merge: true });
@@ -927,25 +969,10 @@ export async function validateStepTiming(
     }
 }
 
-// Record an infraction (in student document)
-export async function recordInfraction(studentId: string, infraction: InfractionRecord): Promise<void> {
-    try {
-        const status = await getStudentSecurityStatus(studentId);
-        const infractions = status?.infractions || [];
-        infractions.push(infraction);
-
-        await setDoc(doc(studentsCollection, studentId), {
-            infractions
-        }, { merge: true });
-    } catch (error) {
-        console.error('Error recording infraction:', error);
-    }
-}
-
-// Disable a student (writes to student document)
+// Disable a student (writes to SECONDARY DB - security_sessions)
 export async function disableStudent(studentId: string, reason: string): Promise<void> {
     try {
-        await setDoc(doc(studentsCollection, studentId), {
+        await setDoc(doc(securityCollection, studentId), {
             disabled: true,
             disabledAt: new Date().toISOString(),
             disabledReason: reason,
@@ -2501,4 +2528,392 @@ export async function syncStudentsToFirestore(students: StudentCRUDData[]): Prom
     }
 
     return { created, updated, errors };
+}
+
+// ============================================
+// 🔔 PUSH NOTIFICATIONS SYSTEM
+// Firebase Cloud Messaging para notificaciones
+// ============================================
+
+// Colección para tokens de notificación (BD SECUNDARIA - portal-sg-2)
+const notificationTokensCollection = collection(dbSecondary, 'notification_tokens');
+// Colección para alertas de admin (BD SECUNDARIA)
+const adminAlertsCollection = collection(dbSecondary, 'admin_alerts');
+
+// Tipos de notificación
+export type NotificationType =
+    | 'verification_error'    // Estudiante usó email incorrecto
+    | 'duplicate_session'     // Sesión duplicada detectada
+    | 'crud_action'           // Admin IETAC modificó estudiante
+    | 'student_verified'      // Estudiante verificó cuenta
+    | 'login_failed'          // Múltiples intentos fallidos
+    | 'reminder_pending'      // Recordatorio a estudiante pendiente
+    | 'account_disabled';     // Cuenta deshabilitada
+
+export interface AdminAlert {
+    id?: string;
+    type: NotificationType;
+    title: string;
+    message: string;
+    priority: 'low' | 'medium' | 'high';
+    studentId?: string;
+    studentName?: string;
+    adminId?: string;
+    timestamp: string;
+    read: boolean;
+    data?: Record<string, unknown>;
+}
+
+// 📱 Registrar token de notificación para un dispositivo
+export async function registerNotificationToken(
+    userId: string,
+    token: string,
+    role: 'admin' | 'ietac_admin' | 'student',
+    deviceInfo?: { browser?: string; os?: string }
+): Promise<boolean> {
+    try {
+        const tokenDoc = doc(notificationTokensCollection, `${userId}_${token.substring(0, 20)}`);
+        await setDoc(tokenDoc, {
+            userId,
+            token,
+            role,
+            deviceInfo: deviceInfo || {},
+            createdAt: new Date().toISOString(),
+            lastActive: new Date().toISOString(),
+            enabled: true
+        }, { merge: true });
+
+        // Token registrado exitosamente (no logueamos el token por seguridad)
+        return true;
+    } catch (error) {
+        console.error('Error registrando token:', error);
+        return false;
+    }
+}
+
+// 🔔 Crear alerta para admins
+export async function createAdminAlert(alert: Omit<AdminAlert, 'id' | 'timestamp' | 'read'>): Promise<string | null> {
+    try {
+        const alertDoc = doc(adminAlertsCollection);
+        const alertData: AdminAlert = {
+            ...alert,
+            id: alertDoc.id,
+            timestamp: new Date().toISOString(),
+            read: false
+        };
+
+        await setDoc(alertDoc, alertData);
+        console.log('🔔 Alerta de admin creada:', alert.type);
+
+        // Intentar enviar notificación push a admins
+        await sendPushToAdmins(alertData);
+
+        return alertDoc.id;
+    } catch (error) {
+        console.error('Error creando alerta:', error);
+        return null;
+    }
+}
+
+// 📤 Enviar notificación push a todos los admins
+async function sendPushToAdmins(alert: AdminAlert): Promise<void> {
+    try {
+        // Obtener tokens de admin
+        const adminTokensQuery = query(
+            notificationTokensCollection,
+            where('role', 'in', ['admin', 'ietac_admin']),
+            where('enabled', '==', true)
+        );
+
+        const snapshot = await getDocs(adminTokensQuery);
+
+        if (snapshot.empty) {
+            console.log('No hay admins con notificaciones habilitadas');
+            return;
+        }
+
+        // Guardar la notificación pendiente para cuando el admin abra la app
+        // (Las notificaciones reales se envían vía Cloud Functions en producción)
+        console.log(`📤 ${snapshot.size} admin(s) serán notificados de: ${alert.type}`);
+
+    } catch (error) {
+        console.error('Error enviando push a admins:', error);
+    }
+}
+
+// 📋 Obtener alertas de admin no leídas
+export async function getUnreadAdminAlerts(limitCount: number = 20): Promise<AdminAlert[]> {
+    try {
+        const alertsQuery = query(
+            adminAlertsCollection,
+            where('read', '==', false),
+            orderBy('timestamp', 'desc'),
+            limit(limitCount)
+        );
+
+        const snapshot = await getDocs(alertsQuery);
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as AdminAlert));
+    } catch (error) {
+        console.error('Error obteniendo alertas:', error);
+        return [];
+    }
+}
+
+// ✅ Marcar alerta como leída
+export async function markAlertAsRead(alertId: string): Promise<boolean> {
+    try {
+        await updateDoc(doc(adminAlertsCollection, alertId), { read: true });
+        return true;
+    } catch (error) {
+        console.error('Error marcando alerta:', error);
+        return false;
+    }
+}
+
+// 🚨 Funciones de alerta específicas con mensajes detallados
+export async function alertVerificationError(
+    studentId: string,
+    studentName: string,
+    assignedEmail: string,
+    usedEmail: string,
+    institution?: string
+): Promise<void> {
+    const inst = institution || 'SG';
+    const time = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+
+    await createAdminAlert({
+        type: 'verification_error',
+        title: `🔴 ERROR: ${studentName} (${inst})`,
+        message: `Estudiante ${studentName} [ID: ${studentId}] verificó con email incorrecto.\n` +
+            `✓ Asignado: ${assignedEmail}\n` +
+            `✗ Usado: ${usedEmail}\n` +
+            `⏰ ${time}`,
+        priority: 'high',
+        studentId,
+        studentName,
+        data: { assignedEmail, usedEmail, institution: inst }
+    });
+}
+
+export async function alertDuplicateSession(
+    studentId: string,
+    studentName: string,
+    institution?: string,
+    existingSessionId?: string
+): Promise<void> {
+    const inst = institution || 'SG';
+    const time = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+
+    await createAdminAlert({
+        type: 'duplicate_session',
+        title: `🟠 SESIÓN DUPLICADA: ${studentName}`,
+        message: `El estudiante ${studentName} [ID: ${studentId}] de ${inst} ` +
+            `intentó iniciar sesión mientras ya tiene una sesión activa.\n` +
+            `⚠️ Posible cuenta compartida.\n` +
+            `⏰ ${time}`,
+        priority: 'high',
+        studentId,
+        studentName,
+        data: { institution: inst, existingSessionId }
+    });
+}
+
+export async function alertCRUDAction(
+    action: 'CREATE' | 'UPDATE' | 'DELETE',
+    studentId: string,
+    studentName: string,
+    adminId: string,
+    adminType: 'admin' | 'ietac_admin',
+    changes?: Record<string, unknown>
+): Promise<void> {
+    const time = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    const actionEmoji = { CREATE: '🟢', UPDATE: '🟡', DELETE: '🔴' }[action];
+    const actionText = { CREATE: 'CREÓ', UPDATE: 'MODIFICÓ', DELETE: 'ELIMINÓ' }[action];
+    const adminLabel = adminType === 'ietac_admin' ? 'Admin IETAC' : 'Admin SG';
+
+    let changesSummary = '';
+    if (changes && Object.keys(changes).length > 0) {
+        changesSummary = '\nCambios: ' + Object.keys(changes).join(', ');
+    }
+
+    await createAdminAlert({
+        type: 'crud_action',
+        title: `${actionEmoji} ${actionText}: ${studentName}`,
+        message: `${adminLabel} ${actionText.toLowerCase()} al estudiante:\n` +
+            `👤 ${studentName} [ID: ${studentId}]${changesSummary}\n` +
+            `⏰ ${time}`,
+        priority: 'medium',
+        studentId,
+        studentName,
+        adminId,
+        data: { action, adminType, changes }
+    });
+}
+
+export async function alertStudentVerified(
+    studentId: string,
+    studentName: string,
+    email: string,
+    institution?: string
+): Promise<void> {
+    const inst = institution || 'SG';
+    const time = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+
+    await createAdminAlert({
+        type: 'student_verified',
+        title: `✅ VERIFICADO: ${studentName} (${inst})`,
+        message: `¡Estudiante verificó su cuenta correctamente!\n` +
+            `👤 ${studentName} [ID: ${studentId}]\n` +
+            `📧 ${email}\n` +
+            `⏰ ${time}`,
+        priority: 'low',
+        studentId,
+        studentName,
+        data: { email, institution: inst }
+    });
+}
+
+// 🔵 Nueva alerta: Múltiples intentos de login fallidos
+export async function alertLoginFailed(
+    attemptedId: string,
+    attemptCount: number,
+    ipAddress?: string
+): Promise<void> {
+    const time = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+
+    await createAdminAlert({
+        type: 'login_failed',
+        title: `🔵 LOGIN FALLIDO x${attemptCount}`,
+        message: `Se detectaron ${attemptCount} intentos fallidos de login.\n` +
+            `🆔 ID intentado: ${attemptedId}\n` +
+            `${ipAddress ? `🌐 IP: ${ipAddress}\n` : ''}` +
+            `⏰ ${time}`,
+        priority: attemptCount >= 5 ? 'high' : 'medium',
+        data: { attemptedId, attemptCount, ipAddress }
+    });
+}
+
+// 🟢 Nueva alerta: Estudiante nuevo registrado
+export async function alertNewStudent(
+    studentId: string,
+    studentName: string,
+    email: string,
+    institution: string,
+    createdBy: string
+): Promise<void> {
+    const time = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+
+    await createAdminAlert({
+        type: 'crud_action',
+        title: `🟢 NUEVO ESTUDIANTE: ${studentName}`,
+        message: `Se registró un nuevo estudiante en ${institution}:\n` +
+            `👤 ${studentName} [ID: ${studentId}]\n` +
+            `📧 ${email}\n` +
+            `👨‍💼 Creado por: ${createdBy}\n` +
+            `⏰ ${time}`,
+        priority: 'medium',
+        studentId,
+        studentName,
+        adminId: createdBy,
+        data: { email, institution, createdBy }
+    });
+}
+
+// ⚠️ Nueva alerta: Cuenta deshabilitada
+export async function alertAccountDisabled(
+    studentId: string,
+    studentName: string,
+    reason: string,
+    disabledBy: string
+): Promise<void> {
+    const time = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+
+    await createAdminAlert({
+        type: 'account_disabled',
+        title: `⛔ CUENTA BLOQUEADA: ${studentName}`,
+        message: `Se deshabilitó la cuenta del estudiante:\n` +
+            `👤 ${studentName} [ID: ${studentId}]\n` +
+            `📝 Razón: ${reason}\n` +
+            `👨‍💼 Por: ${disabledBy}\n` +
+            `⏰ ${time}`,
+        priority: 'high',
+        studentId,
+        studentName,
+        adminId: disabledBy,
+        data: { reason, disabledBy }
+    });
+}
+
+// 📊 Contador de alertas no leídas (para badge)
+export async function getUnreadAlertCount(): Promise<number> {
+    try {
+        const alertsQuery = query(
+            adminAlertsCollection,
+            where('read', '==', false)
+        );
+        const snapshot = await getDocs(alertsQuery);
+        return snapshot.size;
+    } catch (error) {
+        console.error('Error contando alertas:', error);
+        return 0;
+    }
+}
+
+// 🔔 Solicitar permiso de notificaciones y obtener token
+export async function requestNotificationPermission(): Promise<string | null> {
+    try {
+        if (!('Notification' in window)) {
+            console.warn('Este navegador no soporta notificaciones');
+            return null;
+        }
+
+        const permission = await Notification.requestPermission();
+
+        if (permission !== 'granted') {
+            console.log('Permiso de notificaciones denegado');
+            return null;
+        }
+
+        // Importar messaging dinámicamente solo si se aprobó el permiso
+        const { getMessaging, getToken } = await import('firebase/messaging');
+        // Usar appSecondary porque la VAPID key es de portal-sg-2
+        const messaging = getMessaging(appSecondary);
+
+        // VAPID key - Configurado desde Firebase Console > Cloud Messaging (BD Secundaria portal-sg-2)
+        const vapidKey = 'BIDF5Uqmdde9bZOXQRMnwRNvX5rr0f-ROJuiV1MUzo674y7tVpuYfFtvb1GK-mcJXSq-3m3vGJoB9fkzxGdNdF0';
+
+        const token = await getToken(messaging, { vapidKey });
+        // Token obtenido exitosamente (no logueamos por seguridad)
+
+        return token;
+    } catch (error: unknown) {
+        // En localhost no funciona FCM, solo en producción con HTTPS
+        if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+            console.warn('⚠️ FCM no funciona en localhost. Prueba en producción.');
+            return null;
+        }
+        console.error('Error obteniendo token FCM:', error);
+        return null;
+    }
+}
+
+// 🎯 Escuchar notificaciones en primer plano
+export async function setupForegroundNotifications(
+    onNotification: (payload: { title: string; body: string; data?: Record<string, unknown> }) => void
+): Promise<void> {
+    try {
+        const { getMessaging, onMessage } = await import('firebase/messaging');
+        const messaging = getMessaging(appPrimary);
+
+        onMessage(messaging, (payload) => {
+            console.log('📬 Notificación en primer plano:', payload);
+            onNotification({
+                title: payload.notification?.title || 'SeamosGenios',
+                body: payload.notification?.body || '',
+                data: payload.data
+            });
+        });
+    } catch (error) {
+        console.error('Error configurando notificaciones foreground:', error);
+    }
 }

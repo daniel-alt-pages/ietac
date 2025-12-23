@@ -358,14 +358,22 @@ export default function AdminCRUD({ adminId, onClose, fixedInstitution }: AdminC
                     </div>
                 </div>
 
-                {/* Toast Message */}
+                {/* Message Modal - Centered */}
                 {message && (
-                    <div className={`mx-6 mt-4 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3 animate-slideDown ${message.type === 'success'
-                        ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20'
-                        : 'bg-red-500/10 text-red-300 border border-red-500/20'
-                        }`}>
-                        <span className="text-lg">{message.type === 'success' ? '✓' : '✕'}</span>
-                        {message.text}
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+                        <div className={`max-w-md w-full px-6 py-5 rounded-2xl shadow-2xl flex flex-col items-center gap-3 text-center ${message.type === 'success'
+                            ? 'bg-gradient-to-br from-emerald-500 to-green-600 text-white'
+                            : 'bg-gradient-to-br from-red-500 to-rose-600 text-white'
+                            }`}>
+                            <span className="text-4xl">{message.type === 'success' ? '✓' : '✕'}</span>
+                            <p className="text-lg font-medium">{message.text}</p>
+                            <button
+                                onClick={() => setMessage(null)}
+                                className="mt-2 px-6 py-2 bg-white/20 hover:bg-white/30 rounded-xl text-sm font-medium transition-all"
+                            >
+                                Cerrar
+                            </button>
+                        </div>
                     </div>
                 )}
 
@@ -547,146 +555,289 @@ export default function AdminCRUD({ adminId, onClose, fixedInstitution }: AdminC
                         </div>
                     )}
 
-                    {/* CREATE / EDIT MODE */}
+                    {/* CREATE / EDIT MODE - Premium Design */}
                     {(mode === 'create' || mode === 'edit') && (
-                        <div className="max-w-2xl mx-auto">
-                            <div className="text-center mb-8">
-                                <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center ${mode === 'create' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-purple-500/20 text-purple-400'}`}>
-                                    <span className="text-3xl">{mode === 'create' ? '➕' : '✏️'}</span>
+                        <div className="max-w-xl mx-auto">
+                            {/* Header */}
+                            <div className="text-center mb-6">
+                                <div className={`w-14 h-14 mx-auto mb-3 rounded-2xl flex items-center justify-center shadow-lg ${mode === 'create'
+                                    ? 'bg-gradient-to-br from-emerald-400 to-green-500'
+                                    : 'bg-gradient-to-br from-purple-400 to-indigo-500'
+                                    }`}>
+                                    <span className="text-2xl text-white">{mode === 'create' ? '✚' : '✎'}</span>
                                 </div>
-                                <h2 className="text-2xl font-bold text-white">{mode === 'create' ? 'Nuevo Estudiante' : 'Editar Estudiante'}</h2>
-                                <p className="text-slate-400 text-sm mt-1">
-                                    {mode === 'create' ? 'Agrega un nuevo estudiante al sistema' : `Modificando: ${originalId}`}
-                                </p>
+                                <h2 className="text-xl font-bold text-white">{mode === 'create' ? 'Nuevo Estudiante' : 'Editar Estudiante'}</h2>
+                                {mode === 'edit' && <p className="text-slate-500 text-xs mt-1">ID: {originalId}</p>}
                             </div>
 
-                            <div className="bg-slate-800/30 rounded-2xl p-6 border border-slate-700/30 space-y-5">
-                                {/* ID Field with special highlight */}
-                                <div>
-                                    <label className="block text-slate-300 text-sm font-medium mb-2">ID (Cédula) <span className="text-red-400">*</span></label>
-                                    <input
-                                        type="text"
-                                        value={formData.id}
-                                        onChange={(e) => setFormData({ ...formData, id: e.target.value })}
-                                        className={`w-full rounded-xl px-4 py-3 text-white font-mono transition-all ${mode === 'edit' && formData.id !== originalId
-                                            ? 'bg-orange-500/10 border-2 border-orange-500/50 focus:border-orange-400'
-                                            : 'bg-slate-700/50 border border-slate-600/50 focus:border-purple-500'
-                                            } focus:outline-none focus:ring-2 focus:ring-purple-500/20`}
-                                        placeholder="1234567890"
-                                    />
-                                    {mode === 'edit' && formData.id !== originalId && (
-                                        <div className="mt-3 p-4 bg-orange-500/10 border border-orange-500/30 rounded-xl">
-                                            <div className="flex items-start gap-3">
-                                                <span className="text-orange-400 text-xl">⚠️</span>
-                                                <div>
-                                                    <p className="text-orange-300 text-sm font-medium">Cambio de ID detectado</p>
-                                                    <p className="text-orange-200/60 text-xs mt-1">
-                                                        Esta acción requiere confirmación con código de seguridad.
-                                                    </p>
-                                                    <div className="flex items-center gap-2 mt-2 text-xs">
-                                                        <span className="text-slate-400">Actual:</span>
-                                                        <code className="bg-slate-800 px-2 py-0.5 rounded text-slate-300">{originalId}</code>
-                                                        <span className="text-slate-500">→</span>
-                                                        <span className="text-slate-400">Nuevo:</span>
-                                                        <code className="bg-orange-900/50 px-2 py-0.5 rounded text-orange-300">{formData.id}</code>
+                            {/* Form Card */}
+                            <div className="bg-gradient-to-b from-slate-800/60 to-slate-900/60 rounded-2xl border border-slate-700/40 overflow-hidden shadow-xl">
+
+                                {/* Section: Identificación */}
+                                <div className="p-5 border-b border-slate-700/30">
+                                    <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">📋 Identificación</h3>
+                                    <div className="space-y-4">
+                                        {/* ID */}
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                value={formData.id}
+                                                onChange={(e) => setFormData({ ...formData, id: e.target.value.replace(/\D/g, '') })}
+                                                className={`peer w-full bg-slate-900/50 border-2 rounded-lg px-4 pt-5 pb-2 text-white font-mono text-lg transition-all outline-none ${mode === 'edit' && formData.id !== originalId
+                                                    ? 'border-orange-500/50 focus:border-orange-400'
+                                                    : 'border-slate-600/50 focus:border-purple-400'
+                                                    }`}
+                                                placeholder=" "
+                                            />
+                                            <label className="absolute left-4 top-2 text-[10px] font-medium text-slate-400 uppercase tracking-wider">
+                                                Cédula / Documento *
+                                            </label>
+                                        </div>
+                                        {mode === 'edit' && formData.id !== originalId && (
+                                            <div className="flex items-center gap-2 px-3 py-2 bg-orange-500/10 border border-orange-500/30 rounded-lg text-orange-300 text-xs">
+                                                <span>⚠️</span> Cambio de ID requiere confirmación
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Section: Datos Personales */}
+                                <div className="p-5 border-b border-slate-700/30">
+                                    <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">👤 Datos Personales</h3>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {/* Nombre */}
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                value={formData.first}
+                                                onChange={(e) => setFormData({ ...formData, first: e.target.value.toUpperCase() })}
+                                                className="peer w-full bg-slate-900/50 border-2 border-slate-600/50 focus:border-purple-400 rounded-lg px-4 pt-5 pb-2 text-white transition-all outline-none"
+                                                placeholder=" "
+                                            />
+                                            <label className="absolute left-4 top-2 text-[10px] font-medium text-slate-400 uppercase tracking-wider">Nombre *</label>
+                                        </div>
+                                        {/* Apellido */}
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                value={formData.last}
+                                                onChange={(e) => setFormData({ ...formData, last: e.target.value.toUpperCase() })}
+                                                className="peer w-full bg-slate-900/50 border-2 border-slate-600/50 focus:border-purple-400 rounded-lg px-4 pt-5 pb-2 text-white transition-all outline-none"
+                                                placeholder=" "
+                                            />
+                                            <label className="absolute left-4 top-2 text-[10px] font-medium text-slate-400 uppercase tracking-wider">Apellido *</label>
+                                        </div>
+                                        {/* Género */}
+                                        <div className="relative">
+                                            <select
+                                                value={formData.gender}
+                                                onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                                                className="w-full bg-slate-900/50 border-2 border-slate-600/50 focus:border-purple-400 rounded-lg px-4 pt-5 pb-2 text-white transition-all outline-none appearance-none cursor-pointer"
+                                            >
+                                                <option value="M">Masculino</option>
+                                                <option value="F">Femenino</option>
+                                            </select>
+                                            <label className="absolute left-4 top-2 text-[10px] font-medium text-slate-400 uppercase tracking-wider">Género</label>
+                                            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">▼</div>
+                                        </div>
+                                        {/* Institución */}
+                                        <div className="relative">
+                                            <select
+                                                value={formData.institution}
+                                                onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
+                                                disabled={!!fixedInstitution}
+                                                className={`w-full bg-slate-900/50 border-2 border-slate-600/50 focus:border-purple-400 rounded-lg px-4 pt-5 pb-2 text-white transition-all outline-none appearance-none cursor-pointer ${fixedInstitution ? 'opacity-60' : ''}`}
+                                            >
+                                                <option value="IETAC">IETAC</option>
+                                                <option value="SG">SeamosGenios</option>
+                                            </select>
+                                            <label className="absolute left-4 top-2 text-[10px] font-medium text-slate-400 uppercase tracking-wider">Institución</label>
+                                            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">▼</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Fecha Nacimiento - Futurista */}
+                                    <div className="mt-4">
+                                        <label className="block text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-2">
+                                            📅 Fecha de Nacimiento
+                                        </label>
+                                        <div className="relative group">
+                                            <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-500/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                                            <div className="relative bg-slate-900/80 border border-slate-600/50 rounded-xl p-3 backdrop-blur-xl">
+                                                <div className="flex items-center gap-3">
+                                                    {/* Día */}
+                                                    <div className="flex flex-col items-center">
+                                                        <span className="text-[8px] text-slate-500 uppercase tracking-widest mb-1">Día</span>
+                                                        <div className="relative">
+                                                            <input
+                                                                type="text"
+                                                                inputMode="numeric"
+                                                                maxLength={2}
+                                                                value={formData.birth?.split('/')[0] || ''}
+                                                                onChange={(e) => {
+                                                                    const val = e.target.value.replace(/\D/g, '').slice(0, 2);
+                                                                    const day = val ? Math.min(31, Math.max(1, parseInt(val))) : '';
+                                                                    const parts = (formData.birth || '//').split('/');
+                                                                    setFormData({ ...formData, birth: `${day}/${parts[1] || ''}/${parts[2] || ''}` });
+                                                                }}
+                                                                className="w-12 h-12 bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-600/50 rounded-lg text-center text-xl font-bold text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-500/30 outline-none transition-all"
+                                                                placeholder="--"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <span className="text-2xl text-slate-600 font-light">/</span>
+
+                                                    {/* Mes */}
+                                                    <div className="flex flex-col items-center flex-1">
+                                                        <span className="text-[8px] text-slate-500 uppercase tracking-widest mb-1">Mes</span>
+                                                        <div className="relative w-full">
+                                                            <select
+                                                                value={formData.birth?.split('/')[1] || ''}
+                                                                onChange={(e) => {
+                                                                    const parts = (formData.birth || '//').split('/');
+                                                                    setFormData({ ...formData, birth: `${parts[0] || ''}/${e.target.value}/${parts[2] || ''}` });
+                                                                }}
+                                                                className="w-full h-12 bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-600/50 rounded-lg px-3 text-sm font-medium text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-500/30 outline-none transition-all appearance-none cursor-pointer text-center"
+                                                            >
+                                                                <option value="" className="bg-slate-900">Seleccionar</option>
+                                                                <option value="01" className="bg-slate-900">Ene</option>
+                                                                <option value="02" className="bg-slate-900">Feb</option>
+                                                                <option value="03" className="bg-slate-900">Mar</option>
+                                                                <option value="04" className="bg-slate-900">Abr</option>
+                                                                <option value="05" className="bg-slate-900">May</option>
+                                                                <option value="06" className="bg-slate-900">Jun</option>
+                                                                <option value="07" className="bg-slate-900">Jul</option>
+                                                                <option value="08" className="bg-slate-900">Ago</option>
+                                                                <option value="09" className="bg-slate-900">Sep</option>
+                                                                <option value="10" className="bg-slate-900">Oct</option>
+                                                                <option value="11" className="bg-slate-900">Nov</option>
+                                                                <option value="12" className="bg-slate-900">Dic</option>
+                                                            </select>
+                                                            <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">▼</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <span className="text-2xl text-slate-600 font-light">/</span>
+
+                                                    {/* Año */}
+                                                    <div className="flex flex-col items-center">
+                                                        <span className="text-[8px] text-slate-500 uppercase tracking-widest mb-1">Año</span>
+                                                        <input
+                                                            type="text"
+                                                            inputMode="numeric"
+                                                            maxLength={4}
+                                                            value={formData.birth?.split('/')[2] || ''}
+                                                            onChange={(e) => {
+                                                                const val = e.target.value.replace(/\D/g, '').slice(0, 4);
+                                                                const parts = (formData.birth || '//').split('/');
+                                                                setFormData({ ...formData, birth: `${parts[0] || ''}/${parts[1] || ''}/${val}` });
+                                                            }}
+                                                            className="w-16 h-12 bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-600/50 rounded-lg text-center text-xl font-bold text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-500/30 outline-none transition-all"
+                                                            placeholder="----"
+                                                        />
                                                     </div>
                                                 </div>
+
+                                                {/* Preview de fecha */}
+                                                {formData.birth && formData.birth !== '//' && (
+                                                    <div className="mt-2 pt-2 border-t border-slate-700/50 text-center">
+                                                        <span className="text-xs text-slate-500">
+                                                            {(() => {
+                                                                const [d, m, y] = (formData.birth || '').split('/');
+                                                                const months = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                                                                if (d && m && y) return `${d} de ${months[parseInt(m)] || ''} de ${y}`;
+                                                                return '';
+                                                            })()}
+                                                        </span>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
-                                    )}
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-slate-300 text-sm font-medium mb-2">Nombre <span className="text-red-400">*</span></label>
-                                        <input type="text" value={formData.first}
-                                            onChange={(e) => setFormData({ ...formData, first: e.target.value.toUpperCase() })}
-                                            className="w-full bg-slate-700/50 border border-slate-600/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
-                                            placeholder="JUAN" />
                                     </div>
-                                    <div>
-                                        <label className="block text-slate-300 text-sm font-medium mb-2">Apellido <span className="text-red-400">*</span></label>
-                                        <input type="text" value={formData.last}
-                                            onChange={(e) => setFormData({ ...formData, last: e.target.value.toUpperCase() })}
-                                            className="w-full bg-slate-700/50 border border-slate-600/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
-                                            placeholder="PÉREZ" />
+
+                                    {/* Teléfono */}
+                                    <div className="relative mt-4">
+                                        <input
+                                            type="tel"
+                                            value={formData.phone}
+                                            onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                                            className="peer w-full bg-slate-900/50 border-2 border-slate-600/50 focus:border-purple-400 rounded-lg px-4 pt-5 pb-2 text-white transition-all outline-none"
+                                            placeholder=" "
+                                            maxLength={10}
+                                        />
+                                        <label className="absolute left-4 top-2 text-[10px] font-medium text-slate-400 uppercase tracking-wider">Teléfono</label>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-slate-300 text-sm font-medium mb-2">Institución</label>
-                                        <select
-                                            value={formData.institution}
-                                            onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
-                                            disabled={!!fixedInstitution}
-                                            className={`w-full bg-slate-700/50 border border-slate-600/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 ${fixedInstitution ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                                            <option value="IETAC">IETAC</option>
-                                            <option value="SG">SeamosGenios</option>
-                                        </select>
+                                {/* Section: Credenciales */}
+                                <div className="p-5 bg-slate-900/30">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">🔐 Credenciales</h3>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const firstName = formData.first.toLowerCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                                                const lastName = formData.last.toLowerCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                                                const email = `${firstName}${lastName}.sg.est`;
+                                                const password = `Sg${firstName.charAt(0).toUpperCase()}${lastName.charAt(0).toUpperCase()}${new Date().getFullYear()}`;
+                                                setFormData({ ...formData, email, password });
+                                            }}
+                                            className="text-[10px] bg-gradient-to-r from-purple-500/20 to-indigo-500/20 hover:from-purple-500/30 hover:to-indigo-500/30 text-purple-300 px-3 py-1.5 rounded-full transition-all font-medium flex items-center gap-1 border border-purple-500/30"
+                                        >
+                                            ✨ Generar automático
+                                        </button>
                                     </div>
-                                    <div>
-                                        <label className="block text-slate-300 text-sm font-medium mb-2">Género</label>
-                                        <select value={formData.gender} onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                                            className="w-full bg-slate-700/50 border border-slate-600/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500">
-                                            <option value="M">Masculino</option>
-                                            <option value="F">Femenino</option>
-                                        </select>
+                                    <div className="space-y-3">
+                                        {/* Email */}
+                                        <div className="flex items-stretch">
+                                            <div className="relative flex-1">
+                                                <input
+                                                    type="text"
+                                                    value={formData.email}
+                                                    onChange={(e) => setFormData({ ...formData, email: e.target.value.toLowerCase().replace(/\s+/g, '') })}
+                                                    className="w-full bg-slate-900/50 border-2 border-slate-600/50 border-r-0 focus:border-purple-400 rounded-l-lg px-4 pt-5 pb-2 text-white transition-all outline-none"
+                                                    placeholder=" "
+                                                />
+                                                <label className="absolute left-4 top-2 text-[10px] font-medium text-slate-400 uppercase tracking-wider">Email *</label>
+                                            </div>
+                                            <div className="bg-slate-700/50 border-2 border-l-0 border-slate-600/50 rounded-r-lg px-3 flex items-center text-slate-400 text-xs font-medium">
+                                                @gmail.com
+                                            </div>
+                                        </div>
+                                        {/* Password */}
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                value={formData.password}
+                                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                                className="peer w-full bg-slate-900/50 border-2 border-slate-600/50 focus:border-purple-400 rounded-lg px-4 pt-5 pb-2 text-white font-mono transition-all outline-none"
+                                                placeholder=" "
+                                            />
+                                            <label className="absolute left-4 top-2 text-[10px] font-medium text-slate-400 uppercase tracking-wider">Contraseña</label>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-slate-300 text-sm font-medium mb-2">Fecha de Nacimiento</label>
-                                        <input type="text" value={formData.birth}
-                                            onChange={(e) => setFormData({ ...formData, birth: e.target.value })}
-                                            className="w-full bg-slate-700/50 border border-slate-600/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
-                                            placeholder="15/03/2006" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-slate-300 text-sm font-medium mb-2">Teléfono</label>
-                                        <input type="text" value={formData.phone}
-                                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                            className="w-full bg-slate-700/50 border border-slate-600/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
-                                            placeholder="3001234567" />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-slate-300 text-sm font-medium mb-2">Email <span className="text-red-400">*</span></label>
-                                    <div className="flex">
-                                        <input type="text" value={formData.email}
-                                            onChange={(e) => setFormData({ ...formData, email: e.target.value.toLowerCase() })}
-                                            className="flex-1 bg-slate-700/50 border border-slate-600/50 rounded-l-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500"
-                                            placeholder="estudiante.juan" />
-                                        <span className="bg-slate-600/50 border border-slate-600/50 border-l-0 rounded-r-xl px-4 py-3 text-slate-400 text-sm">@gmail.com</span>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-slate-300 text-sm font-medium mb-2">Contraseña</label>
-                                    <input type="text" value={formData.password}
-                                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                        className="w-full bg-slate-700/50 border border-slate-600/50 rounded-xl px-4 py-3 text-white font-mono focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20"
-                                        placeholder="Sg@2025..." />
                                 </div>
                             </div>
 
-                            <div className="flex gap-4 mt-6">
+                            {/* Buttons */}
+                            <div className="flex gap-3 mt-5">
                                 <button
-                                    onClick={() => setMode('list')}
-                                    className="flex-1 bg-slate-700/50 hover:bg-slate-700 text-white py-3.5 rounded-xl font-medium transition-colors"
+                                    onClick={() => { setMode('list'); resetForm(); }}
+                                    className="flex-1 bg-slate-800/80 hover:bg-slate-700 text-slate-300 py-3.5 rounded-xl font-medium transition-all border border-slate-600/50"
                                 >
-                                    Cancelar
+                                    ← Cancelar
                                 </button>
                                 <button
                                     onClick={mode === 'create' ? handleCreate : handleUpdate}
-                                    className={`flex-1 py-3.5 rounded-xl font-medium transition-all hover:scale-[1.02] active:scale-[0.98] ${mode === 'edit' && formData.id !== originalId
-                                        ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/20'
-                                        : 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/20'
+                                    className={`flex-1 py-3.5 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] ${mode === 'edit' && formData.id !== originalId
+                                        ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-orange-500/25'
+                                        : mode === 'create'
+                                            ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-emerald-500/25'
+                                            : 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-purple-500/25'
                                         }`}
                                 >
-                                    {mode === 'create' ? 'Crear Estudiante' : (formData.id !== originalId ? 'Cambiar ID y Guardar' : 'Guardar Cambios')}
+                                    {mode === 'create' ? '✓ Crear Estudiante' : (formData.id !== originalId ? '⚠ Cambiar ID' : '✓ Guardar')}
                                 </button>
                             </div>
                         </div>

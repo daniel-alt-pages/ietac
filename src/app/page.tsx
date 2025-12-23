@@ -20,6 +20,7 @@ import {
   isStudentDisabled,
   validateStepTiming,
   clearSession,
+  updateSessionActivity,
   subscribeToSecurityStatuses,
   enableStudent,
   disableStudent,
@@ -48,6 +49,12 @@ import AdminCRUD from '@/components/AdminCRUD';
 import VerificationReport from '@/components/VerificationReport';
 import ActivityDashboard from '@/components/ActivityDashboard';
 import GoogleVerificationReport from '@/components/GoogleVerificationReport';
+import AdminBroadcast from '@/components/AdminBroadcast';
+import NotificationSettingsManager from '@/components/NotificationSettingsManager';
+import NotificationPermissionButton from '@/components/NotificationPermissionButton';
+import NotificationPromptModal from '@/components/NotificationPromptModal';
+import AdminAlertsPanel from '@/components/AdminAlertsPanel';
+import BroadcastHistory from '@/components/BroadcastHistory';
 
 // ============================================
 // 🔧 MODO MANTENIMIENTO
@@ -130,9 +137,27 @@ export default function Home() {
   const [showVerificationReport, setShowVerificationReport] = useState(false);
   const [showActivityLog, setShowActivityLog] = useState(false);
   const [showGoogleReport, setShowGoogleReport] = useState(false);
+  const [showBroadcast, setShowBroadcast] = useState(false);
+  const [showNotificationSettings, setShowNotificationSettings] = useState(false);
+  const [showNotificationPrompt, setShowNotificationPrompt] = useState(false);
+  const [showAlertsPanel, setShowAlertsPanel] = useState(false);
+  const [showBroadcastHistory, setShowBroadcastHistory] = useState(false);
 
-  // Security system state
-  const [sessionId] = useState(() => generateSessionId());
+  // Security system state - Persist sessionId in localStorage to avoid false positives on reload
+  const [sessionId] = useState(() => {
+    if (typeof window !== 'undefined') {
+      // Try to get existing sessionId from localStorage
+      const existingSessionId = localStorage.getItem('sg_session_id');
+      if (existingSessionId) {
+        return existingSessionId;
+      }
+      // Generate new one and save it
+      const newSessionId = generateSessionId();
+      localStorage.setItem('sg_session_id', newSessionId);
+      return newSessionId;
+    }
+    return generateSessionId();
+  });
   const [securityStatuses, setSecurityStatuses] = useState<StudentSecurityStatus[]>([]);
   const [securityWarning, setSecurityWarning] = useState<string | null>(null);
 
@@ -165,6 +190,9 @@ export default function Home() {
     show: boolean;
     downloading: boolean;
   } | null>(null);
+
+  // Welcome modal for students (Google connect or create account)
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   // Tutorial visibility state
   const [showIetacTutorial, setShowIetacTutorial] = useState(false);
@@ -470,6 +498,12 @@ export default function Home() {
             setView('student-flow');
             if (session.studentStep) setStudentStep(session.studentStep);
             if (session.googleStep) setGoogleStep(session.googleStep);
+
+            // 🔔 Verificar si necesita pedir permiso de notificaciones
+            const alreadyAsked = localStorage.getItem(`notification_asked_${student.id}`);
+            if (!alreadyAsked && 'Notification' in window) {
+              setTimeout(() => setShowNotificationPrompt(true), 2000);
+            }
           }
         }
         if (session.loginId) setLoginId(session.loginId);
@@ -506,6 +540,21 @@ export default function Home() {
     }
   }, [view]);
 
+  // 🔐 Periodic session activity update to prevent false positives
+  useEffect(() => {
+    if (!authenticatedStudent) return;
+
+    // Update activity immediately when student is set
+    updateSessionActivity(authenticatedStudent.id, sessionId);
+
+    // Update every 2 minutes to keep session alive
+    const activityInterval = setInterval(() => {
+      updateSessionActivity(authenticatedStudent.id, sessionId);
+    }, 2 * 60 * 1000); // 2 minutes
+
+    return () => clearInterval(activityInterval);
+  }, [authenticatedStudent, sessionId]);
+
   // 💡 Load login history for suggestions
   useEffect(() => {
     try {
@@ -516,6 +565,25 @@ export default function Home() {
       }
     } catch { /* ignore */ }
   }, []);
+
+  // 🔒 Clean session on browser close to prevent false "duplicate session" errors
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (authenticatedStudent) {
+        // Use navigator.sendBeacon for reliable session cleanup on page close
+        const payload = JSON.stringify({
+          studentId: authenticatedStudent.id,
+          sessionId: sessionId
+        });
+        navigator.sendBeacon('/api/clear-session', payload);
+        // Also try sync clear (may not complete)
+        clearSession(authenticatedStudent.id, sessionId);
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [authenticatedStudent, sessionId]);
 
   // 💾 Save login to history after successful login
   const saveLoginToHistory = (id: string, birth: string) => {
@@ -719,11 +787,11 @@ export default function Home() {
       'sep': '09', 'oct': '10', 'nov': '11', 'dic': '12'
     };
 
-    // Usar regex para reemplazar palabras completas
-    for (const [name, num] of Object.entries(monthsMap)) {
-      const regex = new RegExp(`\\b${name}\\b`, 'gi');
-      if (regex.test(d)) {
-        d = d.replace(regex, num);
+    // Reemplazar nombres de meses por números (orden por longitud para evitar conflictos)
+    const sortedMonths = Object.entries(monthsMap).sort((a, b) => b[0].length - a[0].length);
+    for (const [name, num] of sortedMonths) {
+      if (d.includes(name)) {
+        d = d.replace(name, num);
         break;
       }
     }
@@ -755,11 +823,37 @@ export default function Home() {
       return;
     }
 
-    // Check student
-    const student = studentData.find(s =>
-      s.id === loginId.trim() &&
-      normalizeDate(s.birth) === inputNorm
+    // Check student - Primero data.ts (siempre disponible), luego Firebase como respaldo
+    let student: Student | null = null;
+
+    // 📁 PASO 1: Buscar en data.ts (más rápido y confiable)
+    const localStudent = studentData.find(
+      s => s.id === loginId.trim() && normalizeDate(s.birth) === inputNorm
     );
+
+    if (localStudent) {
+      student = localStudent;
+    } else {
+      // 🔥 PASO 2: Si no está en data.ts, buscar en Firebase (para estudiantes CRUD)
+      try {
+        const firestoreStudent = await getStudentById(loginId.trim());
+        if (firestoreStudent && !firestoreStudent.deleted && normalizeDate(firestoreStudent.birth || '') === inputNorm) {
+          student = {
+            id: firestoreStudent.studentId,
+            first: firestoreStudent.first || firestoreStudent.firstName || '',
+            last: firestoreStudent.last || firestoreStudent.lastName || '',
+            birth: firestoreStudent.birth || '',
+            gender: (firestoreStudent.gender || 'M') as 'M' | 'F',
+            email: firestoreStudent.email || firestoreStudent.emailNormalized || '',
+            password: firestoreStudent.password || '',
+            phone: firestoreStudent.phone || '',
+            institution: firestoreStudent.institution || 'IETAC'
+          };
+        }
+      } catch (err) {
+        console.warn('Firebase lookup failed, continuing with local data only:', err);
+      }
+    }
 
     if (student) {
       // 🔒 SECURITY CHECK 1: Check if student is disabled
@@ -791,6 +885,8 @@ export default function Home() {
         }, 500);
       } else {
         setStudentStep('credentials'); // Flujo normal para NO verificados
+        // 🎯 Mostrar modal de bienvenida para estudiantes no verificados
+        setShowWelcomeModal(true);
       }
 
       // Save credentials to cache for suggestions
@@ -821,6 +917,12 @@ export default function Home() {
         phone: student.phone,
         details: 'Inicio de sesión exitoso'
       });
+
+      // 🔔 Mostrar prompt de notificaciones (solo una vez por usuario)
+      const alreadyAsked = localStorage.getItem(`notification_asked_${student.id}`);
+      if (!alreadyAsked && 'Notification' in window) {
+        setTimeout(() => setShowNotificationPrompt(true), 1500);
+      }
     } else {
       setLoginError('ID o fecha incorrectos. Verifica tus datos.');
     }
@@ -1676,9 +1778,45 @@ ${credentials.suggestedPassword}
                     <span>📊</span>
                     Actividad
                   </button>
+                  <button
+                    onClick={() => setShowBroadcast(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-lg text-sm font-medium transition-colors shadow-lg"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                    </svg>
+                    Notificar
+                  </button>
+                  <button
+                    onClick={() => setShowNotificationSettings(true)}
+                    className="flex items-center gap-2 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors"
+                    title="Configurar notificaciones"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => setShowAlertsPanel(true)}
+                    className="relative flex items-center gap-1 px-3 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg text-sm font-medium transition-colors"
+                    title="Ver alertas"
+                  >
+                    🔔
+                  </button>
+                  <button
+                    onClick={() => setShowBroadcastHistory(true)}
+                    className="flex items-center gap-1 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors"
+                    title="Historial de mensajes"
+                  >
+                    📜
+                  </button>
                 </div>
-                <div className="text-sm text-slate-500">
-                  Total: <span className="font-bold text-slate-700">{filteredData.length}</span> estudiantes
+                <div className="flex items-center gap-4">
+                  <NotificationPermissionButton userId="admin" role="admin" variant="compact" />
+                  <div className="text-sm text-slate-500">
+                    Total: <span className="font-bold text-slate-700">{filteredData.length}</span> estudiantes
+                  </div>
                 </div>
               </div>
 
@@ -2344,6 +2482,35 @@ ${credentials.suggestedPassword}
         {showGoogleReport && (
           <GoogleVerificationReport
             onClose={() => setShowGoogleReport(false)}
+          />
+        )}
+
+        {/* Modal Broadcast Notificaciones */}
+        {showBroadcast && (
+          <AdminBroadcast
+            adminId="admin"
+            onClose={() => setShowBroadcast(false)}
+          />
+        )}
+
+        {/* Modal Configuración Notificaciones */}
+        {showNotificationSettings && (
+          <NotificationSettingsManager
+            onClose={() => setShowNotificationSettings(false)}
+          />
+        )}
+
+        {/* Panel de Alertas */}
+        {showAlertsPanel && (
+          <AdminAlertsPanel
+            onClose={() => setShowAlertsPanel(false)}
+          />
+        )}
+
+        {/* Historial de Broadcasts */}
+        {showBroadcastHistory && (
+          <BroadcastHistory
+            onClose={() => setShowBroadcastHistory(false)}
           />
         )}
       </div>
@@ -3751,6 +3918,93 @@ ${credentials.suggestedPassword}
             {studentStep === 'credentials' && credentials && authenticatedStudent && (
               <div className="space-y-5 animate-fadeIn">
 
+                {/* 🎯 MODAL DE BIENVENIDA - Opción Google o Crear Cuenta */}
+                {showWelcomeModal && (
+                  <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-fadeIn">
+                    <div className="relative bg-gradient-to-br from-[#1e1b4b] via-[#312e81] to-[#1e1b4b] rounded-3xl p-8 max-w-md w-full border border-white/20 shadow-2xl shadow-purple-500/20">
+                      {/* Efecto decorativo */}
+                      <div className="absolute -top-12 -right-12 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl"></div>
+                      <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl"></div>
+
+                      {/* Contenido */}
+                      <div className="relative z-10 text-center">
+                        <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/40">
+                          <span className="text-3xl font-bold text-white">
+                            {credentials.firstName.charAt(0)}{credentials.lastName.charAt(0)}
+                          </span>
+                        </div>
+
+                        <h2 className="text-2xl font-bold text-white mb-1">¡Hola, {credentials.firstName}!</h2>
+                        <p className="text-purple-200/70 text-sm mb-4">{authenticatedStudent.institution}</p>
+
+                        {/* Tarjeta de credenciales */}
+                        <div className="bg-white/10 rounded-2xl p-4 mb-6 border border-white/10 text-left">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                              <span className="text-lg">👤</span>
+                            </div>
+                            <div>
+                              <p className="text-white/50 text-xs">Nombre completo</p>
+                              <p className="text-white font-medium text-sm">{credentials.firstName} {credentials.lastName}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                              <span className="text-lg">📧</span>
+                            </div>
+                            <div className="overflow-hidden">
+                              <p className="text-white/50 text-xs">Tu correo asignado</p>
+                              <p className="text-white font-medium text-sm truncate">{credentials.email}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <p className="text-purple-200/80 mb-6">¿Ya creaste esta cuenta de Google?</p>
+
+                        {/* Opción 1: Conectar Google */}
+                        <button
+                          onClick={async () => {
+                            setShowWelcomeModal(false);
+                            // Ir directo a verificación de Google
+                            if (authenticatedStudent && credentials) {
+                              setStudentStep('confirmation-final');
+                              // Trigger Google verification
+                              setTimeout(() => {
+                                const verifyBtn = document.querySelector('[data-verify-google]') as HTMLButtonElement;
+                                if (verifyBtn) verifyBtn.click();
+                              }, 500);
+                            }
+                          }}
+                          className="w-full mb-4 py-4 px-6 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white font-semibold rounded-2xl shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3"
+                        >
+                          <svg className="w-6 h-6" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                            <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                            <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                            <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                          </svg>
+                          Ya tengo cuenta - Conectar Google
+                        </button>
+
+                        {/* Opción 2: Crear cuenta */}
+                        <button
+                          onClick={() => setShowWelcomeModal(false)}
+                          className="w-full py-4 px-6 bg-white/10 hover:bg-white/20 text-white font-medium rounded-2xl border border-white/20 transition-all flex items-center justify-center gap-3"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                          </svg>
+                          No tengo cuenta - Crear ahora
+                        </button>
+
+                        <p className="text-purple-300/50 text-xs mt-6">
+                          Si ya creaste tu cuenta de Google, conéctala para verificar
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* ========== TARJETA DE BIENVENIDA PROFESIONAL ========== */}
                 <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-3xl border border-white/20 overflow-hidden">
                   {/* Efecto de brillo superior */}
@@ -5083,6 +5337,16 @@ ${credentials.suggestedPassword}
           SeamosGenios © 2025
         </p>
       </footer>
+
+      {/* 🔔 Modal de Solicitud de Notificaciones */}
+      {showNotificationPrompt && authenticatedStudent && (
+        <NotificationPromptModal
+          userId={authenticatedStudent.id}
+          userName={authenticatedStudent.first.split(' ')[0]}
+          role="student"
+          onClose={() => setShowNotificationPrompt(false)}
+        />
+      )}
     </div>
   );
 }

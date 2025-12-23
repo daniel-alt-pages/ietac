@@ -149,7 +149,12 @@ const studentDataSG: Student[] = [
     { first: "SG - ISABELLA", last: "VÁSQUEZ CASAS", email: "vasquezcasasi.sg.est", id: "1096540557", password: "IsabellaV.0557", gender: "Mujer", phone: "3159851800", birth: "08 Abr 2009", institution: "SG" },
     { first: "SG - GEISON RAFAEL", last: "ORTEGA BARRAZA", email: "ortegabarrazagr.sg.est", id: "1121538385", password: "GeisonO.8385", gender: "Hombre", phone: "3225681487", birth: "12 Feb 2009", institution: "SG" },
     { first: "SG - MARÍA ÁNGEL", last: "OJEDA SÁENZ", email: "ojedasaenzma.sg.est", id: "1062439459", password: "MariaO.9459", gender: "Mujer", phone: "3103968790", birth: "27 Abr 2009", institution: "SG" },
-    { first: "SG - SANTIAGO", last: "MÁRQUEZ MARTÍNEZ", email: "marquezmartinezs.sg.est", id: "1121539027", password: "SantiagoM.9027", gender: "Hombre", phone: "3116672151", birth: "04 Sep 2009", institution: "SG" }
+    { first: "SG - SANTIAGO", last: "MÁRQUEZ MARTÍNEZ", email: "marquezmartinezs.sg.est", id: "1121539027", password: "SantiagoM.9027", gender: "Hombre", phone: "3116672151", birth: "04 Sep 2009", institution: "SG" },
+    { first: "SG - ALBERT RICARDO", last: "HINESTROZA FLOREZ", email: "hinestrozaflorezsag.sg.est", id: "1124021237", password: "AlbertH.1237", gender: "Hombre", phone: "3011389596", birth: "14 Nov 2007", institution: "SG" },
+    { first: "SG - JOSE MIGUEL", last: "URREA GÓMEZ", email: "urreagomezjm.sg.est", id: "1114882979", password: "JoseU.2979", gender: "Hombre", phone: "3052769729", birth: "12 Abr 2008", institution: "SG" },
+    { first: "SG - NAILIN ANDREA", last: "VALLE RUIZ", email: "valleruizna.sg.est", id: "1121539427", password: "NailinV.9427", gender: "Mujer", phone: "3166060757", birth: "31 Jul 2009", institution: "SG" },
+    { first: "SG - LINDA ROSA", last: "CÓRDOBA CRUZ", email: "cordobacruzlr.sg.est", id: "1175714000", password: "LindaC.4000", gender: "Mujer", phone: "3009515140", birth: "17 Jun 2010", institution: "SG" },
+    { first: "SG - NUBIA LISETH", last: "MORA HERMOZO", email: "morahermozonl.sg.est", id: "1007602728", password: "NubiaM.2728", gender: "Mujer", phone: "3222090003", birth: "27 Oct 1997", institution: "SG" }
 ];
 
 
