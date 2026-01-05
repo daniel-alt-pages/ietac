@@ -1504,6 +1504,32 @@ export async function verifyWithGoogleAuth(
             details: `Error en verificación Google: ${errorMessage}`
         });
 
+        // Detectar error específico de Safari/navegadores con restricciones de privacidad
+        if (errorMessage.includes('missing initial state') ||
+            errorMessage.includes('sessionStorage') ||
+            errorMessage.includes('storage-partitioned')) {
+            return {
+                success: false,
+                message: '⚠️ Tu navegador (Safari) bloquea la verificación. Por favor abre este sitio en Chrome o desactiva "Prevenir seguimiento entre sitios" en Configuración > Safari.'
+            };
+        }
+
+        // Error de popup bloqueado
+        if (errorMessage.includes('popup') || errorMessage.includes('blocked')) {
+            return {
+                success: false,
+                message: '🚫 El popup fue bloqueado. Permite los popups en tu navegador e intenta de nuevo.'
+            };
+        }
+
+        // Error de red o timeout
+        if (errorMessage.includes('network') || errorMessage.includes('timeout')) {
+            return {
+                success: false,
+                message: '📶 Error de conexión. Verifica tu internet e intenta de nuevo.'
+            };
+        }
+
         return {
             success: false,
             message: 'Error al verificar. Por favor intenta de nuevo.'
@@ -1767,6 +1793,26 @@ export async function executeExpressVerification(
             };
         }
 
+        // Detectar error específico de Safari/navegadores con restricciones de privacidad
+        if (errorMessage.includes('missing initial state') ||
+            errorMessage.includes('sessionStorage') ||
+            errorMessage.includes('storage-partitioned')) {
+            return {
+                success: false,
+                verified: false,
+                message: '⚠️ Tu navegador (Safari) bloquea la verificación. Por favor abre este sitio en Chrome o desactiva "Prevenir seguimiento entre sitios" en Configuración > Safari.'
+            };
+        }
+
+        // Error de popup bloqueado
+        if (errorMessage.includes('popup') || errorMessage.includes('blocked')) {
+            return {
+                success: false,
+                verified: false,
+                message: '🚫 El popup fue bloqueado. Permite los popups en tu navegador e intenta de nuevo.'
+            };
+        }
+
         console.error('Express verification error:', error);
 
         // Log del error
@@ -2009,6 +2055,24 @@ export async function intelligentGoogleVerification(
             return {
                 type: 'CANCELLED',
                 message: 'Verificación cancelada.'
+            };
+        }
+
+        // Detectar error específico de Safari/navegadores con restricciones de privacidad
+        if (errorMessage.includes('missing initial state') ||
+            errorMessage.includes('sessionStorage') ||
+            errorMessage.includes('storage-partitioned')) {
+            return {
+                type: 'ERROR',
+                message: '⚠️ Tu navegador (Safari) bloquea la verificación. Por favor abre este sitio en Chrome o desactiva "Prevenir seguimiento entre sitios" en Configuración > Safari.'
+            };
+        }
+
+        // Error de popup bloqueado
+        if (errorMessage.includes('popup') || errorMessage.includes('blocked')) {
+            return {
+                type: 'ERROR',
+                message: '🚫 El popup fue bloqueado. Permite los popups en tu navegador e intenta de nuevo.'
             };
         }
 
