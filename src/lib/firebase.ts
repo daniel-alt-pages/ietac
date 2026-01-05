@@ -1961,11 +1961,19 @@ export async function intelligentGoogleVerification(
 
         // VALIDACIÓN DE IDENTIDAD EXTENDIDA (Si buscamos por ID)
         if (isIdLookup && studentDoc) {
-            // Verificar que el email de Google coincida con el asignado
-            const assigned = (studentDoc.assignedEmail || studentDoc.email || '').toLowerCase().replace('@gmail.com', '');
+            // Normalizar el email asignado - manejar ambos formatos (con y sin @gmail.com)
+            let assigned = '';
+            if (studentDoc.assignedEmail) {
+                assigned = studentDoc.assignedEmail.toLowerCase().replace('@gmail.com', '');
+            } else if (studentDoc.email) {
+                // El campo email puede estar sin @gmail.com, así que no necesita replace
+                assigned = studentDoc.email.toLowerCase().replace('@gmail.com', '');
+            } else if (studentDoc.emailNormalized) {
+                assigned = studentDoc.emailNormalized.toLowerCase();
+            }
 
             // Si hay un mismatch, manejémoslo aquí
-            if (assigned !== normalizedEmail) {
+            if (assigned && assigned !== normalizedEmail) {
                 // Pero espera... si ya estaba verificado y usa SU email verificado, está bien.
                 const alreadyVerifiedEmail = (studentDoc.verifiedWithEmail || '').toLowerCase().replace('@gmail.com', '');
 
@@ -1974,11 +1982,12 @@ export async function intelligentGoogleVerification(
                     // Dejamos pasar a la lógica de VETERANO abajo
                 } else {
                     // REAL MISMATCH
+                    console.warn(`⚠️ Email mismatch: assigned=${assigned}, provided=${normalizedEmail}`);
                     await markVerificationMismatch(studentDoc.studentId, googleEmail, googleName);
                     await signOut(auth);
                     return {
                         type: 'ERROR', // O un tipo específico MISMATCH
-                        message: `⛔ Error de Identidad: Estás logueado como ${studentDoc.first}, pero intentaste verificar con "${googleEmail}" que no es tu correo asignado (${assigned}@gmail.com).`
+                        message: `⛔ Error de Identidad: Estás logueado como ${studentDoc.first || studentDoc.firstName}, pero intentaste verificar con "${googleEmail}" que no es tu correo asignado (${assigned}@gmail.com).`
                     };
                 }
             }
