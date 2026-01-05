@@ -1996,7 +1996,10 @@ export async function intelligentGoogleVerification(
         // El email existe en nuestra base de datos - Ahora verificamos el estado
         const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : 'server';
 
-        if (studentDoc.verificationStatus === 'PENDING' || studentDoc.verificationStatus === 'MISMATCH') {
+        // Normalizar verificationStatus - tratar undefined/null/vacío como PENDING
+        const currentStatus = studentDoc.verificationStatus || 'PENDING';
+
+        if (currentStatus === 'PENDING' || currentStatus === 'MISMATCH' || !studentDoc.verificationStatus) {
             // 🟢 RAMA B: EL CUMPLIDOR (Primera vez verificando)
 
             // Actualizar a VERIFIED
