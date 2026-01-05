@@ -47,15 +47,26 @@ export default function GoogleVerificationReport({ onClose }: GoogleVerification
 
     // Get verification status
     function getStatus(s: StudentDocument): 'VERIFIED' | 'MISMATCH' | 'PENDING' {
-        if (s.verificationStatus === 'VERIFIED') return 'VERIFIED';
-        if (s.verificationStatus === 'MISMATCH') return 'MISMATCH';
-        if (s.verificationStatus === 'PENDING') return 'PENDING';
-
-        const assigned = getAssignedEmail(s).toLowerCase().replace('@gmail.com', '');
         const verified = getVerifiedEmail(s);
 
+        // Si ya está verificado con email, verificar si coincide
+        if (s.verificationStatus === 'VERIFIED' && verified) return 'VERIFIED';
+
+        // Si tiene estatus MISMATCH pero NO tiene email verificado, en realidad está PENDING
+        if (s.verificationStatus === 'MISMATCH') {
+            if (!verified) return 'PENDING'; // No ha verificado con ningún email
+            // Sí tiene email verificado que no coincide
+            const assigned = getAssignedEmail(s).toLowerCase().replace('@gmail.com', '');
+            const usedNormalized = verified.toLowerCase().replace('@gmail.com', '');
+            return assigned === usedNormalized ? 'VERIFIED' : 'MISMATCH';
+        }
+
+        if (s.verificationStatus === 'PENDING' || !s.verificationStatus) return 'PENDING';
+
+        // Fallback: calcular basado en emails
         if (!verified) return 'PENDING';
 
+        const assigned = getAssignedEmail(s).toLowerCase().replace('@gmail.com', '');
         const usedNormalized = verified.toLowerCase().replace('@gmail.com', '');
         return assigned === usedNormalized ? 'VERIFIED' : 'MISMATCH';
     }
