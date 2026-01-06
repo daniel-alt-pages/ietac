@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-StudentDocument,
+import {
+    StudentDocument,
     getAllStudentsFromFirestore
 } from '@/lib/firebase';
 import { collection, query, orderBy, limit, onSnapshot, updateDoc, doc, addDoc, getDocs, where } from 'firebase/firestore';
